@@ -1,5 +1,5 @@
-name: cookingbook
-description: Some food
+name: recipebook
+description: Food?
 publish_to: 'none'
 version: 1.0.0+1
 

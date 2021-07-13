@@ -1,4 +1,4 @@
-package com.carapacik.cookingbook
+package com.carapacik.recipebook
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,11 +1,11 @@
 {
-    "name": "cookingbook",
-    "short_name": "cookingbook",
+    "name": "recipebook",
+    "short_name": "recipebook",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Some food",
+    "description": "Food?",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
