@@ -1,0 +1,28 @@
+name: cookingbook
+description: Some food
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.3
+  google_fonts: ^2.1.0
+  provider: ^5.0.0
+  flutter_svg: ^0.22.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - google_fonts/
+    - assets/
+    - assets/icons/
+    - assets/images/
