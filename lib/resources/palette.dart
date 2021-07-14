@@ -9,4 +9,6 @@ class Palette {
   static const Color mainLighten = Color(0xFF3A3C41);
   static const Color mainLighten1 = Color(0xFF4A525A);
   static const Color grey = Color(0xFF9196A1);
+
+  static const Color shadowColor = Color(0x0D22272F);
 }
