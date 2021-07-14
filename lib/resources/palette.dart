@@ -11,4 +11,5 @@ class Palette {
   static const Color grey = Color(0xFF9196A1);
 
   static const Color shadowColor = Color(0x0D22272F);
+  static const Color iconBackground = Color(0xFFFFEFCC);
 }

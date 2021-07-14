@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/home_page.dart';
+import 'package:recipebook/home/home_page.dart';
 import 'package:recipebook/widgets/appbar_widget.dart';
 
 class WidgetTree extends StatelessWidget {

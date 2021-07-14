@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:recipebook/home/components/category_card.dart';
+import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/widgets/contained_button.dart';
@@ -90,39 +92,81 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CategoryCardWidget(),
-                  CategoryCardWidget(),
-                  CategoryCardWidget(),
-                  CategoryCardWidget(),
+                  CategoryCardWidget(
+                    iconPath: CookingIcons.menu,
+                    title: "Простые блюда",
+                    description:
+                        "Время приготвления таких блюд не более 1 часа",
+                  ),
+                  CategoryCardWidget(
+                    iconPath: CookingIcons.cook,
+                    title: "Детское",
+                    description:
+                        "Самые полезные блюда которые можно детям любого возраста",
+                  ),
+                  CategoryCardWidget(
+                    iconPath: CookingIcons.chef,
+                    title: "От шеф-поваров",
+                    description:
+                        "Требуют умения, времени и терпения, зато как в ресторане",
+                  ),
+                  CategoryCardWidget(
+                    iconPath: CookingIcons.confetti,
+                    title: "На праздник",
+                    description:
+                        "Чем удивить гостей, чтобы все были сыты за праздничным столом",
+                  ),
                 ],
-              )
+              ),
+              const SizedBox(height: 157),
+              Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomLeft,
+                    children: [
+                      Container(
+                        width: 543,
+                        height: 543,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(72),
+                            bottomRight: Radius.circular(72),
+                          ),
+                        ),
+                        child: Image.asset(
+                          CookingImages.recipeOfDay,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 38),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(5),
+                          ),
+                        ),
+                        child: const Text(
+                          "@glazest",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Palette.orange,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 150),
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class CategoryCardWidget extends StatelessWidget {
-  const CategoryCardWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 271,
-      width: 278,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: const [
-          BoxShadow(
-            color: Palette.shadowColor,
-            offset: Offset(0, 16),
-            blurRadius: 72,
-          )
-        ],
-      ),
     );
   }
 }
