@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:recipebook/home/block/recipe_info.dart';
 import 'package:recipebook/home/components/category_card.dart';
+import 'package:recipebook/home/components/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -119,50 +121,51 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 157),
-              Row(
-                children: [
-                  Stack(
-                    alignment: Alignment.bottomLeft,
-                    children: [
-                      Container(
-                        width: 543,
-                        height: 543,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(72),
-                            bottomRight: Radius.circular(72),
-                          ),
-                        ),
-                        child: Image.asset(
-                          CookingImages.recipeOfDay,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 38),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.horizontal(
-                            right: Radius.circular(5),
-                          ),
-                        ),
-                        child: const Text(
-                          "@glazest",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Palette.orange,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+              RecipeOfDayWidget(
+                recipeInfo: RecipeInfo(
+                  imageUrl: CookingImages.recipeOfDay,
+                  author: "@glazest",
+                  likes: 356,
+                  cookingTime: 35,
+                  name: "Тыквенный супчик на кокосовом молоке",
+                  description:
+                      "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке. Можно даже в Пост! ",
+                ),
               ),
               const SizedBox(height: 150),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Поиск рецептов",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 42,
+                      color: Palette.main,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Введите примерное название блюда, а мы по тегам найдем его",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Palette.mainLighten1,
+                    ),
+                  ),
+                  const SizedBox(height: 64),
+                  Row(
+                    children: [
+                      const SizedBox(width: 16),
+                      ButtonContainedWidget(
+                        text: "Поиск",
+                        width: 152,
+                        height: 73,
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
