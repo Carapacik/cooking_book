@@ -1,8 +1,8 @@
-﻿namespace RecipeBook.Entities
+﻿namespace RecipeBook.Application.Entities
 {
-    public class UserEntity
+    public class User
     {
-        public string Id { get; set; }
+        public long UserId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Login { get; set; }

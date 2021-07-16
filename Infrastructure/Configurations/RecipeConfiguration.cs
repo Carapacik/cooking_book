@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RecipeBook.Entities;
+using RecipeBook.Application.Entities;
 
 namespace RecipeBook.Infrastructure.Configurations
 {
-    public class RecipeConfiguration : IEntityTypeConfiguration<RecipeEntity>
+    public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
     {
-        public void Configure(EntityTypeBuilder<RecipeEntity> builder)
+        public void Configure(EntityTypeBuilder<Recipe> builder)
         {
-            builder.ToTable("Recipe").HasKey(item => item.Id);
-            builder.Property(item => item.Id).HasColumnName("Recipe");
+            builder.ToTable("Recipe").HasKey(item => item.RecipeId);
+            builder.Property(item => item.RecipeId);
         }
     }
 }

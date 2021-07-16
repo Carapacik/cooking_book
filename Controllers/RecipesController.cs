@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Entities;
-using RecipeBook.Repositories;
+using RecipeBook.Application.Entities;
+using RecipeBook.Application.Repositories;
 
 namespace RecipeBook.Controllers
 {
     [ApiController]
-    [Route("recipes")]
+    [Route("api/recipes")]
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
@@ -15,10 +15,10 @@ namespace RecipeBook.Controllers
             _recipeRepository = recipeRepository;
         }
 
-        // [HttpGet]
-        // public RecipeEntity Get()
-        // {
-        //     return _recipeRepository.GetById("");
-        // }
+        [HttpGet]
+        public Recipe Get(long id)
+        {
+            return _recipeRepository.GetById(id);
+        }
     }
 }

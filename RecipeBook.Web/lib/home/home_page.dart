@@ -174,17 +174,19 @@ class HomePage extends StatelessWidget {
                             ]),
                         child: TextField(
                           cursorColor: Palette.orange,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Palette.main,
+                          ),
+                          maxLines: 1,
                           decoration: InputDecoration(
-                              labelText: "Название блюда...",
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              labelStyle: TextStyle(
-                                fontSize: 18,
-                                color: Palette.main.withOpacity(0.5),
-                              )),
+                            border: InputBorder.none,
+                            hintText: "Название блюда...",
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Palette.main.withOpacity(0.5),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),

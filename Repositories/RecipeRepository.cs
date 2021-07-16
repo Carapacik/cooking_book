@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using RecipeBook.Entities;
+using RecipeBook.Application.Entities;
+using RecipeBook.Application.Repositories;
 using RecipeBook.Infrastructure;
 
 namespace RecipeBook.Repositories
@@ -9,13 +10,18 @@ namespace RecipeBook.Repositories
         private readonly RecipeBookDbContext _context;
 
         public RecipeRepository(RecipeBookDbContext context)
-        {   
+        {
             _context = context;
         }
 
-        public RecipeEntity GetById(string id)
+        public Recipe GetById(long id)
         {
-            return _context.Set<RecipeEntity>().FirstOrDefault(item => item.Id == id);
+            return _context.Set<Recipe>().FirstOrDefault(x => x.RecipeId == id);
+        }
+
+        public void Add(Recipe newRecipe)
+        {
+            _context.Set<Recipe>().Add(newRecipe);
         }
     }
 }
