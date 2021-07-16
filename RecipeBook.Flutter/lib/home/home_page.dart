@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:recipebook/home/block/recipe_info.dart';
 import 'package:recipebook/home/components/category_card.dart';
@@ -154,7 +155,38 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 64),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Container(
+                        height: 73,
+                        width: 716,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 28, horizontal: 32),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Palette.shadowColor,
+                                offset: Offset(0, 8),
+                                blurRadius: 42,
+                              )
+                            ]),
+                        child: TextField(
+                          cursorColor: Palette.orange,
+                          decoration: InputDecoration(
+                              labelText: "Название блюда...",
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              labelStyle: TextStyle(
+                                fontSize: 18,
+                                color: Palette.main.withOpacity(0.5),
+                              )),
+                        ),
+                      ),
                       const SizedBox(width: 16),
                       ButtonContainedWidget(
                         text: "Поиск",
@@ -164,6 +196,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ],
