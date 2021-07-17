@@ -7,13 +7,20 @@ import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/widgets/contained_button.dart';
+import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
+
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -25,6 +32,7 @@ class HomePage extends StatelessWidget {
             CookingImages.homeBackground,
           ),
         ),
+        HeaderWidget(),
         Padding(
           padding: const EdgeInsets.only(top: 211, left: 120, right: 120),
           child: Column(
