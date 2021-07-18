@@ -67,11 +67,10 @@ class _HomePageState extends State<HomePage> {
             CookingImages.homeBackground,
           ),
         ),
-        HeaderWidget(),
+        const HeaderWidget(),
         Padding(
           padding: const EdgeInsets.only(top: 211, left: 120, right: 120),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
@@ -179,7 +178,6 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 150),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                     "Поиск рецептов",
@@ -222,7 +220,6 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 18,
                             color: Palette.main,
                           ),
-                          maxLines: 1,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Название блюда...",

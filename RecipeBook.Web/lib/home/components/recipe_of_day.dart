@@ -59,9 +59,42 @@ class RecipeOfDayWidget extends StatelessWidget {
           margin: const EdgeInsets.only(left: 62),
           width: 513,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SvgPicture.asset(
+                    CookingIcons.heartEmpty,
+                    color: Palette.grey,
+                    height: 20,
+                    width: 20,
+                  ),
+                  const SizedBox(width: 7),
+                  Text(
+                    recipeInfo.likesCount.toString(),
+                    style: const TextStyle(
+                      color: Palette.main,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 27),
+                  SvgPicture.asset(
+                    CookingIcons.timer,
+                    color: Palette.grey,
+                    height: 20,
+                    width: 20,
+                  ),
+                  const SizedBox(width: 7),
+                  Text(
+                    "${recipeInfo.cookingTimeInMinutes} минут",
+                    style: const TextStyle(
+                      color: Palette.main,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
               SvgPicture.asset(
                 CookingIcons.recipeOfDay,
                 height: 95,
