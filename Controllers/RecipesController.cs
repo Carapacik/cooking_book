@@ -16,7 +16,7 @@ namespace RecipeBook.Controllers
         }
 
         [HttpGet]
-        public Recipe Get(long id)
+        public Recipe Get(int id)
         {
             return _recipeRepository.GetById(id);
         }

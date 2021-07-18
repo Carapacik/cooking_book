@@ -4,7 +4,7 @@ namespace RecipeBook.Application.Repositories
 {
     public interface IRecipeRepository
     {
-        Recipe GetById(long id);
+        Recipe GetById(int id);
         void Add(Recipe recipe);
     }
 }

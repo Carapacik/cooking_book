@@ -1,11 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/home/block/recipe_info.dart';
+import 'package:recipebook/block/recipe_info.dart';
 import 'package:recipebook/home/components/category_card.dart';
 import 'package:recipebook/home/components/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
@@ -18,9 +20,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late ApiService apiService;
+  late bool isLoading;
+
+  Future getRecipeOfDay() async {
+    Response response;
+
+    try {
+      isLoading = true;
+
+      response = await apiService.getRequest("/recipes?id=2");
+
+      isLoading = false;
+
+      if (response.statusCode == 200) {
+        setState(() {
+          // тут будет десериализвация json и запихивание в модель
+          print(response.data.toString());
+        });
+      } else {
+        print("There is some problem status code not 200");
+      }
+    } on Exception catch (e) {
+      isLoading = false;
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    apiService = ApiService();
+    getRecipeOfDay();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -132,13 +167,14 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 157),
               RecipeOfDayWidget(
                 recipeInfo: RecipeInfo(
-                  imageUrl: CookingImages.recipeOfDay,
-                  author: "@glazest",
-                  likes: 356,
-                  cookingTime: 35,
                   name: "Тыквенный супчик на кокосовом молоке",
                   description:
                       "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке. Можно даже в Пост! ",
+                  imageUrl: CookingImages.recipeOfDay,
+                  cookingTimeInMinutes: 35,
+                  portionsCount: 2,
+                  username: "@glazest",
+                  likesCount: 310,
                 ),
               ),
               const SizedBox(height: 150),

@@ -2,9 +2,9 @@
 {
     public class IngredientItem
     {
-        public long IngredientItemId { get; set; }
+        public int IngredientItemId { get; set; }
         public string Name { get; set; }
 
-        public string IngredientId { get; set; }
+        public int IngredientId { get; set; }
     }
 }

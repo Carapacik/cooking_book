@@ -14,7 +14,7 @@ namespace RecipeBook.Repositories
             _context = context;
         }
 
-        public Recipe GetById(long id)
+        public Recipe GetById(int id)
         {
             return _context.Set<Recipe>().FirstOrDefault(x => x.RecipeId == id);
         }

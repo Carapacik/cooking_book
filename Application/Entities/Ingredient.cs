@@ -4,10 +4,11 @@ namespace RecipeBook.Application.Entities
 {
     public class Ingredient
     {
-        public string IngredientId { get; set; }
+        public int IngredientId { get; set; }
         public string Title { get; set; }
-        public List<IngredientItem> IngredientItems { get; set; }
 
-        public long RecipeId { get; set; }
+        public int RecipeId { get; set; }
+
+        public List<IngredientItem> IngredientItems { get; set; }
     }
 }

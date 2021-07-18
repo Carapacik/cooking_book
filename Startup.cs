@@ -24,7 +24,7 @@ namespace RecipeBook
 
             services.AddDependencies();
             services.AddDbContext<RecipeBookDbContext>(conf =>
-                conf.UseNpgsql(Configuration.GetConnectionString("RecipeBookConnection")));
+                conf.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
 
             services.AddSwaggerGen(c =>
             {

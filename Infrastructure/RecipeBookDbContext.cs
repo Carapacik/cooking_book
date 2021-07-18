@@ -16,7 +16,13 @@ namespace RecipeBook.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new RecipeConfiguration());
+            modelBuilder.ApplyConfiguration(new IngredientConf());
+            modelBuilder.ApplyConfiguration(new IngredientItemConf());
+            modelBuilder.ApplyConfiguration(new LikeConf());
+            modelBuilder.ApplyConfiguration(new RecipeConf());
+            modelBuilder.ApplyConfiguration(new StepConf());
+            modelBuilder.ApplyConfiguration(new TagConf());
+            modelBuilder.ApplyConfiguration(new UserConf());
         }
     }
 }

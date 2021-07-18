@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/home/block/recipe_info.dart';
+import 'package:recipebook/block/recipe_info.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 
@@ -45,7 +45,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                recipeInfo.author,
+                recipeInfo.username,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
