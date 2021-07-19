@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class ApiService {
   late Dio _dio;
 
-  final baseUrl = "http://localhost:5000/api/";
+  final baseUrl = "https://localhost:5001/api/";
 
   ApiService() {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));

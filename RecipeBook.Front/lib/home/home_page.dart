@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/block/recipe_info.dart';
 import 'package:recipebook/home/components/category_card.dart';
 import 'package:recipebook/home/components/recipe_of_day.dart';
-import 'package:recipebook/models/recipe_model.dart';
+import 'package:recipebook/models/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -24,23 +23,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late ApiService apiService;
-  late bool isLoading;
+  bool isLoading = true;
+  late RecipeOfDay recipe;
 
   Future getRecipeOfDay() async {
     Response response;
-    Recipe recipe;
 
     try {
       isLoading = true;
 
-      response = await apiService.getRequest("/Recipe");
+      response = await apiService.getRequest("Recipes");
 
       isLoading = false;
 
       if (response.statusCode == 200) {
         setState(() {
-          print(response.data);
-          recipe = Recipe.fromJson(
+          recipe = RecipeOfDay.fromJson(
               jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
@@ -169,18 +167,10 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const SizedBox(height: 157),
-              RecipeOfDayWidget(
-                recipeInfo: RecipeInfo(
-                  name: "Тыквенный супчик на кокосовом молоке",
-                  description:
-                      "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке. Можно даже в Пост! ",
-                  imageUrl: CookingImages.recipeOfDay,
-                  cookingTimeInMinutes: 35,
-                  portionsCount: 2,
-                  username: "@glazest",
-                  likesCount: 310,
-                ),
-              ),
+              if (isLoading)
+                const Center(child: CircularProgressIndicator(color: Palette.orange))
+              else
+                RecipeOfDayWidget(recipe: recipe),
               const SizedBox(height: 150),
               Column(
                 children: [

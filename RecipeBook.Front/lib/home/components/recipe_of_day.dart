@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/block/recipe_info.dart';
+import 'package:recipebook/models/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
+import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 
 class RecipeOfDayWidget extends StatelessWidget {
-  final RecipeInfo recipeInfo;
+  final RecipeOfDay recipe;
 
   const RecipeOfDayWidget({
     Key? key,
-    required this.recipeInfo,
+    required this.recipe,
   }) : super(key: key);
 
   @override
@@ -31,7 +32,8 @@ class RecipeOfDayWidget extends StatelessWidget {
                 ),
               ),
               child: Image.asset(
-                recipeInfo.imageUrl,
+                // CookingImages.recipeOfDay,
+                recipe.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -45,7 +47,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                recipeInfo.username,
+                recipe.username,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -72,7 +74,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    recipeInfo.likesCount.toString(),
+                    recipe.likesCount.toString(),
                     style: const TextStyle(
                       color: Palette.main,
                       fontSize: 16,
@@ -87,7 +89,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    "${recipeInfo.cookingTimeInMinutes} минут",
+                    "${recipe.cookingTimeInMinutes} минут",
                     style: const TextStyle(
                       color: Palette.main,
                       fontSize: 16,
@@ -101,7 +103,7 @@ class RecipeOfDayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                recipeInfo.name,
+                recipe.title,
                 style: const TextStyle(
                   color: Palette.main,
                   fontSize: 42,
@@ -111,7 +113,7 @@ class RecipeOfDayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                recipeInfo.description,
+                recipe.description,
                 style: const TextStyle(
                   color: Palette.mainLighten1,
                   fontSize: 18,
