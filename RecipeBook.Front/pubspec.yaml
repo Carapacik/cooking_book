@@ -1,5 +1,5 @@
 name: recipebook
-description: Food?
+description: Al recipes in one place
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -13,16 +13,17 @@ dependencies:
   dio: ^4.0.0
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
-  json_annotation:
+  json_annotation: ^4.1.0
   provider: ^5.0.0
   url_launcher: ^6.0.9
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   build_runner: ^2.0.6
-  json_serializable:
+  json_serializable: ^5.0.0
   lint: ^1.5.3
+
+dependency_overrides:
+  meta: ^1.7.0
 
 flutter:
   uses-material-design: true

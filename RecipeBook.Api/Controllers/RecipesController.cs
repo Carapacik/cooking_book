@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Api.Application.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Repositories;
 
 namespace RecipeBook.Api.Controllers
 {
     [ApiController]
-    [Route("api/recipe")]
+    [Route("api/[controller]")]
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
@@ -17,27 +16,18 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet]
-        public Recipe Get(int id)
+        public RecipeOfDayDto GetRecipeOfDay()
         {
             return new()
             {
                 RecipeId = 1,
-                Name = "Тыква",
-                Description = "Зеленая",
-                ImageUrl = "http//bobo",
-                CookingTimeInMinutes = 20,
-                PortionsCount = 2,
-                LikesCount = 322,
-                FavoritesCount = 22,
-                UserId = 1,
-                Tags = new List<Tag>
-                {
-                    new()
-                    {
-                        TagId = 1,
-                        Name = "loh"
-                    }
-                }
+                Title = "Тыквенный супчик на кокосовом молоке",
+                Description =
+                    "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке.",
+                ImageUrl = "http//тыква-картинка.jpg",
+                CookingTimeInMinutes = 35,
+                LikesCount = 365,
+                AuthorLogin = "@glazest"
             };
         }
     }
