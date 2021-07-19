@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,8 @@ class _HomePageState extends State<HomePage> {
       if (response.statusCode == 200) {
         setState(() {
           print(response.data);
-          recipe = Recipe.fromJson(response.data[]);
+          recipe = Recipe.fromJson(
+              jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
         print("There is some problem status code not 200");

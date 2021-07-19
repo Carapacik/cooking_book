@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RecipeBook.Api.Application.Entities
+﻿namespace RecipeBook.Api.Application.Entities
 {
     public class User
     {

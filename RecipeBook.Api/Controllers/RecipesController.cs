@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 
@@ -18,8 +19,26 @@ namespace RecipeBook.Api.Controllers
         [HttpGet]
         public Recipe Get(int id)
         {
-            return new Recipe();
-            return _recipeRepository.GetById(id);
+            return new()
+            {
+                RecipeId = 1,
+                Name = "Тыква",
+                Description = "Зеленая",
+                ImageUrl = "http//bobo",
+                CookingTimeInMinutes = 20,
+                PortionsCount = 2,
+                LikesCount = 322,
+                FavoritesCount = 22,
+                UserId = 1,
+                Tags = new List<Tag>
+                {
+                    new()
+                    {
+                        TagId = 1,
+                        Name = "loh"
+                    }
+                }
+            };
         }
     }
 }
