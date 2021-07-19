@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:recipebook/block/recipe_info.dart';
 import 'package:recipebook/home/components/category_card.dart';
 import 'package:recipebook/home/components/recipe_of_day.dart';
+import 'package:recipebook/models/recipe_model.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -25,18 +26,19 @@ class _HomePageState extends State<HomePage> {
 
   Future getRecipeOfDay() async {
     Response response;
+    Recipe recipe;
 
     try {
       isLoading = true;
 
-      response = await apiService.getRequest("/recipes?id=2");
+      response = await apiService.getRequest("/recipe?id=1");
 
       isLoading = false;
 
       if (response.statusCode == 200) {
         setState(() {
-          // тут будет десериализвация json и запихивание в модель
-          print(response.data.toString());
+          print(response.data);
+          recipe = Recipe.fromJson(response.data[]);
         });
       } else {
         print("There is some problem status code not 200");

@@ -18,7 +18,7 @@ namespace RecipeBook.Api.Infrastructure
         {
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
             modelBuilder.ApplyConfiguration(new IngredientItemConfiguration());
-            modelBuilder.ApplyConfiguration(new LikeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRatingConfiguration());
             modelBuilder.ApplyConfiguration(new RecipeConfiguration());
             modelBuilder.ApplyConfiguration(new StepConfiguration());
             modelBuilder.ApplyConfiguration(new TagConfiguration());

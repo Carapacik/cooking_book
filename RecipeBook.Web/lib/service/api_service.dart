@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class ApiService {
   late Dio _dio;
 
-  final baseUrl = "https://localhost:5001/api/";
+  final baseUrl = "http://localhost:5000/api/";
 
   ApiService() {
     _dio = Dio(BaseOptions(baseUrl: baseUrl));
@@ -14,7 +14,7 @@ class ApiService {
   Future<Response> getRequest(String endPoint) async {
     Response response;
     try {
-      response = await _dio.get(endPoint);
+      response = await _dio.get<String>(endPoint);
     } on DioError catch (e) {
       throw Exception(e.message);
     }

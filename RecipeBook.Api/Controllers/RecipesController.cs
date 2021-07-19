@@ -18,6 +18,7 @@ namespace RecipeBook.Api.Controllers
         [HttpGet]
         public Recipe Get(int id)
         {
+            return new Recipe();
             return _recipeRepository.GetById(id);
         }
     }

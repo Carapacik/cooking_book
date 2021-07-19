@@ -4,11 +4,11 @@ using RecipeBook.Api.Application.Entities;
 
 namespace RecipeBook.Api.Infrastructure.Configurations
 {
-    public class LikeConfiguration : IEntityTypeConfiguration<Like>
+    public class UserRatingConfiguration : IEntityTypeConfiguration<UserRating>
     {
-        public void Configure(EntityTypeBuilder<Like> builder)
+        public void Configure(EntityTypeBuilder<UserRating> builder)
         {
-            builder.ToTable("Like").HasKey(item => item.LikeId);
+            builder.ToTable("UserRating").HasKey(item => item.UserRatingId);
         }
     }
 }
