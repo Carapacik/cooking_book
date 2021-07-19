@@ -24,10 +24,10 @@ namespace RecipeBook.Api.Controllers
                 Title = "Тыквенный супчик на кокосовом молоке",
                 Description =
                     "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке.",
-                ImageUrl = "http//тыква-картинка.jpg",
+                ImageUrl = "картинка-тыквы.jpg",
                 CookingTimeInMinutes = 35,
                 LikesCount = 365,
-                AuthorLogin = "@glazest"
+                Username = "@glazest"
             };
         }
     }

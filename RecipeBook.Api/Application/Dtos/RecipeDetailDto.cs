@@ -12,7 +12,7 @@ namespace RecipeBook.Api.Application.Dtos
         public int PortionsCount { get; set; }
         public int LikesCount { get; set; }
         public int FavoritesCount { get; set; }
-        public string AuthorLogin { get; set; }
+        public string Username { get; set; }
         public List<string> Tags { get; set; }
         public List<string> Steps { get; set; }
         public List<IngredientDto> Ingredients { get; set; }

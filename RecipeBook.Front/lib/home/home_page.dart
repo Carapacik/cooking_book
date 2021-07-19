@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     try {
       isLoading = true;
 
-      response = await apiService.getRequest("/recipe?id=1");
+      response = await apiService.getRequest("/Recipe");
 
       isLoading = false;
 

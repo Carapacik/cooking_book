@@ -8,6 +8,6 @@
         public string ImageUrl { get; set; }
         public int LikesCount { get; set; }
         public int CookingTimeInMinutes { get; set; }
-        public string AuthorLogin { get; set; }
+        public string Username { get; set; }
     }
 }
