@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 
 class CategoryCardWidget extends StatelessWidget {
@@ -45,7 +44,7 @@ class CategoryCardWidget extends StatelessWidget {
             ),
             child: SizedBox(
               child: SvgPicture.asset(
-                CookingIcons.menu,
+                iconPath,
                 color: Palette.orange,
               ),
             ),

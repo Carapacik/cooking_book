@@ -30,6 +30,7 @@ namespace RecipeBook.Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("IngredientId");
@@ -50,6 +51,7 @@ namespace RecipeBook.Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("IngredientItemId");
@@ -70,22 +72,26 @@ namespace RecipeBook.Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<int>("FavoritesCount")
                         .HasColumnType("integer");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("LikesCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
                     b.Property<int>("PortionsCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -103,6 +109,7 @@ namespace RecipeBook.Api.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("RecipeId")
@@ -123,6 +130,7 @@ namespace RecipeBook.Api.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("RecipeId")
@@ -143,15 +151,21 @@ namespace RecipeBook.Api.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<string>("Login")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("UserId");
@@ -161,10 +175,11 @@ namespace RecipeBook.Api.Migrations
 
             modelBuilder.Entity("RecipeBook.Api.Application.Entities.UserRating", b =>
                 {
-                    b.Property<int>("UserRatingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("InFavorite")
                         .HasColumnType("boolean");
@@ -172,13 +187,7 @@ namespace RecipeBook.Api.Migrations
                     b.Property<bool>("IsLiked")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserRatingId");
+                    b.HasKey("RecipeId", "UserId");
 
                     b.ToTable("UserRating");
                 });

@@ -27,6 +27,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           children: [
             TextButton(
               onPressed: () {},
+              style: TextButton.styleFrom(
+                primary: Palette.orange,
+              ),
               child: const Text(
                 "Recipes",
                 style: TextStyle(
@@ -47,6 +50,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                       _currentSelectedButton = index;
                     });
                   },
+                  style: TextButton.styleFrom(
+                    primary: Palette.orange,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
@@ -69,6 +75,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             const Expanded(child: SizedBox()),
             TextButton(
               onPressed: () {},
+              style: TextButton.styleFrom(
+                primary: Palette.orange,
+              ),
               child: Row(
                 children: [
                   SvgPicture.asset(

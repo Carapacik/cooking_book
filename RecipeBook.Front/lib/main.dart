@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/home/home_page.dart';
+import 'package:recipebook/recipes/add_recipe_page.dart';
 import 'package:recipebook/theme.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "RecipeBook",
       theme: themeData(context),
-      home: const HomePage(title: "Home"),
+      home: const AddRecipePage(title: "Add recipe"),
     );
   }
 }

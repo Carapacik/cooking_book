@@ -33,7 +33,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     try {
       isLoading = true;
 
-      response = await apiService.getRequest("Recipes");
+      response = await apiService.getRequest("recipes");
 
       isLoading = false;
 

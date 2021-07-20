@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace RecipeBook.Api.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initt : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,9 +13,9 @@ namespace RecipeBook.Api.Migrations
                 {
                     RecipeId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
                     CookingTimeInMinutes = table.Column<int>(type: "integer", nullable: false),
                     PortionsCount = table.Column<int>(type: "integer", nullable: false),
                     LikesCount = table.Column<int>(type: "integer", nullable: false),
@@ -33,10 +33,10 @@ namespace RecipeBook.Api.Migrations
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Login = table.Column<string>(type: "text", nullable: true),
-                    Password = table.Column<string>(type: "text", nullable: true)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Login = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,16 +47,14 @@ namespace RecipeBook.Api.Migrations
                 name: "UserRating",
                 columns: table => new
                 {
-                    UserRatingId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    InFavorite = table.Column<bool>(type: "boolean", nullable: false),
-                    IsLiked = table.Column<bool>(type: "boolean", nullable: false),
                     RecipeId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    InFavorite = table.Column<bool>(type: "boolean", nullable: false),
+                    IsLiked = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRating", x => x.UserRatingId);
+                    table.PrimaryKey("PK_UserRating", x => new { x.RecipeId, x.UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -65,7 +63,7 @@ namespace RecipeBook.Api.Migrations
                 {
                     IngredientId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -85,7 +83,7 @@ namespace RecipeBook.Api.Migrations
                 {
                     StepId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Description = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -105,7 +103,7 @@ namespace RecipeBook.Api.Migrations
                 {
                     TagId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -125,7 +123,7 @@ namespace RecipeBook.Api.Migrations
                 {
                     IngredientItemId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     IngredientId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

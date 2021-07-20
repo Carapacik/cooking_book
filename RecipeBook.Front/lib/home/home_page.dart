@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 113),
+                  const SizedBox(height: 352),
                   Text(
                     "Умная сортировка по тегам",
                     style: Theme.of(context).textTheme.headline2,
@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
-                  const SizedBox(height: 352),
+                  const SizedBox(height: 42),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -123,10 +123,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         "Введите примерное название блюда, а мы по тегам найдем его",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Palette.main),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                       const SizedBox(height: 64),
                       Row(
@@ -149,10 +146,10 @@ class HomePage extends StatelessWidget {
                                 ]),
                             child: TextField(
                               cursorColor: Palette.orange,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Palette.main,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(color: Palette.main),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Название блюда...",
