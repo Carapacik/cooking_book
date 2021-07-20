@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'recipe_of_day.g.dart';
@@ -23,7 +22,8 @@ class RecipeOfDay {
   final int cookingTimeInMinutes;
   final String username;
 
-  factory RecipeOfDay.fromJson(Map<String, dynamic> json) => _$RecipeOfDayFromJson(json);
+  factory RecipeOfDay.fromJson(Map<String, dynamic> json) =>
+      _$RecipeOfDayFromJson(json);
 
   Map<String, dynamic> toJson() => _$RecipeOfDayToJson(this);
 }

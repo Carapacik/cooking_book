@@ -53,21 +53,14 @@ class CategoryCardWidget extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             title,
-            style: const TextStyle(
-              color: Palette.main,
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(context).textTheme.headline3,
           ),
           if (description != null)
             Padding(
               padding: const EdgeInsets.only(top: 16, bottom: 8),
               child: Text(
                 description!,
-                style: const TextStyle(
-                  color: Palette.mainLighten1,
-                  fontSize: 18,
-                ),
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             )
           else

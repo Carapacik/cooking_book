@@ -1,20 +1,62 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/models/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/service/api_service.dart';
 
-class RecipeOfDayWidget extends StatelessWidget {
-  final RecipeOfDay recipe;
+class RecipeOfDayWidget extends StatefulWidget {
+  const RecipeOfDayWidget({Key? key}) : super(key: key);
 
-  const RecipeOfDayWidget({
-    Key? key,
-    required this.recipe,
-  }) : super(key: key);
+  @override
+  _RecipeOfDayWidgetState createState() => _RecipeOfDayWidgetState();
+}
+
+class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
+  late ApiService apiService;
+  bool isLoading = true;
+  late RecipeOfDay recipeOfDay;
+
+  @override
+  void initState() {
+    apiService = ApiService();
+    getRecipeOfDay();
+    super.initState();
+  }
+
+  Future getRecipeOfDay() async {
+    Response response;
+
+    try {
+      isLoading = true;
+
+      response = await apiService.getRequest("Recipes");
+
+      isLoading = false;
+
+      if (response.statusCode == 200) {
+        setState(() {
+          recipeOfDay = RecipeOfDay.fromJson(
+              jsonDecode(response.data as String) as Map<String, dynamic>);
+        });
+      } else {
+        print("There is some problem status code not 200");
+      }
+    } on Exception catch (e) {
+      isLoading = false;
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+          child: CircularProgressIndicator(color: Palette.orange));
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,8 +74,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                 ),
               ),
               child: Image.asset(
-                // CookingImages.recipeOfDay,
-                recipe.imageUrl,
+                recipeOfDay.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -47,7 +88,7 @@ class RecipeOfDayWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                recipe.username,
+                recipeOfDay.username,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -74,11 +115,8 @@ class RecipeOfDayWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    recipe.likesCount.toString(),
-                    style: const TextStyle(
-                      color: Palette.main,
-                      fontSize: 16,
-                    ),
+                    recipeOfDay.likesCount.toString(),
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   const SizedBox(width: 27),
                   SvgPicture.asset(
@@ -89,11 +127,8 @@ class RecipeOfDayWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    "${recipe.cookingTimeInMinutes} минут",
-                    style: const TextStyle(
-                      color: Palette.main,
-                      fontSize: 16,
-                    ),
+                    "${recipeOfDay.cookingTimeInMinutes} минут",
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               ),
@@ -103,17 +138,13 @@ class RecipeOfDayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                recipe.title,
-                style: const TextStyle(
-                  color: Palette.main,
-                  fontSize: 42,
-                  fontWeight: FontWeight.w700,
-                ),
-                maxLines: 3,
+                recipeOfDay.title,
+                style: Theme.of(context).textTheme.headline2,
+                maxLines: 2,
               ),
               const SizedBox(height: 16),
               Text(
-                recipe.description,
+                recipeOfDay.description,
                 style: const TextStyle(
                   color: Palette.mainLighten1,
                   fontSize: 18,

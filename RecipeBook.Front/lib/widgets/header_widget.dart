@@ -4,7 +4,9 @@ import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 
 class HeaderWidget extends StatefulWidget {
-  const HeaderWidget({Key? key}) : super(key: key);
+  const HeaderWidget({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
@@ -51,7 +53,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                       _buttonNames[index],
                       style: _currentSelectedButton == index
                           ? const TextStyle(
-                              color: Palette.mainLighten,
+                              color: Palette.mainLighten2,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             )

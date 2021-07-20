@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:recipebook/widget_tree.dart';
+import 'package:recipebook/home/home_page.dart';
+import 'package:recipebook/theme.dart';
 
 void main() {
   runApp(const App());
@@ -13,13 +13,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Home",
-      theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
-      home: WidgetTree(),
+      title: "RecipeBook",
+      theme: themeData(context),
+      home: const HomePage(title: "Home"),
     );
   }
 }
