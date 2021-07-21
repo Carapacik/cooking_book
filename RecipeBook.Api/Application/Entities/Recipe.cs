@@ -4,7 +4,7 @@ namespace RecipeBook.Api.Application.Entities
 {
     public class Recipe
     {
-        public int RecipeId { get; }
+        public int RecipeId { get; private set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }

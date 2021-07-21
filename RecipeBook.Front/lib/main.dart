@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "RecipeBook",
       theme: themeData(context),
-      home: const AddRecipePage(title: "Add recipe"),
+      home: AddRecipePage(title: "Add recipe"),
     );
   }
 }

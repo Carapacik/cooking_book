@@ -25,6 +25,11 @@ ThemeData themeData(BuildContext context) {
         fontSize: 24,
         fontWeight: FontWeight.w700,
       ),
+      headline4: const TextStyle(
+        color: Palette.mainLighten1,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
       bodyText1: const TextStyle(
         color: Palette.mainLighten1,
         fontSize: 18,
