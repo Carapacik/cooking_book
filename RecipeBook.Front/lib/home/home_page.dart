@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/home/components/category_card.dart';
 import 'package:recipebook/home/components/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
@@ -21,6 +23,19 @@ class HomePage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topRight,
           children: [
+            SvgPicture.asset(
+              CookingImages.wave1,
+              color: Palette.wave,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 1000),
+              child: SvgPicture.asset(
+                CookingImages.wave2,
+                color: Palette.wave,
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
             Container(
               alignment: Alignment.topRight,
               width: 602,
@@ -39,7 +54,7 @@ class HomePage extends StatelessWidget {
                     width: 688,
                     child: Text(
                       "Готовь и делись рецептами",
-                      style: Theme.of(context).textTheme.headline1,
+                      style: Theme.of(context).textTheme.b72,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -47,7 +62,7 @@ class HomePage extends StatelessWidget {
                     width: 566,
                     child: Text(
                       "Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.",
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.r18,
                     ),
                   ),
                   const SizedBox(height: 42),
@@ -71,14 +86,14 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 352),
                   Text(
                     "Умная сортировка по тегам",
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.b42,
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: 700,
                     child: Text(
                       "Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.",
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.r18,
                     ),
                   ),
                   const SizedBox(height: 42),
@@ -118,12 +133,15 @@ class HomePage extends StatelessWidget {
                     children: [
                       Text(
                         "Поиск рецептов",
-                        style: Theme.of(context).textTheme.headline2,
+                        style: Theme.of(context).textTheme.b42,
                       ),
                       const SizedBox(height: 16),
                       Text(
                         "Введите примерное название блюда, а мы по тегам найдем его",
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context)
+                            .textTheme
+                            .r18
+                            .copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
                       Row(
@@ -148,16 +166,12 @@ class HomePage extends StatelessWidget {
                               cursorColor: Palette.orange,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .r18
                                   .copyWith(color: Palette.main),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Название блюда...",
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: Palette.main.withOpacity(0.5)),
+                                hintStyle: Theme.of(context).textTheme.r16,
                               ),
                             ),
                           ),

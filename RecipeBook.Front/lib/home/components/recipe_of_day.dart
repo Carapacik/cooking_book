@@ -43,9 +43,19 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
-        print("There is some problem status code not 200");
+        // код не 200
+        recipeOfDay = RecipeOfDay(
+          recipeId: 0,
+          title: "",
+          description: "",
+          imageUrl: "",
+          likesCount: 0,
+          cookingTimeInMinutes: 0,
+          username: "",
+        );
       }
     } on Exception catch (e) {
+      // тут как бы нет соединения с сервером
       isLoading = false;
       print(e);
     }
@@ -54,8 +64,21 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(
-          child: CircularProgressIndicator(color: Palette.orange));
+      return Container(
+        height: 543,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(72),
+            boxShadow: const [
+              BoxShadow(
+                color: Palette.shadowColor,
+                offset: Offset(0, 8),
+                blurRadius: 42,
+              )
+            ]),
+        child: const Center(
+            child: CircularProgressIndicator(color: Palette.orange)),
+      );
     }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

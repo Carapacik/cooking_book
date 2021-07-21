@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class FormTextFieldWidget extends StatelessWidget {
   const FormTextFieldWidget({
@@ -28,10 +29,7 @@ class FormTextFieldWidget extends StatelessWidget {
         maxLines: textarea != null ? null : 1,
         maxLength: maxLength,
         cursorColor: Palette.orange,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText1!
-            .copyWith(color: Palette.main),
+        style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(top: 11, left: 24, right: 24),
           focusColor: Palette.orange,
@@ -43,14 +41,11 @@ class FormTextFieldWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Palette.grey.withOpacity(0.4)),
+            borderSide: BorderSide(color: Palette.grey.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(16),
           ),
           hintText: hintText,
-          hintStyle: Theme.of(context)
-              .textTheme
-              .bodyText2!
-              .copyWith(color: Palette.main.withOpacity(0.5)),
+          hintStyle: Theme.of(context).textTheme.r16,
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -16,8 +15,6 @@ class IngredientItemWidget extends StatelessWidget {
           children: [
             const Expanded(child: SizedBox()),
             IconButton(
-              splashRadius: 24,
-              hoverColor: Palette.uploadPhotoBackground.withOpacity(0.4),
               onPressed: () {},
               icon: Icon(
                 Icons.close,
@@ -26,10 +23,9 @@ class IngredientItemWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 10),
         Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 30, vertical: 36),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 36),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(24),

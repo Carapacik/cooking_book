@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/recipes/components/ingredient_item_widget.dart';
+import 'package:recipebook/recipes/components/step_item_widget.dart';
 import 'package:recipebook/resources/icons.dart';
+import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
@@ -22,6 +25,11 @@ class AddRecipePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Stack(
           children: [
+            SvgPicture.asset(
+              CookingImages.wave1,
+              color: Palette.wave,
+              width: MediaQuery.of(context).size.width,
+            ),
             HeaderWidget(title: title),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
@@ -39,10 +47,7 @@ class AddRecipePage extends StatelessWidget {
                         const SizedBox(width: 13),
                         Text(
                           "Назад",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Palette.orange),
+                          style: Theme.of(context).textTheme.n18,
                         )
                       ],
                     ),
@@ -52,7 +57,7 @@ class AddRecipePage extends StatelessWidget {
                       children: [
                         Text(
                           "Добавить новый рецепт",
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Theme.of(context).textTheme.b42,
                         ),
                         ButtonContainedWidget(
                           text: "Опубликовать",
@@ -116,7 +121,7 @@ class AddRecipePage extends StatelessWidget {
                                             "Загрузите фото\nготового блюда",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText2!
+                                                .r16
                                                 .copyWith(
                                                     color: Palette.orange),
                                           ),
@@ -167,7 +172,7 @@ class AddRecipePage extends StatelessWidget {
                                         "Минут",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2!
+                                            .r16
                                             .copyWith(color: Palette.main),
                                       ),
                                       const SizedBox(width: 64),
@@ -183,7 +188,7 @@ class AddRecipePage extends StatelessWidget {
                                         "Персон",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2!
+                                            .r16
                                             .copyWith(color: Palette.main),
                                       ),
                                     ],
@@ -197,6 +202,7 @@ class AddRecipePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 50),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: 380,
@@ -204,8 +210,8 @@ class AddRecipePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Ингридиенты",
-                                style: Theme.of(context).textTheme.headline4,
+                                "Ингредиенты",
+                                style: Theme.of(context).textTheme.b20,
                               ),
                               const IngredientItemWidget(),
                               const SizedBox(height: 40),
@@ -213,11 +219,21 @@ class AddRecipePage extends StatelessWidget {
                                 text: "Добавить заголовок",
                                 width: 380,
                                 height: 60,
-                              )
+                              ),
                             ],
                           ),
                         ),
-                        Column(),
+                        Column(
+                          children: [
+                            StepItemWidget(),
+                            SizedBox(height: 40),
+                            ButtonOutlinedWidget(
+                              text: "Добавить шаг",
+                              width: 380,
+                              height: 60,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     const SizedBox(height: 106),

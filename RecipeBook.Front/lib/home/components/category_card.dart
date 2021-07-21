@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class CategoryCardWidget extends StatelessWidget {
   final String title;
@@ -52,14 +53,14 @@ class CategoryCardWidget extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             title,
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.b24,
           ),
           if (description != null)
             Padding(
               padding: const EdgeInsets.only(top: 16, bottom: 8),
               child: Text(
                 description!,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.r18,
               ),
             )
           else
