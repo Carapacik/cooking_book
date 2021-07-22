@@ -2,38 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 
-class FormTextFieldWidget extends StatelessWidget {
-  const FormTextFieldWidget({
-    required this.height,
+class FormTextFieldWidget extends StatefulWidget {
+  FormTextFieldWidget({
+    this.height,
+    this.width,
     required this.hintText,
+    this.controller,
+    this.onSaved,
     this.maxLength,
     this.minLines,
     this.textarea,
+    this.validator,
+    this.keyboardType,
     Key? key,
   }) : super(key: key);
 
-  final double height;
+  final TextEditingController? controller;
+  final double? height;
+  final double? width;
   final String hintText;
   final int? maxLength;
   final int? minLines;
   final bool? textarea;
+  final TextInputType? keyboardType;
+  final FormFieldValidator<String>? validator;
+  final FormFieldSetter<String>? onSaved;
 
+  @override
+  _FormTextFieldWidgetState createState() => _FormTextFieldWidgetState();
+}
+
+class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: double.infinity,
+      height: widget.height,
+      width: widget.width ?? double.infinity,
       child: TextFormField(
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        validator: widget.validator,
+        onSaved: widget.onSaved,
         textAlignVertical: TextAlignVertical.top,
-        expands: textarea != null,
-        maxLines: textarea != null ? null : 1,
-        maxLength: maxLength,
+        expands: widget.textarea != null,
+        maxLines: widget.textarea != null ? null : 1,
+        maxLength: widget.maxLength,
         cursorColor: Palette.orange,
         style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(top: 11, left: 24, right: 24),
           focusColor: Palette.orange,
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.red),
             borderRadius: BorderRadius.circular(16),
           ),
           focusedBorder: OutlineInputBorder(
@@ -44,7 +68,7 @@ class FormTextFieldWidget extends StatelessWidget {
             borderSide: BorderSide(color: Palette.grey.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(16),
           ),
-          hintText: hintText,
+          hintText: widget.hintText,
           hintStyle: Theme.of(context).textTheme.r16,
         ),
       ),

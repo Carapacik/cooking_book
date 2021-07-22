@@ -2,9 +2,14 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:recipebook/controllers/ingredient_notifier.dart';
+import 'package:recipebook/controllers/step_notifier.dart';
+import 'package:recipebook/models/ingredient.dart';
+import 'package:recipebook/models/recipe_detail.dart';
 import 'package:recipebook/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/recipes/components/ingredient_item_widget.dart';
-import 'package:recipebook/recipes/components/step_item_widget.dart';
+import 'package:recipebook/recipes/components/ingredient_list_widget.dart';
+import 'package:recipebook/recipes/components/step_list_widget.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -13,14 +18,49 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-class AddRecipePage extends StatelessWidget {
-  AddRecipePage({Key? key, required this.title}) : super(key: key);
+class AddRecipePage extends StatefulWidget {
+  AddRecipePage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
-  final String title;
+  String title;
+  String? recipeTitle;
+  String? recipeDescription;
+  String? cookingTime;
+  String? portionsCount;
+  List<String>? tags;
+  List<String>? steps;
+  List<Ingredient>? ingredients;
+
+  @override
+  _AddRecipePageState createState() => _AddRecipePageState();
+}
+
+class _AddRecipePageState extends State<AddRecipePage> {
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final tagsController = TextEditingController();
+  final cookingTimeController = TextEditingController();
+  final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    tagsController.dispose();
+    cookingTimeController.dispose();
+    portionsCountController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
+    IngredientNotifier ingredientNotifier =
+        Provider.of<IngredientNotifier>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -30,7 +70,7 @@ class AddRecipePage extends StatelessWidget {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            HeaderWidget(title: title),
+            HeaderWidget(title: widget.title),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
               child: Form(
@@ -64,9 +104,29 @@ class AddRecipePage extends StatelessWidget {
                           width: 278,
                           height: 60,
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // логика отправки данных
+                            final form = _formKey.currentState!;
+                            if (form.validate()) {
+                              print("Валидация прошла успешно");
                             }
+                            form.save();
+
+                            RecipeDetail recipe = RecipeDetail(
+                              recipeId: 0,
+                              title: widget.recipeTitle!,
+                              description: widget.recipeDescription!,
+                              imageUrl: "",
+                              cookingTimeInMinutes:
+                                  int.parse(widget.cookingTime!),
+                              portionsCount: int.parse(widget.portionsCount!),
+                              likesCount: 0,
+                              favoritesCount: 0,
+                              username: "",
+                              tags: widget.tags!,
+                              steps: widget.steps!,
+                              ingredients: widget.ingredients!,
+                            );
+
+                            //save recipe and send to api
                           },
                         ),
                       ],
@@ -140,32 +200,62 @@ class AddRecipePage extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const FormTextFieldWidget(
-                                    height: 50,
+                                  FormTextFieldWidget(
+                                    controller: titleController,
                                     hintText: "Название рецепта",
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Название рецепта обязательно";
+                                      }
+
+                                      return null;
+                                    },
+                                    onSaved: (value) {
+                                      widget.recipeTitle = value;
+                                    },
                                   ),
                                   const SizedBox(height: 20),
-                                  const FormTextFieldWidget(
+                                  FormTextFieldWidget(
+                                    controller: descriptionController,
                                     textarea: true,
                                     height: 120,
                                     hintText:
                                         "Краткое описание рецепта (150 символов)",
                                     maxLength: 150,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Описание рецепта обязательно";
+                                      }
+
+                                      return null;
+                                    },
+                                    onSaved: (value) {
+                                      widget.recipeDescription = value;
+                                    },
                                   ),
                                   const SizedBox(height: 20),
-                                  const FormTextFieldWidget(
-                                    height: 50,
+                                  FormTextFieldWidget(
+                                    controller: tagsController,
                                     hintText: "Добавить теги",
                                   ),
                                   const SizedBox(height: 20),
                                   Row(
                                     children: [
-                                      const SizedBox(
+                                      FormTextFieldWidget(
                                         width: 220,
-                                        child: FormTextFieldWidget(
-                                          height: 50,
-                                          hintText: "Время готовки",
-                                        ),
+                                        controller: cookingTimeController,
+                                        keyboardType: TextInputType.number,
+                                        hintText: "Время готовки",
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Не должно быть пустым";
+                                          }
+
+                                          return null;
+                                        },
+                                        onSaved: (value) {
+                                          widget.cookingTime = value;
+                                        },
                                       ),
                                       const SizedBox(width: 11),
                                       Text(
@@ -176,12 +266,21 @@ class AddRecipePage extends StatelessWidget {
                                             .copyWith(color: Palette.main),
                                       ),
                                       const SizedBox(width: 64),
-                                      const SizedBox(
+                                      FormTextFieldWidget(
                                         width: 220,
-                                        child: FormTextFieldWidget(
-                                          height: 50,
-                                          hintText: "Порций в блюде",
-                                        ),
+                                        controller: portionsCountController,
+                                        keyboardType: TextInputType.number,
+                                        hintText: "Порций в блюде",
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Не должно быть пустым";
+                                          }
+
+                                          return null;
+                                        },
+                                        onSaved: (value) {
+                                          widget.portionsCount = value;
+                                        },
                                       ),
                                       const SizedBox(width: 11),
                                       Text(
@@ -203,6 +302,7 @@ class AddRecipePage extends StatelessWidget {
                     const SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           width: 380,
@@ -213,27 +313,34 @@ class AddRecipePage extends StatelessWidget {
                                 "Ингредиенты",
                                 style: Theme.of(context).textTheme.b20,
                               ),
-                              const IngredientItemWidget(),
+                              const IngredientListWidget(),
                               const SizedBox(height: 40),
-                              const ButtonOutlinedWidget(
+                              ButtonOutlinedWidget(
                                 text: "Добавить заголовок",
                                 width: 380,
                                 height: 60,
+                                onPressed: () {
+                                  ingredientNotifier.addNewIngredient();
+                                },
                               ),
                             ],
                           ),
                         ),
-                        Column(
-                          children: [
-                            StepItemWidget(),
-                            SizedBox(height: 40),
-                            ButtonOutlinedWidget(
-                              text: "Добавить шаг",
-                              width: 380,
-                              height: 60,
-                            ),
-                          ],
-                        ),
+                        SizedBox(
+                            width: 790,
+                            child: Column(
+                              children: [
+                                const StepListWidget(),
+                                ButtonOutlinedWidget(
+                                  text: "Добавить шаг",
+                                  width: 380,
+                                  height: 60,
+                                  onPressed: () {
+                                    stepNotifier.addStep();
+                                  },
+                                ),
+                              ],
+                            )),
                       ],
                     ),
                     const SizedBox(height: 106),

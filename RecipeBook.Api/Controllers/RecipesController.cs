@@ -14,7 +14,7 @@ namespace RecipeBook.Api.Controllers
         {
             _recipeRepository = recipeRepository;
         }
-
+        
         [HttpGet]
         public RecipeOfDayDto GetRecipeOfDay()
         {

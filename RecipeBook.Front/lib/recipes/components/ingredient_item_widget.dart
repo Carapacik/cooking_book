@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/resources/palette.dart';
 
 class IngredientItemWidget extends StatelessWidget {
-  const IngredientItemWidget({
+  IngredientItemWidget({
+    required this.index,
     Key? key,
   }) : super(key: key);
 
+  final int index;
+
   @override
   Widget build(BuildContext context) {
+    IngredientNotifier ingredientNotifier =
+        Provider.of<IngredientNotifier>(context);
+
     return Column(
       children: [
         Row(
           children: [
             const Expanded(child: SizedBox()),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                ingredientNotifier.deleteIngredient(index);
+              },
               icon: Icon(
                 Icons.close,
                 color: Palette.grey.withOpacity(0.4),
@@ -38,16 +48,35 @@ class IngredientItemWidget extends StatelessWidget {
             ],
           ),
           child: Column(
-            children: const [
+            children: [
               FormTextFieldWidget(
-                height: 50,
                 hintText: "Заголовок для ингридиентов",
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return "Заголовок обязателен";
+                //   }
+                //
+                //   return null;
+                // },
+                // onSaved: (value) {
+                //   ingredients[0].title = value;
+                // },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               FormTextFieldWidget(
                 textarea: true,
                 height: 230,
                 hintText: "Список подуктов для категории",
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return "Введите хотя бы один продукт";
+                //   }
+                //
+                //   return null;
+                // },
+                // onSaved: (value) {
+                //   ingredients[0].ingredientNames = value;
+                // },
               ),
             ],
           ),
