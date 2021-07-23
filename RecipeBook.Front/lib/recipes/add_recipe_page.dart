@@ -126,9 +126,12 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     ingredientNotifier.ingredientList.toList(),
                               );
 
+                              String nextPageIndex = "";
                               await apiService
                                   .postRequest("recipes", recipe)
-                                  .then((value) => print(value));
+                                  .then((value) =>
+                                      nextPageIndex = value.toString());
+                              print(nextPageIndex);
                             }
                           },
                         ),

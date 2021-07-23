@@ -7,6 +7,7 @@ import 'package:recipebook/models/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
+import 'package:recipebook/theme.dart';
 
 class RecipeOfDayWidget extends StatefulWidget {
   const RecipeOfDayWidget({Key? key}) : super(key: key);
@@ -31,10 +32,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     Response response;
 
     try {
-      isLoading = true;
-
       response = await apiService.getRequest("recipes/recipe-of-day");
-
       isLoading = false;
 
       if (response.statusCode == 200) {
@@ -47,6 +45,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
       }
     } on Exception catch (e) {
       // тут как бы нет соединения с сервером
+      // возможно перенаправление на отдельную страницу
       isLoading = false;
       print(e);
     }
@@ -103,11 +102,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               ),
               child: Text(
                 recipeOfDay.username,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Palette.orange,
-                ),
+                style: Theme.of(context).textTheme.r16.copyWith(
+                      color: Palette.orange,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             )
           ],
@@ -130,7 +128,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                   const SizedBox(width: 7),
                   Text(
                     recipeOfDay.likesCount.toString(),
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.r16,
                   ),
                   const SizedBox(width: 27),
                   SvgPicture.asset(
@@ -142,7 +140,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                   const SizedBox(width: 7),
                   Text(
                     "${recipeOfDay.cookingTimeInMinutes} минут",
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.r16,
                   ),
                 ],
               ),
@@ -153,16 +151,13 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               const SizedBox(height: 32),
               Text(
                 recipeOfDay.title,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.b42,
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
               Text(
                 recipeOfDay.description,
-                style: const TextStyle(
-                  color: Palette.mainLighten1,
-                  fontSize: 18,
-                ),
+                style: Theme.of(context).textTheme.r18,
               ),
             ],
           ),

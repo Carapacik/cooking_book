@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
 import 'package:recipebook/home/home_page.dart';
+import 'package:recipebook/models/add_recipe.dart';
+import 'package:recipebook/recipes/add_recipe_page.dart';
 import 'package:recipebook/theme.dart';
 
 void main() {
@@ -30,7 +32,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "RecipeBook",
       theme: themeData,
-      home: HomePage(title: "Add recipe"),
+      home: AddRecipePage(title: "Add recipe"),
     );
   }
 }
