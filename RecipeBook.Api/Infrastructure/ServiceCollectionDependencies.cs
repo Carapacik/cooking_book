@@ -9,6 +9,7 @@ namespace RecipeBook.Api.Infrastructure
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
             services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<IUnitOfWork, RecipeBookDbContext>();
 
             return services;
         }
