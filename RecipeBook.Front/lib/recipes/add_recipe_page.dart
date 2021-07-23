@@ -5,14 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
-import 'package:recipebook/models/ingredient.dart';
-import 'package:recipebook/models/recipe_detail.dart';
+import 'package:recipebook/models/add_recipe.dart';
 import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/recipes/components/ingredient_list_widget.dart';
 import 'package:recipebook/recipes/components/step_list_widget.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
@@ -24,26 +24,31 @@ class AddRecipePage extends StatefulWidget {
     required this.title,
   }) : super(key: key);
 
-  String title;
+  final String title;
   String? recipeTitle;
   String? recipeDescription;
   String? cookingTime;
   String? portionsCount;
-  List<String>? tags;
-  List<String>? steps;
-  List<Ingredient>? ingredients;
+  List<String> tags = [];
 
   @override
   _AddRecipePageState createState() => _AddRecipePageState();
 }
 
 class _AddRecipePageState extends State<AddRecipePage> {
+  late ApiService apiService;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final tagsController = TextEditingController();
   final cookingTimeController = TextEditingController();
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    apiService = ApiService();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -57,8 +62,8 @@ class _AddRecipePageState extends State<AddRecipePage> {
 
   @override
   Widget build(BuildContext context) {
-    StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    IngredientNotifier ingredientNotifier =
+    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
+    final IngredientNotifier ingredientNotifier =
         Provider.of<IngredientNotifier>(context);
 
     return Scaffold(
@@ -103,30 +108,28 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           text: "Опубликовать",
                           width: 278,
                           height: 60,
-                          onPressed: () {
+                          onPressed: () async {
                             final form = _formKey.currentState!;
                             if (form.validate()) {
-                              print("Валидация прошла успешно");
+                              form.save();
+
+                              final AddRecipe recipe = AddRecipe(
+                                title: widget.recipeTitle!,
+                                description: widget.recipeDescription!,
+                                imageUrl: "link",
+                                cookingTimeInMinutes:
+                                    int.parse(widget.cookingTime!),
+                                portionsCount: int.parse(widget.portionsCount!),
+                                tags: widget.tags,
+                                steps: stepNotifier.stepList,
+                                ingredients:
+                                    ingredientNotifier.ingredientList.toList(),
+                              );
+
+                              await apiService
+                                  .postRequest("recipes", recipe)
+                                  .then((value) => print(value));
                             }
-                            form.save();
-
-                            RecipeDetail recipe = RecipeDetail(
-                              recipeId: 0,
-                              title: widget.recipeTitle!,
-                              description: widget.recipeDescription!,
-                              imageUrl: "",
-                              cookingTimeInMinutes:
-                                  int.parse(widget.cookingTime!),
-                              portionsCount: int.parse(widget.portionsCount!),
-                              likesCount: 0,
-                              favoritesCount: 0,
-                              username: "",
-                              tags: widget.tags!,
-                              steps: widget.steps!,
-                              ingredients: widget.ingredients!,
-                            );
-
-                            //save recipe and send to api
                           },
                         ),
                       ],
@@ -183,7 +186,8 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                                 .textTheme
                                                 .r16
                                                 .copyWith(
-                                                    color: Palette.orange),
+                                                  color: Palette.orange,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -237,6 +241,16 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                   FormTextFieldWidget(
                                     controller: tagsController,
                                     hintText: "Добавить теги",
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Введите хотя бы один тэг";
+                                      }
+
+                                      return null;
+                                    },
+                                    onSaved: (value) {
+                                      widget.tags = value!.trim().split(",");
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   Row(

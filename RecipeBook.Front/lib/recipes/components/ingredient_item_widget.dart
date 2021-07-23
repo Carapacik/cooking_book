@@ -51,32 +51,33 @@ class IngredientItemWidget extends StatelessWidget {
             children: [
               FormTextFieldWidget(
                 hintText: "Заголовок для ингридиентов",
-                // validator: (value) {
-                //   if (value!.isEmpty) {
-                //     return "Заголовок обязателен";
-                //   }
-                //
-                //   return null;
-                // },
-                // onSaved: (value) {
-                //   ingredients[0].title = value;
-                // },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Не должно быть пустым";
+                  }
+
+                  return null;
+                },
+                onSaved: (value) {
+                  ingredientNotifier.ingredientList[index].title = value!;
+                },
               ),
               const SizedBox(height: 20),
               FormTextFieldWidget(
                 textarea: true,
                 height: 230,
                 hintText: "Список подуктов для категории",
-                // validator: (value) {
-                //   if (value!.isEmpty) {
-                //     return "Введите хотя бы один продукт";
-                //   }
-                //
-                //   return null;
-                // },
-                // onSaved: (value) {
-                //   ingredients[0].ingredientNames = value;
-                // },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Не должно быть пустым";
+                  }
+
+                  return null;
+                },
+                onSaved: (value) {
+                  ingredientNotifier.ingredientList[index].ingredientNames =
+                      value!.trim().split(",");
+                },
               ),
             ],
           ),

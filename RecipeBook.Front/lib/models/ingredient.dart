@@ -9,8 +9,8 @@ class Ingredient {
     required this.ingredientNames,
   });
 
-  final String title;
-  final List<String> ingredientNames;
+  String title;
+  List<String> ingredientNames;
 
   factory Ingredient.fromJson(Map<String, dynamic> json) =>
       _$IngredientFromJson(json);

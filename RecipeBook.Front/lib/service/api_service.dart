@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:recipebook/models/add_recipe.dart';
 
 class ApiService {
   late Dio _dio;
@@ -6,9 +7,26 @@ class ApiService {
   final baseUrl = "https://localhost:5001/api/";
 
   ApiService() {
-    _dio = Dio(BaseOptions(baseUrl: baseUrl));
+    _dio = Dio(BaseOptions(
+        baseUrl: baseUrl, connectTimeout: 5000, receiveTimeout: 3000));
 
     initializeInterceptors();
+  }
+
+  Future postRequest(String endPoint, AddRecipe recipe) async {
+    Response response;
+    try {
+      response = await _dio.post(
+        endPoint,
+        data: recipe.toJson(),
+        options: Options(
+          headers: {'content-type': 'application/json; charset=UTF-8'},
+        ),
+      );
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response.data;
   }
 
   Future<Response> getRequest(String endPoint) async {

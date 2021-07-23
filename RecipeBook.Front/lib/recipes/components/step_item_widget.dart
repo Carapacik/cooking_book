@@ -60,6 +60,16 @@ class StepItemWidget extends StatelessWidget {
             textarea: true,
             height: 170,
             hintText: "Описание шага",
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Не должно быть пустым";
+              }
+
+              return null;
+            },
+            onSaved: (value) {
+              stepNotifier.stepList[index] = value!;
+            },
           ),
         ],
       ),

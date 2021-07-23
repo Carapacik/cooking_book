@@ -33,7 +33,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     try {
       isLoading = true;
 
-      response = await apiService.getRequest("recipes");
+      response = await apiService.getRequest("recipes/recipe-of-day");
 
       isLoading = false;
 
@@ -43,16 +43,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
-        // код не 200
-        recipeOfDay = RecipeOfDay(
-          recipeId: 0,
-          title: "",
-          description: "",
-          imageUrl: "",
-          likesCount: 0,
-          cookingTimeInMinutes: 0,
-          username: "",
-        );
+        // затычка
       }
     } on Exception catch (e) {
       // тут как бы нет соединения с сервером
