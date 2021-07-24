@@ -152,53 +152,59 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       ),
                       child: Row(
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                height: 430,
-                                width: 430,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  color: Palette.uploadPhotoBackground,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(72),
-                                    bottomRight: Radius.circular(72),
-                                  ),
+                          TextButton(
+                            onPressed: () {},
+                            clipBehavior: Clip.antiAlias,
+                            style: TextButton.styleFrom(
+                              backgroundColor: Palette.uploadPhotoBackground,
+                              primary: Palette.orange,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(72),
+                                  bottomRight: Radius.circular(72),
                                 ),
-                                child: Center(
-                                  child: DottedBorder(
-                                    borderType: BorderType.RRect,
-                                    color: Palette.orange,
-                                    radius: const Radius.circular(20),
-                                    child: SizedBox(
-                                      height: 269,
-                                      width: 269,
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          SvgPicture.asset(
-                                            CookingIcons.upload,
-                                            height: 42,
-                                            width: 42,
-                                            color: Palette.orange,
-                                          ),
-                                          const SizedBox(height: 30),
-                                          Text(
-                                            "Загрузите фото\nготового блюда",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .r16
-                                                .copyWith(
-                                                  color: Palette.orange,
-                                                ),
-                                          ),
-                                        ],
+                              ),
+                            ),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  height: 430,
+                                  width: 430,
+                                  child: Center(
+                                    child: DottedBorder(
+                                      borderType: BorderType.RRect,
+                                      color: Palette.orange,
+                                      radius: const Radius.circular(20),
+                                      child: SizedBox(
+                                        height: 269,
+                                        width: 269,
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(height: 80),
+                                            SvgPicture.asset(
+                                              CookingIcons.upload,
+                                              height: 42,
+                                              width: 42,
+                                              color: Palette.orange,
+                                            ),
+                                            const SizedBox(height: 30),
+                                            Text(
+                                              "Загрузите фото\nготового блюда",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .r16
+                                                  .copyWith(
+                                                    color: Palette.orange,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 53, right: 70),
