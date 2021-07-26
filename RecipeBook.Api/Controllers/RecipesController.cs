@@ -20,13 +20,13 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost]
-        public int AddRecipe([FromBody] AddRecipeCommandDto value)
+        public int AddRecipe([FromBody] AddRecipeCommandDto addCommand)
         {
-            var newEntity = value.Convert();
-            _recipeRepository.Add(newEntity);
+            var newRecipe = addCommand.Convert();
+            _recipeRepository.Add(newRecipe);
             _unitOfWork.Commit();
 
-            return newEntity.RecipeId;
+            return newRecipe.RecipeId;
         }
 
         [HttpGet("recipe-of-day")]

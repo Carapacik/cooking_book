@@ -10,36 +10,6 @@ final themeData = ThemeData.light().copyWith(
   iconTheme: const IconThemeData(color: Palette.orange),
   primaryTextTheme: GoogleFonts.montserratTextTheme(),
   textTheme: _textTheme,
-
-  // GoogleFonts.montserratTextTheme().copyWith(
-  //   headline1: const TextStyle(
-  //     color: Palette.main,
-  //     fontSize: 72,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  //   headline2: const TextStyle(
-  //     color: Palette.main,
-  //     fontSize: 42,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  //   headline3: const TextStyle(
-  //     color: Palette.main,
-  //     fontSize: 24,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  //   headline4: const TextStyle(
-  //     color: Palette.mainLighten1,
-  //     fontSize: 20,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  //   bodyText1: const TextStyle(
-  //     color: Palette.mainLighten1,
-  //     fontSize: 18,
-  //   ),
-  //   bodyText2: const TextStyle(
-  //     color: Palette.mainLighten1,
-  //     fontSize: 16,
-  //   ),
 );
 
 TextTheme get _textTheme => GoogleFonts.montserratTextTheme().copyWith();

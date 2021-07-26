@@ -14,7 +14,6 @@ class IngredientNotifier extends ChangeNotifier {
   }
 
   deleteIngredient(int index) {
-    //_ingredientList.removeWhere((item) => item.title == _ingredientList[index].title);
     _ingredientList.removeAt(index);
     notifyListeners();
   }

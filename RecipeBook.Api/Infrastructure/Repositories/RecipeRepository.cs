@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 
@@ -15,7 +16,11 @@ namespace RecipeBook.Api.Infrastructure.Repositories
 
         public Recipe GetById(int id)
         {
-            return _context.Set<Recipe>().FirstOrDefault(x => x.RecipeId == id);
+            return _context.Set<Recipe>()
+                .Include(x => x.Tags)
+                .Include(x => x.Ingredients)
+                    .ThenInclude(item => item.IngredientItems)
+                .FirstOrDefault(x => x.RecipeId == id);
         }
 
         public void Add(Recipe newRecipe)

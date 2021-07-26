@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,6 +46,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
   final cookingTimeController = TextEditingController();
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  FilePickerResult? result;
 
   @override
   void initState() {
@@ -153,7 +157,11 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       child: Row(
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              Uint8List? fileBytes = result?.files.single.bytes;
+                              String? fileName = result?.files.single.name;
+                              print(fileName);
+                            },
                             clipBehavior: Clip.antiAlias,
                             style: TextButton.styleFrom(
                               backgroundColor: Palette.uploadPhotoBackground,
