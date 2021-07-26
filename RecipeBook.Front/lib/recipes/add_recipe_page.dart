@@ -158,8 +158,12 @@ class _AddRecipePageState extends State<AddRecipePage> {
                         children: [
                           TextButton(
                             onPressed: () async {
+                              result = await FilePicker.platform
+                                  .pickFiles(type: FileType.image);
+
                               Uint8List? fileBytes = result?.files.single.bytes;
                               String? fileName = result?.files.single.name;
+
                               print(fileName);
                             },
                             clipBehavior: Clip.antiAlias,
