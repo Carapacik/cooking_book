@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
-import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 
 class IngredientItemWidget extends StatelessWidget {
   IngredientItemWidget({
@@ -14,8 +14,7 @@ class IngredientItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IngredientNotifier ingredientNotifier =
-        Provider.of<IngredientNotifier>(context);
+    IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
 
     return Column(
       children: [
@@ -75,8 +74,7 @@ class IngredientItemWidget extends StatelessWidget {
                   return null;
                 },
                 onSaved: (value) {
-                  ingredientNotifier.ingredientList[index].ingredientNames =
-                      value!.trim().split(",");
+                  ingredientNotifier.ingredientList[index].ingredientNames = value!.trim().split(",");
                 },
               ),
             ],

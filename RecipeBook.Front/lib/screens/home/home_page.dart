@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/home/components/category_card.dart';
-import 'package:recipebook/home/components/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/screens/home/components/category_card.dart';
+import 'package:recipebook/screens/home/components/recipe_of_day.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
@@ -103,26 +103,22 @@ class HomePage extends StatelessWidget {
                       CategoryCardWidget(
                         iconPath: CookingIcons.menu,
                         title: "Простые блюда",
-                        description:
-                            "Время приготвления таких блюд не более 1 часа",
+                        description: "Время приготвления таких блюд не более 1 часа",
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.cook,
                         title: "Детское",
-                        description:
-                            "Самые полезные блюда которые можно детям любого возраста",
+                        description: "Самые полезные блюда которые можно детям любого возраста",
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.chef,
                         title: "От шеф-поваров",
-                        description:
-                            "Требуют умения, времени и терпения, зато как в ресторане",
+                        description: "Требуют умения, времени и терпения, зато как в ресторане",
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.confetti,
                         title: "На праздник",
-                        description:
-                            "Чем удивить гостей, чтобы все были сыты за праздничным столом",
+                        description: "Чем удивить гостей, чтобы все были сыты за праздничным столом",
                       ),
                     ],
                   ),
@@ -138,10 +134,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         "Введите примерное название блюда, а мы по тегам найдем его",
-                        style: Theme.of(context)
-                            .textTheme
-                            .r18
-                            .copyWith(color: Palette.main),
+                        style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
                       Row(
@@ -150,24 +143,17 @@ class HomePage extends StatelessWidget {
                           Container(
                             height: 73,
                             width: 716,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 28, horizontal: 32),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Palette.shadowColor,
-                                    offset: Offset(0, 8),
-                                    blurRadius: 42,
-                                  )
-                                ]),
+                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: const [
+                              BoxShadow(
+                                color: Palette.shadowColor,
+                                offset: Offset(0, 8),
+                                blurRadius: 42,
+                              )
+                            ]),
                             child: TextField(
                               cursorColor: Palette.orange,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .r18
-                                  .copyWith(color: Palette.main),
+                              style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Название блюда...",

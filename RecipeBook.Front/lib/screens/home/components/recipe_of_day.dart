@@ -37,8 +37,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
 
       if (response.statusCode == 200) {
         setState(() {
-          recipeOfDay = RecipeOfDay.fromJson(
-              jsonDecode(response.data as String) as Map<String, dynamic>);
+          recipeOfDay = RecipeOfDay.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
         // затычка
@@ -57,17 +56,14 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
       return Container(
         height: 543,
         width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(72),
-            boxShadow: const [
-              BoxShadow(
-                color: Palette.shadowColor,
-                offset: Offset(0, 8),
-                blurRadius: 42,
-              )
-            ]),
-        child: const Center(
-            child: CircularProgressIndicator(color: Palette.orange)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(72), boxShadow: const [
+          BoxShadow(
+            color: Palette.shadowColor,
+            offset: Offset(0, 8),
+            blurRadius: 42,
+          )
+        ]),
+        child: const Center(child: CircularProgressIndicator(color: Palette.orange)),
       );
     }
     return Row(

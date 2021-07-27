@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
-import 'package:recipebook/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/theme.dart';
 
 class StepItemWidget extends StatelessWidget {
@@ -39,10 +39,7 @@ class StepItemWidget extends StatelessWidget {
             children: [
               Text(
                 "Шаг ${index + 1}",
-                style: Theme.of(context)
-                    .textTheme
-                    .r18
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.r18.copyWith(fontWeight: FontWeight.w600),
               ),
               IconButton(
                 onPressed: () {

@@ -1,5 +1,6 @@
-import 'dart:typed_data';
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,12 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
 import 'package:recipebook/models/add_recipe.dart';
-import 'package:recipebook/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/recipes/components/ingredient_list_widget.dart';
-import 'package:recipebook/recipes/components/step_list_widget.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dart';
+import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
@@ -67,8 +68,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
   @override
   Widget build(BuildContext context) {
     final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    final IngredientNotifier ingredientNotifier =
-        Provider.of<IngredientNotifier>(context);
+    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -120,21 +120,20 @@ class _AddRecipePageState extends State<AddRecipePage> {
                               final AddRecipe recipe = AddRecipe(
                                 title: widget.recipeTitle!,
                                 description: widget.recipeDescription!,
-                                imageUrl: "link",
-                                cookingTimeInMinutes:
-                                    int.parse(widget.cookingTime!),
+                                cookingTimeInMinutes: int.parse(widget.cookingTime!),
                                 portionsCount: int.parse(widget.portionsCount!),
                                 tags: widget.tags,
                                 steps: stepNotifier.stepList,
-                                ingredients:
-                                    ingredientNotifier.ingredientList.toList(),
+                                ingredients: ingredientNotifier.ingredientList.toList(),
                               );
 
+                              final formData = FormData.fromMap({
+                                'recipe': jsonEncode(recipe),
+                                'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+                              });
+
                               String nextPageIndex = "";
-                              await apiService
-                                  .postRequest("recipes", recipe)
-                                  .then((value) =>
-                                      nextPageIndex = value.toString());
+                              await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
                               print(nextPageIndex);
                             }
                           },
@@ -158,13 +157,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                         children: [
                           TextButton(
                             onPressed: () async {
-                              result = await FilePicker.platform
-                                  .pickFiles(type: FileType.image);
-
-                              Uint8List? fileBytes = result?.files.single.bytes;
-                              String? fileName = result?.files.single.name;
-
-                              print(fileName);
+                              result = await FilePicker.platform.pickFiles(type: FileType.image);
                             },
                             clipBehavior: Clip.antiAlias,
                             style: TextButton.styleFrom(
@@ -202,10 +195,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                             const SizedBox(height: 30),
                                             Text(
                                               "Загрузите фото\nготового блюда",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .r16
-                                                  .copyWith(
+                                              style: Theme.of(context).textTheme.r16.copyWith(
                                                     color: Palette.orange,
                                                   ),
                                             ),
@@ -244,8 +234,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     controller: descriptionController,
                                     textarea: true,
                                     height: 120,
-                                    hintText:
-                                        "Краткое описание рецепта (150 символов)",
+                                    hintText: "Краткое описание рецепта (150 символов)",
                                     maxLength: 150,
                                     validator: (value) {
                                       if (value!.isEmpty) {
@@ -295,10 +284,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       const SizedBox(width: 11),
                                       Text(
                                         "Минут",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .r16
-                                            .copyWith(color: Palette.main),
+                                        style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
                                       ),
                                       const SizedBox(width: 64),
                                       FormTextFieldWidget(
@@ -320,10 +306,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       const SizedBox(width: 11),
                                       Text(
                                         "Персон",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .r16
-                                            .copyWith(color: Palette.main),
+                                        style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
                                       ),
                                     ],
                                   ),

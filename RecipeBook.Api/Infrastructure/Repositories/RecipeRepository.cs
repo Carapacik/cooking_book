@@ -19,7 +19,7 @@ namespace RecipeBook.Api.Infrastructure.Repositories
             return _context.Set<Recipe>()
                 .Include(x => x.Tags)
                 .Include(x => x.Ingredients)
-                    .ThenInclude(item => item.IngredientItems)
+                .ThenInclude(item => item.IngredientItems)
                 .FirstOrDefault(x => x.RecipeId == id);
         }
 

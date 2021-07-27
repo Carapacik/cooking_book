@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Repositories;
@@ -20,14 +21,22 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost]
-        public int AddRecipe([FromBody] AddRecipeCommandDto addCommand)
+        [DisableRequestSizeLimit]
+        public int AddRecipe()
         {
-            var newRecipe = addCommand.Convert();
+            var files = Request.Form.Files;
+            var addCommandDto = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
+
+            // сохранение картинки 
+
+            var newRecipe = addCommandDto.Convert();
+
             _recipeRepository.Add(newRecipe);
             _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
         }
+
 
         [HttpGet("recipe-of-day")]
         public RecipeOfDayDto GetRecipeOfDay()
@@ -36,7 +45,7 @@ namespace RecipeBook.Api.Controllers
             {
                 RecipeId = 1,
                 Title = "Тыквенный супчик на кокосовом молоке",
-                Description = "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий суп-пюре на кокосовом молоке.",
+                Description = "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас!",
                 ImageUrl = "assets/images/recipe_of_day.png",
                 CookingTimeInMinutes = 35,
                 LikesCount = 365,
