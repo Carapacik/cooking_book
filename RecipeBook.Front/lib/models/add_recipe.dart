@@ -4,7 +4,9 @@ import 'ingredient.dart';
 
 part 'add_recipe.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(
+  explicitToJson: true,
+)
 class AddRecipe {
   AddRecipe({
     required this.title,

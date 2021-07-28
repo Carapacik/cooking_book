@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RecipeBook.Api.Application.Repositories;
+using RecipeBook.Api.Application.Services;
 using RecipeBook.Api.Infrastructure.Repositories;
 
 namespace RecipeBook.Api.Infrastructure
@@ -10,6 +11,7 @@ namespace RecipeBook.Api.Infrastructure
         {
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUnitOfWork, RecipeBookDbContext>();
+            services.AddScoped<IRecipeService, RecipeService>();
 
             return services;
         }

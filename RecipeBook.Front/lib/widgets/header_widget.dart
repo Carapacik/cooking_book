@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/route.dart';
+import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HeaderWidget extends StatefulWidget {
-  const HeaderWidget({Key? key, required this.title}) : super(key: key);
+  HeaderWidget({Key? key, required this.currentSelectedPage}) : super(key: key);
 
-  final String title;
+  final HeaderButtons currentSelectedPage;
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
 }
 
 class _HeaderWidgetState extends State<HeaderWidget> {
-  final List<String> _buttonNames = ["Главная", "Рецепты", "Избранное"];
-  int _currentSelectedButton = 0;
+  List<HeaderButtons> headerButtons = HeaderButtons.values;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                context.vxNav.push(Uri.parse(RecipeRoutes.homeRoute));
+              },
               style: TextButton.styleFrom(
                 primary: Palette.orange,
               ),
@@ -41,14 +45,12 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
             const SizedBox(width: 80),
             ...List.generate(
-              _buttonNames.length,
+              headerButtons.length,
               (index) => Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 0 : 40),
                 child: TextButton(
                   onPressed: () {
-                    setState(() {
-                      _currentSelectedButton = index;
-                    });
+                    context.vxNav.push(Uri.parse(HeaderButtons.getById(index).route));
                   },
                   style: TextButton.styleFrom(
                     primary: Palette.orange,
@@ -56,8 +58,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
-                      _buttonNames[index],
-                      style: _currentSelectedButton == index
+                      HeaderButtons.getById(index).name,
+                      style: widget.currentSelectedPage.index == index
                           ? const TextStyle(
                               color: Palette.mainLighten2,
                               fontSize: 18,

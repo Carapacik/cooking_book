@@ -4,17 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/home/components/category_card.dart';
 import 'package:recipebook/screens/home/components/recipe_of_day.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class HomePage extends StatelessWidget {
                 CookingImages.homeBackground,
               ),
             ),
-            HeaderWidget(title: title),
+            HeaderWidget(currentSelectedPage: HeaderButtons.home),
             Padding(
               padding: const EdgeInsets.only(top: 211, left: 120, right: 120),
               child: Column(
@@ -72,7 +73,9 @@ class HomePage extends StatelessWidget {
                         text: "Добавить рецепт",
                         width: 278,
                         height: 60,
-                        onPressed: () {},
+                        onPressed: () {
+                          context.vxNav.push(Uri.parse(RecipeRoutes.addRecipeRoute));
+                        },
                       ),
                       const SizedBox(width: 24),
                       ButtonOutlinedWidget(

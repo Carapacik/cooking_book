@@ -18,17 +18,14 @@ import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dar
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class AddRecipePage extends StatefulWidget {
-  AddRecipePage({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
+  AddRecipePage({Key? key}) : super(key: key);
 
-  final String title;
   String? recipeTitle;
   String? recipeDescription;
   String? cookingTime;
@@ -79,26 +76,33 @@ class _AddRecipePageState extends State<AddRecipePage> {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            HeaderWidget(title: widget.title),
+            HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
               child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          CookingIcons.arrowBack,
-                          height: 12,
-                          width: 18,
-                        ),
-                        const SizedBox(width: 13),
-                        Text(
-                          "Назад",
-                          style: Theme.of(context).textTheme.n18,
-                        )
-                      ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            CookingIcons.arrowBack,
+                            height: 12,
+                            width: 18,
+                          ),
+                          const SizedBox(width: 13),
+                          Text(
+                            "Назад",
+                            style: Theme.of(context).textTheme.n18,
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 11),
                     Row(
@@ -196,8 +200,8 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                             Text(
                                               "Загрузите фото\nготового блюда",
                                               style: Theme.of(context).textTheme.r16.copyWith(
-                                                    color: Palette.orange,
-                                                  ),
+                                                color: Palette.orange,
+                                              ),
                                             ),
                                           ],
                                         ),
