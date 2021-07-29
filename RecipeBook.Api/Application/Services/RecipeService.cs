@@ -4,12 +4,20 @@ using System.Linq;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Entities;
+using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services.Entities;
 
 namespace RecipeBook.Api.Application.Services
 {
     public class RecipeService : IRecipeService
     {
+        private readonly IRecipeRepository _recipeRepository;
+
+        public RecipeService(IRecipeRepository recipeRepository)
+        {
+            _recipeRepository = recipeRepository;
+        }
+
         public void DeleteRecipe()
         {
         }
@@ -21,7 +29,11 @@ namespace RecipeBook.Api.Application.Services
                 ImageUri = SaveFile(adaptedFile)
             };
             addCommandDto.ImageUrl = saveImageResult.ImageUri;
-            return addCommandDto.Convert();
+            
+            var recipe =  addCommandDto.Convert();
+            _recipeRepository.Add(recipe);
+            
+            return recipe;
         }
 
         private static string SaveFile(FormFileAdapter file)

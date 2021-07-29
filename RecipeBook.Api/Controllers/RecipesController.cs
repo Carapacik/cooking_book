@@ -32,7 +32,6 @@ namespace RecipeBook.Api.Controllers
             var adaptedFile = FormFileAdapter.Create(imageFile);
             var newRecipe = _recipeService.AddRecipe(adaptedFile, addCommandDto);
 
-            _recipeRepository.Add(newRecipe);
             _unitOfWork.Commit();
 
             return newRecipe.RecipeId;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Infrastructure.Configurations;
 
 namespace RecipeBook.Api.Infrastructure
