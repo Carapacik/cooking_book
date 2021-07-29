@@ -4,6 +4,7 @@ using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services;
+using RecipeBook.Api.Application.Services.Entities;
 using RecipeBook.Api.Infrastructure;
 
 namespace RecipeBook.Api.Controllers
@@ -12,7 +13,7 @@ namespace RecipeBook.Api.Controllers
     [Route("api/[controller]")]
     public class RecipesController : ControllerBase
     {
-        private readonly IRecipeRepository _recipeRepository;
+        private readonly IRecipeRepository _recipeRepository; // для получения данных
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -27,10 +28,10 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            var imageFile = Request.Form.Files[0];
-            var addCommandDto = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
-            var adaptedFile = FormFileAdapter.Create(imageFile);
-            var newRecipe = _recipeService.AddRecipe(adaptedFile, addCommandDto);
+            var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
+            var formFile = Request.Form.Files[0];
+            var addRecipeCommand = new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData);
+            var newRecipe = _recipeService.AddRecipe(addRecipeCommand);
 
             _unitOfWork.Commit();
 

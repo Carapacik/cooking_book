@@ -1,18 +1,18 @@
 ﻿using System.Linq;
-using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Entities;
+using RecipeBook.Api.Application.Services.Entities;
 
 namespace RecipeBook.Api.Application.Converters
 {
     public static class RecipeConverter
     {
-        public static Recipe Convert(this AddRecipeCommandDto addRecipeCommandDto)
+        public static Recipe Convert(this AddRecipeCommand addRecipeCommandDto, SaveImageResult saveImageResult)
         {
             return new()
             {
+                ImageUrl = saveImageResult.ImageUri,
                 Title = addRecipeCommandDto.Title,
                 Description = addRecipeCommandDto.Description,
-                ImageUrl = addRecipeCommandDto.ImageUrl,
                 CookingTimeInMinutes = addRecipeCommandDto.CookingTimeInMinutes,
                 PortionsCount = addRecipeCommandDto.PortionsCount,
                 Tags = addRecipeCommandDto.Tags.Select(x => new Tag

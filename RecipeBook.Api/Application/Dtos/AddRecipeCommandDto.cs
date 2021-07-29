@@ -6,16 +6,10 @@ namespace RecipeBook.Api.Application.Dtos
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
         public int CookingTimeInMinutes { get; set; }
         public int PortionsCount { get; set; }
         public List<string> Tags { get; set; }
         public List<string> Steps { get; set; }
         public List<IngredientDto> Ingredients { get; set; }
-
-        public void SetImageUrl(string imageUrl)
-        {
-            ImageUrl = imageUrl;
-        }
     }
 }

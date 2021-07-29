@@ -1,18 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Infrastructure.Configurations;
 
 namespace RecipeBook.Api.Infrastructure
 {
-    public class RecipeBookDbContext : DbContext, IUnitOfWork
+    public class RecipeBookDbContext : DbContext
     {
         public RecipeBookDbContext(DbContextOptions<RecipeBookDbContext> options) : base(options)
         {
-        }
-
-        public void Commit()
-        {
-            SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

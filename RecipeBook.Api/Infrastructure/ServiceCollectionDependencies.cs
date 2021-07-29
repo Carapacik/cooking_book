@@ -7,13 +7,11 @@ namespace RecipeBook.Api.Infrastructure
 {
     public static class ServiceCollectionDependencies
     {
-        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        public static void AddDependencies(this IServiceCollection services)
         {
             services.AddScoped<IRecipeRepository, RecipeRepository>();
-            services.AddScoped<IUnitOfWork, RecipeBookDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRecipeService, RecipeService>();
-
-            return services;
         }
     }
 }

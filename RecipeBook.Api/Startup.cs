@@ -24,7 +24,6 @@ namespace RecipeBook.Api
             services.AddDependencies();
             services.AddDbContext<RecipeBookDbContext>(conf =>
                 conf.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
-            services.AddScoped<RecipeBookDbContext>();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "RecipeBook.Api", Version = "v1"}); });
         }
 
@@ -37,7 +36,6 @@ namespace RecipeBook.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RecipeBook.Api v1"));
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
 
