@@ -7,9 +7,9 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HeaderWidget extends StatefulWidget {
-  HeaderWidget({Key? key, required this.currentSelectedPage}) : super(key: key);
+  const HeaderWidget({Key? key, this.currentSelectedPage}) : super(key: key);
 
-  final HeaderButtons currentSelectedPage;
+  final HeaderButtons? currentSelectedPage;
 
   @override
   _HeaderWidgetState createState() => _HeaderWidgetState();
@@ -59,7 +59,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Text(
                       HeaderButtons.getById(index).name,
-                      style: widget.currentSelectedPage.index == index
+                      style: widget.currentSelectedPage?.index == index
                           ? const TextStyle(
                               color: Palette.mainLighten2,
                               fontSize: 18,

@@ -13,6 +13,7 @@ import 'package:recipebook/models/add_recipe.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dart';
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
@@ -22,6 +23,7 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class AddRecipePage extends StatefulWidget {
   AddRecipePage({Key? key}) : super(key: key);
@@ -76,7 +78,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
+            const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
               child: Form(
@@ -88,6 +90,9 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
+                      style: TextButton.styleFrom(
+                        primary: Palette.orange,
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -137,8 +142,13 @@ class _AddRecipePageState extends State<AddRecipePage> {
                               });
 
                               String nextPageIndex = "";
-                              await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
-                              print(nextPageIndex);
+                              try {
+                                await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
+                              } catch (e) {
+                                context.vxNav.push(Uri.parse(RecipeRoutes.errorRoute));
+                              }
+                              debugPrint("next page is detail recipe with id = ${int.parse(nextPageIndex)}");
+                              // тут будет перенаправление на страницу с рецептом с id = nextPageIndex
                             }
                           },
                         ),
@@ -259,13 +269,48 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       if (value!.isEmpty) {
                                         return "Введите хотя бы один тэг";
                                       }
-
                                       return null;
                                     },
                                     onSaved: (value) {
                                       widget.tags = value!.trim().split(",");
                                     },
                                   ),
+                                  // TextFieldTags(
+                                  //   tagsStyler: TagsStyler(
+                                  //       tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
+                                  //       tagDecoration: BoxDecoration(
+                                  //         color: Colors.blue[300],
+                                  //         borderRadius: BorderRadius.circular(0.0),
+                                  //       ),
+                                  //       tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
+                                  //       tagPadding: const EdgeInsets.all(6.0)),
+                                  //   textFieldStyler: TextFieldStyler(
+                                  //     helperText: "Введите минимум 3 тэга",
+                                  //     helperStyle: Theme.of(context).textTheme.r14,
+                                  //     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+                                  //     textFieldBorder: OutlineInputBorder(
+                                  //       borderRadius: BorderRadius.circular(16),
+                                  //     ),
+                                  //     textFieldEnabledBorder: OutlineInputBorder(
+                                  //       borderSide: BorderSide(color: Palette.grey.withOpacity(0.3)),
+                                  //       borderRadius: BorderRadius.circular(16),
+                                  //     ),
+                                  //     textFieldFocusedBorder: OutlineInputBorder(
+                                  //       borderSide: const BorderSide(color: Palette.orange),
+                                  //       borderRadius: BorderRadius.circular(16),
+                                  //     ),
+                                  //     hintText: "Добавить теги",
+                                  //     hintStyle: Theme.of(context).textTheme.r16,
+                                  //   ),
+                                  //   onTag: (tag) {},
+                                  //   onDelete: (tag) {},
+                                  //   validator: (tag) {
+                                  //     if (tag!.length > 15) {
+                                  //       return "hey that's too long";
+                                  //     }
+                                  //     return null;
+                                  //   },
+                                  // ),
                                   const SizedBox(height: 20),
                                   Row(
                                     children: [

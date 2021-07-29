@@ -4,7 +4,6 @@ import 'package:recipebook/resources/palette.dart';
 
 final themeData = ThemeData.light().copyWith(
   primaryColor: Palette.orange,
-  accentColor: Palette.orange,
   scaffoldBackgroundColor: Colors.white,
   backgroundColor: Colors.white,
   iconTheme: const IconThemeData(color: Palette.orange),
@@ -52,6 +51,12 @@ extension TextThemeExt on TextTheme {
         fontSize: 16,
         fontWeight: FontWeight.w400,
       );
+
+  TextStyle get r14 => bodyText2!.copyWith(
+    color: Palette.main.withOpacity(0.5),
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+  );
 
   TextStyle get n18 => bodyText2!.copyWith(
         color: Palette.orange,

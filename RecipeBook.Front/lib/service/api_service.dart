@@ -33,7 +33,16 @@ class ApiService {
   Future<Response> getRequest(String endPoint) async {
     Response response;
     try {
-      response = await _dio.get<String>(endPoint);
+      response = await _dio.get<String>(
+        endPoint,
+        // Для работы Dio нужен включённый CORS на сервере с API
+        // options: Options(headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+        //   'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+        //   'Access-Control-Allow-Credentials': true
+        // }),
+      );
     } on DioError catch (e) {
       throw Exception(e.message);
     }

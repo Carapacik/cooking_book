@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace RecipeBook.Api.Application.Converters
 {
-    public class FormFileConverter
+    public class FormFileAdapter
     {
         public byte[] Data { get; set; }
         public string FileName { get; set; }
         public string FileExtension { get; set; }
 
-        public static FormFileConverter Create(IFormFile formFile)
+        public static FormFileAdapter Create(IFormFile formFile)
         {
             byte[] bytes;
             using (var ms = new MemoryStream())
@@ -20,7 +20,7 @@ namespace RecipeBook.Api.Application.Converters
                 bytes = ms.ToArray();
             }
 
-            return new FormFileConverter
+            return new FormFileAdapter
             {
                 FileName = formFile.FileName,
                 FileExtension = formFile.FileName.Split('.').Last(),

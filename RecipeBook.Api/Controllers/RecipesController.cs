@@ -29,9 +29,8 @@ namespace RecipeBook.Api.Controllers
         {
             var imageFile = Request.Form.Files[0];
             var addCommandDto = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
-
-            _recipeService.AddRecipe(addCommandDto, imageFile);
-            var newRecipe = addCommandDto.Convert();
+            var adaptedFile = FormFileAdapter.Create(imageFile);
+            var newRecipe = _recipeService.AddRecipe(adaptedFile, addCommandDto);
 
             _recipeRepository.Add(newRecipe);
             _unitOfWork.Commit();

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
 import 'package:recipebook/route.dart';
+import 'package:recipebook/screens/error/connection_lost.dart';
 import 'package:recipebook/screens/home/home_page.dart';
 import 'package:recipebook/screens/recipes/add_recipe_page.dart';
 import 'package:recipebook/screens/recipes/recipe_detail_page.dart';
@@ -41,6 +42,7 @@ class App extends StatelessWidget {
         RecipeRoutes.addRecipeRoute: (_, __) => MaterialPage(child: AddRecipePage()),
         RecipeRoutes.recipesRoute: (_, __) => MaterialPage(child: HomePage()),
         RecipeRoutes.recipeDetailRoute: (_, __) => MaterialPage(child: RecipeDetailPage()),
+        RecipeRoutes.errorRoute: (_, __) => MaterialPage(child: ConnectionLostPage()),
       }),
     );
   }

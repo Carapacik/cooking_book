@@ -40,10 +40,9 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
           recipeOfDay = RecipeOfDay.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
-        // затычка
+        // затычка, код не 200
       }
     } on Exception catch (e) {
-      // тут как бы нет соединения с сервером
       // возможно перенаправление на отдельную страницу
       isLoading = false;
       print(e);
@@ -53,18 +52,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Container(
-        height: 543,
-        width: double.infinity,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(72), boxShadow: const [
-          BoxShadow(
-            color: Palette.shadowColor,
-            offset: Offset(0, 8),
-            blurRadius: 42,
-          )
-        ]),
-        child: const Center(child: CircularProgressIndicator(color: Palette.orange)),
-      );
+      return Center(child: CircularProgressIndicator(color: Palette.orange));
     }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,

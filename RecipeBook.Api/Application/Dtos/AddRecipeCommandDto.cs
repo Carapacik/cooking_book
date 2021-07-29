@@ -12,5 +12,10 @@ namespace RecipeBook.Api.Application.Dtos
         public List<string> Tags { get; set; }
         public List<string> Steps { get; set; }
         public List<IngredientDto> Ingredients { get; set; }
+
+        public void SetImageUrl(string imageUrl)
+        {
+            ImageUrl = imageUrl;
+        }
     }
 }
