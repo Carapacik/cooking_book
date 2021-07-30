@@ -11,10 +11,12 @@ namespace RecipeBook.Api.Application.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly StorageSettings _storageSettings;
 
-        public RecipeService(IRecipeRepository recipeRepository)
+        public RecipeService(IRecipeRepository recipeRepository, StorageSettings storageSettings)
         {
             _recipeRepository = recipeRepository;
+            _storageSettings = storageSettings;
         }
 
         public void DeleteRecipe()
@@ -23,16 +25,15 @@ namespace RecipeBook.Api.Application.Services
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var imageResult = SaveFile(addCommand.FileAdapter);
+            var imageResult = SaveFile(addCommand.FileAdapter, _storageSettings.ImagePath);
             var recipe = addCommand.Convert(imageResult);
             _recipeRepository.Add(recipe);
 
             return recipe;
         }
 
-        private static SaveImageResult SaveFile(FormFileAdapter file)
+        private SaveImageResult SaveFile(FormFileAdapter file, string basePath)
         {
-            const string basePath = "D:\\recipebook-static\\images";
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
             var newFilePath = $@"{basePath}\{fileName}";
             using (var fs = File.Create(newFilePath))

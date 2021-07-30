@@ -7,7 +7,6 @@ namespace RecipeBook.Api.Application.Converters
     public class FormFileAdapter
     {
         public byte[] Data { get; set; }
-        public string FileName { get; set; }
         public string FileExtension { get; set; }
 
         public static FormFileAdapter Create(IFormFile formFile)
@@ -22,7 +21,6 @@ namespace RecipeBook.Api.Application.Converters
 
             return new FormFileAdapter
             {
-                FileName = formFile.FileName,
                 FileExtension = formFile.FileName.Split('.').Last(),
                 Data = bytes
             };
