@@ -34,7 +34,6 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     try {
       response = await apiService.getRequest("recipes/recipe-of-day");
       isLoading = false;
-
       if (response.statusCode == 200) {
         setState(() {
           recipeOfDay = RecipeOfDay.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
@@ -52,7 +51,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Center(child: CircularProgressIndicator(color: Palette.orange));
+      return const Center(child: CircularProgressIndicator(color: Palette.orange));
     }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,9 +79,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(5),
-                ),
+                borderRadius: BorderRadius.horizontal(right: Radius.circular(5)),
               ),
               child: Text(
                 recipeOfDay.username,

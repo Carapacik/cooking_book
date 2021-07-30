@@ -41,11 +41,9 @@ class HomePage extends StatelessWidget {
               alignment: Alignment.topRight,
               width: 602,
               height: 800,
-              child: Image.asset(
-                CookingImages.homeBackground,
-              ),
+              child: Image.asset(CookingImages.homeBackground),
             ),
-            HeaderWidget(currentSelectedPage: HeaderButtons.home),
+            const HeaderWidget(currentSelectedPage: HeaderButtons.home),
             Padding(
               padding: const EdgeInsets.only(top: 211, left: 120, right: 120),
               child: Column(
@@ -82,7 +80,7 @@ class HomePage extends StatelessWidget {
                         text: "Войти",
                         width: 216,
                         height: 60,
-                        onPressed: () {},
+                        onPressed: null,
                       ),
                     ],
                   ),
@@ -147,13 +145,17 @@ class HomePage extends StatelessWidget {
                             height: 73,
                             width: 716,
                             padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: const [
-                              BoxShadow(
-                                color: Palette.shadowColor,
-                                offset: Offset(0, 8),
-                                blurRadius: 42,
-                              )
-                            ]),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Palette.shadowColor,
+                                  offset: Offset(0, 8),
+                                  blurRadius: 42,
+                                )
+                              ],
+                            ),
                             child: TextField(
                               cursorColor: Palette.orange,
                               style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),

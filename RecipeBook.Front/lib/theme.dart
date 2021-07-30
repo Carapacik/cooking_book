@@ -53,10 +53,10 @@ extension TextThemeExt on TextTheme {
       );
 
   TextStyle get r14 => bodyText2!.copyWith(
-    color: Palette.main.withOpacity(0.5),
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-  );
+        color: Palette.main.withOpacity(0.5),
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      );
 
   TextStyle get n18 => bodyText2!.copyWith(
         color: Palette.orange,

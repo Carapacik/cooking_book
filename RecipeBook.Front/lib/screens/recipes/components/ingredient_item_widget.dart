@@ -14,7 +14,7 @@ class IngredientItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
 
     return Column(
       children: [
@@ -54,7 +54,6 @@ class IngredientItemWidget extends StatelessWidget {
                   if (value!.isEmpty) {
                     return "Не должно быть пустым";
                   }
-
                   return null;
                 },
                 onSaved: (value) {
@@ -70,7 +69,6 @@ class IngredientItemWidget extends StatelessWidget {
                   if (value!.isEmpty) {
                     return "Не должно быть пустым";
                   }
-
                   return null;
                 },
                 onSaved: (value) {

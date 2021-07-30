@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
 import 'package:recipebook/route.dart';
-import 'package:recipebook/screens/error/connection_lost.dart';
+import 'package:recipebook/screens/error/error_page.dart';
 import 'package:recipebook/screens/home/home_page.dart';
 import 'package:recipebook/screens/recipes/add_recipe_page.dart';
 import 'package:recipebook/screens/recipes/recipe_detail_page.dart';
+import 'package:recipebook/screens/recipes/recipes_page.dart';
 import 'package:recipebook/theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -37,12 +38,12 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(routes: {
-        '/': (_, __) => MaterialPage(child: HomePage()),
-        RecipeRoutes.homeRoute: (_, __) => MaterialPage(child: HomePage()),
+        '/': (_, __) => const MaterialPage(child: HomePage()),
+        RecipeRoutes.homeRoute: (_, __) => const MaterialPage(child: HomePage()),
         RecipeRoutes.addRecipeRoute: (_, __) => MaterialPage(child: AddRecipePage()),
-        RecipeRoutes.recipesRoute: (_, __) => MaterialPage(child: HomePage()),
+        RecipeRoutes.recipesRoute: (_, __) => const MaterialPage(child: RecipesPage()),
         RecipeRoutes.recipeDetailRoute: (_, __) => MaterialPage(child: RecipeDetailPage()),
-        RecipeRoutes.errorRoute: (_, __) => MaterialPage(child: ConnectionLostPage()),
+        RecipeRoutes.errorRoute: (_, __) => const MaterialPage(child: ConnectionLostPage()),
       }),
     );
   }

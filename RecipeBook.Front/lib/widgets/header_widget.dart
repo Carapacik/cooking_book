@@ -77,9 +77,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             const Expanded(child: SizedBox()),
             TextButton(
               onPressed: () {},
-              style: TextButton.styleFrom(
-                primary: Palette.orange,
-              ),
+              style: TextButton.styleFrom(primary: Palette.orange),
               child: Row(
                 children: [
                   SvgPicture.asset(

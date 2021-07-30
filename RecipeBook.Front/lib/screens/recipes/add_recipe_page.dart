@@ -47,6 +47,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FilePickerResult? result;
+  bool isFilePicked = true;
 
   @override
   void initState() {
@@ -90,9 +91,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      style: TextButton.styleFrom(
-                        primary: Palette.orange,
-                      ),
+                      style: TextButton.styleFrom(primary: Palette.orange),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -121,36 +120,39 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           text: "Опубликовать",
                           width: 278,
                           height: 60,
-                          onPressed: () async {
-                            final form = _formKey.currentState!;
-                            if (form.validate()) {
-                              form.save();
+                          onPressed: result == null
+                              ? null
+                              : () async {
+                                  final form = _formKey.currentState!;
+                                  if (form.validate()) {
+                                    form.save();
 
-                              final AddRecipe recipe = AddRecipe(
-                                title: widget.recipeTitle!,
-                                description: widget.recipeDescription!,
-                                cookingTimeInMinutes: int.parse(widget.cookingTime!),
-                                portionsCount: int.parse(widget.portionsCount!),
-                                tags: widget.tags,
-                                steps: stepNotifier.stepList,
-                                ingredients: ingredientNotifier.ingredientList.toList(),
-                              );
+                                    final AddRecipe recipe = AddRecipe(
+                                      title: widget.recipeTitle!,
+                                      description: widget.recipeDescription!,
+                                      cookingTimeInMinutes: int.parse(widget.cookingTime!),
+                                      portionsCount: int.parse(widget.portionsCount!),
+                                      tags: widget.tags,
+                                      steps: stepNotifier.stepList,
+                                      ingredients: ingredientNotifier.ingredientList.toList(),
+                                    );
 
-                              final formData = FormData.fromMap({
-                                'recipe': jsonEncode(recipe),
-                                'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
-                              });
+                                    final formData = FormData.fromMap({
+                                      'recipe': jsonEncode(recipe),
+                                      'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+                                    });
 
-                              String nextPageIndex = "";
-                              try {
-                                await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
-                              } catch (e) {
-                                context.vxNav.push(Uri.parse(RecipeRoutes.errorRoute));
-                              }
-                              debugPrint("next page is detail recipe with id = ${int.parse(nextPageIndex)}");
-                              // тут будет перенаправление на страницу с рецептом с id = nextPageIndex
-                            }
-                          },
+                                    String nextPageIndex = "";
+                                    try {
+                                      await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
+                                    } catch (e) {
+                                      context.vxNav.push(Uri.parse(RecipeRoutes.errorRoute));
+                                    }
+                                    debugPrint("next page is detail recipe with id = ${int.parse(nextPageIndex)}");
+                                    // тут будет перенаправление на страницу с рецептом с id = nextPageIndex
+                                    // когда я её сделаю ))
+                                  }
+                                },
                         ),
                       ],
                     ),
@@ -172,6 +174,15 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           TextButton(
                             onPressed: () async {
                               result = await FilePicker.platform.pickFiles(type: FileType.image);
+                              if (result == null) {
+                                setState(() {
+                                  isFilePicked = false;
+                                });
+                              } else {
+                                setState(() {
+                                  isFilePicked = true;
+                                });
+                              }
                             },
                             clipBehavior: Clip.antiAlias,
                             style: TextButton.styleFrom(
@@ -192,7 +203,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                   child: Center(
                                     child: DottedBorder(
                                       borderType: BorderType.RRect,
-                                      color: Palette.orange,
+                                      color: isFilePicked ? Palette.orange : Colors.red,
                                       radius: const Radius.circular(20),
                                       child: SizedBox(
                                         height: 269,
@@ -204,14 +215,15 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                               CookingIcons.upload,
                                               height: 42,
                                               width: 42,
-                                              color: Palette.orange,
+                                              color: isFilePicked ? Palette.orange : Colors.red,
                                             ),
                                             const SizedBox(height: 30),
                                             Text(
-                                              "Загрузите фото\nготового блюда",
+                                              isFilePicked ? "Загрузите фото\nготового блюда" : "Необходимо загрузить\nфотографию",
+                                              textAlign: TextAlign.center,
                                               style: Theme.of(context).textTheme.r16.copyWith(
-                                                color: Palette.orange,
-                                              ),
+                                                    color: isFilePicked ? Palette.orange : Colors.red,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -236,7 +248,6 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       if (value!.isEmpty) {
                                         return "Название рецепта обязательно";
                                       }
-
                                       return null;
                                     },
                                     onSaved: (value) {
@@ -254,7 +265,6 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       if (value!.isEmpty) {
                                         return "Описание рецепта обязательно";
                                       }
-
                                       return null;
                                     },
                                     onSaved: (value) {
@@ -275,42 +285,6 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       widget.tags = value!.trim().split(",");
                                     },
                                   ),
-                                  // TextFieldTags(
-                                  //   tagsStyler: TagsStyler(
-                                  //       tagTextStyle: TextStyle(fontWeight: FontWeight.normal),
-                                  //       tagDecoration: BoxDecoration(
-                                  //         color: Colors.blue[300],
-                                  //         borderRadius: BorderRadius.circular(0.0),
-                                  //       ),
-                                  //       tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
-                                  //       tagPadding: const EdgeInsets.all(6.0)),
-                                  //   textFieldStyler: TextFieldStyler(
-                                  //     helperText: "Введите минимум 3 тэга",
-                                  //     helperStyle: Theme.of(context).textTheme.r14,
-                                  //     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-                                  //     textFieldBorder: OutlineInputBorder(
-                                  //       borderRadius: BorderRadius.circular(16),
-                                  //     ),
-                                  //     textFieldEnabledBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(color: Palette.grey.withOpacity(0.3)),
-                                  //       borderRadius: BorderRadius.circular(16),
-                                  //     ),
-                                  //     textFieldFocusedBorder: OutlineInputBorder(
-                                  //       borderSide: const BorderSide(color: Palette.orange),
-                                  //       borderRadius: BorderRadius.circular(16),
-                                  //     ),
-                                  //     hintText: "Добавить теги",
-                                  //     hintStyle: Theme.of(context).textTheme.r16,
-                                  //   ),
-                                  //   onTag: (tag) {},
-                                  //   onDelete: (tag) {},
-                                  //   validator: (tag) {
-                                  //     if (tag!.length > 15) {
-                                  //       return "hey that's too long";
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  // ),
                                   const SizedBox(height: 20),
                                   Row(
                                     children: [
@@ -323,7 +297,6 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
                                           }
-
                                           return null;
                                         },
                                         onSaved: (value) {
@@ -345,7 +318,6 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
                                           }
-
                                           return null;
                                         },
                                         onSaved: (value) {

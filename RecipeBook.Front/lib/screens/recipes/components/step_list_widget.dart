@@ -8,7 +8,7 @@ class StepListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
+    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
 
     return Column(
       children: [

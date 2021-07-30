@@ -8,7 +8,7 @@ class IngredientListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
 
     return Column(
       children: [
