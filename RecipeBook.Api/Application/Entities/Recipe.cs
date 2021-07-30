@@ -4,13 +4,12 @@ namespace RecipeBook.Api.Application.Entities
 {
     public class Recipe
     {
-        public int RecipeId { get; set; }
-        public string Name { get; set; }
+        public int RecipeId { get; private set; }
+        public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public int CookingTimeInMinutes { get; set; }
         public int PortionsCount { get; set; }
-
         public int LikesCount { get; set; }
         public int FavoritesCount { get; set; }
 

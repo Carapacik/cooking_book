@@ -9,6 +9,7 @@ namespace RecipeBook.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Ingredient> builder)
         {
             builder.ToTable("Ingredient").HasKey(item => item.IngredientId);
+            builder.Property(x => x.Title).IsRequired();
         }
     }
 }

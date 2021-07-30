@@ -24,8 +24,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.transparent,
           primary: Palette.orange,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16))),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
           side: const BorderSide(color: Palette.orange),
         ),
         onPressed: onPressed,

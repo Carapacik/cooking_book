@@ -9,6 +9,7 @@ namespace RecipeBook.Api.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder.ToTable("Tag").HasKey(item => item.TagId);
+            builder.Property(x => x.Name).IsRequired();
         }
     }
 }

@@ -8,7 +8,12 @@ namespace RecipeBook.Api.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Recipe> builder)
         {
-            builder.ToTable("Recipe").HasKey(item => item.RecipeId);
+            builder.ToTable("Recipe").HasKey(x => x.RecipeId);
+            builder.Property(x => x.Title).IsRequired();
+            builder.Property(x => x.Description).IsRequired().HasMaxLength(150);
+            builder.Property(x => x.ImageUrl).IsRequired();
+            builder.Property(x => x.CookingTimeInMinutes).IsRequired();
+            builder.Property(x => x.PortionsCount).IsRequired();
         }
     }
 }
