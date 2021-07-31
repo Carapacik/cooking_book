@@ -5,13 +5,14 @@ import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/route.dart';
-import 'package:recipebook/screens/home/components/category_card.dart';
 import 'package:recipebook/screens/home/components/recipe_of_day.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/category_card.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipebook/widgets/search_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatelessWidget {
@@ -138,42 +139,10 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 73,
-                            width: 716,
-                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Palette.shadowColor,
-                                  offset: Offset(0, 8),
-                                  blurRadius: 42,
-                                )
-                              ],
-                            ),
-                            child: TextField(
-                              cursorColor: Palette.orange,
-                              style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Название блюда...",
-                                hintStyle: Theme.of(context).textTheme.r16,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          ButtonContainedWidget(
-                            text: "Поиск",
-                            width: 152,
-                            height: 73,
-                            onPressed: () {},
-                          ),
-                        ],
+                      Center(
+                        child: SearchWidget(
+                          width: 716,
+                        ),
                       ),
                       const SizedBox(height: 24),
                     ],

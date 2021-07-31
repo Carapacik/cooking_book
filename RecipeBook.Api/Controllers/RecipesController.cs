@@ -34,7 +34,6 @@ namespace RecipeBook.Api.Controllers
             var newRecipe = _recipeService.AddRecipe(addRecipeCommand);
 
             _unitOfWork.Commit();
-
             return newRecipe.RecipeId;
         }
 

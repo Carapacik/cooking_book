@@ -18,7 +18,6 @@ class CategoryCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 271,
       width: 278,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(

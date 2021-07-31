@@ -8,6 +8,7 @@ import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
 class RecipeOfDayWidget extends StatefulWidget {
   const RecipeOfDayWidget({Key? key}) : super(key: key);
@@ -56,40 +57,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Container(
-              width: 543,
-              height: 543,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(72),
-                  bottomRight: Radius.circular(72),
-                ),
-              ),
-              child: Image.asset(
-                recipeOfDay.imageUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 38),
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.horizontal(right: Radius.circular(5)),
-              ),
-              child: Text(
-                recipeOfDay.username,
-                style: Theme.of(context).textTheme.r16.copyWith(
-                      color: Palette.orange,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            )
-          ],
+        RecipeImageWithAuthor(
+          imageUrl: recipeOfDay.imageUrl,
+          username: recipeOfDay.username,
+          size: 543,
         ),
         Container(
           margin: const EdgeInsets.only(left: 62),
