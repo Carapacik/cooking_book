@@ -69,6 +69,8 @@ class HomePage extends StatelessWidget {
                   Row(
                     children: [
                       ButtonContainedWidget(
+                        icon: Icons.add,
+                        padding: 18,
                         text: "Добавить рецепт",
                         width: 278,
                         height: 60,
@@ -139,7 +141,7 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
-                      Center(
+                      const Center(
                         child: SearchWidget(
                           width: 716,
                         ),

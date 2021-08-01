@@ -38,10 +38,10 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(routes: {
-        '/': (_, __) => const MaterialPage(child: RecipesPage()),
+        '/': (_, __) => MaterialPage(child: RecipesPage()),
         RecipeRoutes.homeRoute: (_, __) => const MaterialPage(child: HomePage()),
         RecipeRoutes.addRecipeRoute: (_, __) => MaterialPage(child: AddRecipePage()),
-        RecipeRoutes.recipesRoute: (_, __) => const MaterialPage(child: RecipesPage()),
+        RecipeRoutes.recipesRoute: (_, __) => MaterialPage(child: RecipesPage()),
         RecipeRoutes.recipeDetailRoute: (_, __) => const MaterialPage(child: RecipeDetailPage()),
         RecipeRoutes.errorRoute: (_, __) => const MaterialPage(child: ConnectionLostPage()),
       }),

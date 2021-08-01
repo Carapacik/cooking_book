@@ -71,11 +71,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SvgPicture.asset(
-                    CookingIcons.heartEmpty,
+                  Icon(
+                    Icons.favorite_outline,
                     color: Palette.grey,
-                    height: 20,
-                    width: 20,
+                    size: 20,
                   ),
                   const SizedBox(width: 7),
                   Text(
@@ -83,11 +82,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                     style: Theme.of(context).textTheme.r16,
                   ),
                   const SizedBox(width: 27),
-                  SvgPicture.asset(
-                    CookingIcons.timer,
+                  const Icon(
+                    Icons.timer,
+                    size: 20,
                     color: Palette.grey,
-                    height: 20,
-                    width: 20,
                   ),
                   const SizedBox(width: 7),
                   Text(

@@ -40,6 +40,12 @@ extension TextThemeExt on TextTheme {
         height: 30 / 20,
       );
 
+  TextStyle get b18 => bodyText1!.copyWith(
+        color: Palette.main,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      );
+
   TextStyle get r18 => bodyText1!.copyWith(
         color: Palette.mainLighten1,
         fontSize: 18,

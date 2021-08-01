@@ -95,12 +95,11 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SvgPicture.asset(
-                            CookingIcons.arrowBack,
-                            height: 12,
-                            width: 18,
+                          const Icon(
+                            Icons.arrow_back,
+                            size: 18,
                           ),
-                          const SizedBox(width: 13),
+                          const SizedBox(width: 12),
                           Text(
                             "Назад",
                             style: Theme.of(context).textTheme.n18,

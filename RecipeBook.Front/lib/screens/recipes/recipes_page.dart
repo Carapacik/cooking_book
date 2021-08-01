@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipebook/models/recipe_item.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -10,11 +11,41 @@ import 'package:recipebook/widgets/category_card.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/search_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RecipesPage extends StatelessWidget {
-  const RecipesPage({Key? key}) : super(key: key);
+  RecipesPage({Key? key}) : super(key: key);
+
+  List<RecipeItem> recipeList = [
+    RecipeItem(
+      recipeId: 0,
+      title: "Клубничная панна-котта",
+      description:
+          "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
+      imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
+      username: "@horilka",
+      tags: ["десерты", "клубника", "сливки"],
+      favoritesCount: 10,
+      likesCount: 8,
+      cookingTimeInMinutes: 35,
+      portionsCount: 5,
+    ),
+    RecipeItem(
+      recipeId: 1,
+      title: "sssубничная панна-котта",
+      description:
+          "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
+      imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
+      username: "@horilka",
+      tags: ["десерты", "клубника", "сливки"],
+      favoritesCount: 10,
+      likesCount: 8,
+      cookingTimeInMinutes: 35,
+      portionsCount: 5,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +79,8 @@ class RecipesPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.b42,
                       ),
                       ButtonContainedWidget(
+                        icon: Icons.add,
+                        padding: 18,
                         text: "Добавить рецепт",
                         width: 278,
                         height: 60,
@@ -91,7 +124,26 @@ class RecipesPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 80),
-                  RecipeItemWidget(),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: recipeList.length,
+                    itemBuilder: (context, index) {
+                      return RecipeItemWidget(
+                        recipeItem: recipeList[index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(height: 40);
+                    },
+                  ),
+                  const SizedBox(height: 65),
+                  ButtonOutlinedWidget(
+                    text: "Загрузить еще",
+                    width: 309,
+                    height: 60,
+                    onPressed: () {},
+                  ),
+                  const SizedBox(height: 108),
                 ],
               ),
             )
