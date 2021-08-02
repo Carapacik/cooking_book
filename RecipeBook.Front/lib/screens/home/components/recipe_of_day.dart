@@ -29,6 +29,12 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    apiService.dispose();
+    super.dispose();
+  }
+
   Future getRecipeOfDay() async {
     Response response;
 
@@ -71,7 +77,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.favorite_outline,
                     color: Palette.grey,
                     size: 20,

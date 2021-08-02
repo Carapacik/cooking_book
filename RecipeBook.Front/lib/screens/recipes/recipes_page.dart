@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/models/recipe_item.dart';
@@ -6,6 +7,7 @@ import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
@@ -15,8 +17,15 @@ import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/search_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class RecipesPage extends StatelessWidget {
+class RecipesPage extends StatefulWidget {
   RecipesPage({Key? key}) : super(key: key);
+
+  @override
+  _RecipesPageState createState() => _RecipesPageState();
+}
+
+class _RecipesPageState extends State<RecipesPage> {
+  late ApiService apiService;
 
   List<RecipeItem> recipeList = [
     RecipeItem(
@@ -46,6 +55,31 @@ class RecipesPage extends StatelessWidget {
       portionsCount: 5,
     ),
   ];
+
+  Future getTopRecipes() async {
+    Response response;
+
+    try {
+      response = await apiService.getRequestWithParam("recipes", 0, 5);
+      if (response.statusCode == 200) {
+        setState(() {
+          print(response.data);
+        });
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    apiService = ApiService();
+    getTopRecipes();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

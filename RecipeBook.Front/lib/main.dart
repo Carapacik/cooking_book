@@ -38,7 +38,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(routes: {
-        '/': (_, __) => MaterialPage(child: RecipesPage()),
+        '/': (_, __) => MaterialPage(child: HomePage()),
         RecipeRoutes.homeRoute: (_, __) => const MaterialPage(child: HomePage()),
         RecipeRoutes.addRecipeRoute: (_, __) => MaterialPage(child: AddRecipePage()),
         RecipeRoutes.recipesRoute: (_, __) => MaterialPage(child: RecipesPage()),

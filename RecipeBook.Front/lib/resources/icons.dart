@@ -1,5 +1,6 @@
 class CookingIcons {
   CookingIcons._();
+
   static String chef = "assets/icons/chef.svg";
   static String confetti = "assets/icons/confetti.svg";
   static String cook = "assets/icons/cook.svg";
