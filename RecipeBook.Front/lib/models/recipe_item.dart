@@ -17,16 +17,16 @@ class RecipeItem {
     required this.portionsCount,
   });
 
-  final int recipeId;
-  final String title;
-  final String description;
-  final String imageUrl;
-  final String username;
-  final List<String> tags;
-  final int favoritesCount;
-  final int likesCount;
-  final int cookingTimeInMinutes;
-  final int portionsCount;
+  int recipeId;
+  String title;
+  String description;
+  String imageUrl;
+  String username;
+  List<String> tags;
+  int favoritesCount;
+  int likesCount;
+  int cookingTimeInMinutes;
+  int portionsCount;
 
   factory RecipeItem.fromJson(Map<String, dynamic> json) => _$RecipeItemFromJson(json);
 

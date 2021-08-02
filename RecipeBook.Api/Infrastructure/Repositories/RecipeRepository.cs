@@ -21,20 +21,28 @@ namespace RecipeBook.Api.Infrastructure.Repositories
                 .Include(x => x.Tags)
                 .Include(x => x.Ingredients)
                 .ThenInclude(y => y.IngredientItems)
+                .Include(x => x.Steps)
                 .FirstOrDefault(x => x.RecipeId == id);
         }
-        
-        public List<Recipe> Search(int take, int skip, string searchQuery)
+
+        public List<Recipe> Search(int skip, int take, string searchQuery)
         {
             if (string.IsNullOrEmpty(searchQuery))
-            {
-               return  _context.Set<Recipe>().Take(take).Skip(skip).ToList();
-            }
+                return _context.Set<Recipe>()
+                    .Include(x => x.Tags)
+                    .Include(x => x.Ingredients)
+                    .ThenInclude(y => y.IngredientItems)
+                    .Include(x => x.Steps)
+                    .OrderByDescending(x => x.LikesCount)
+                    .Skip(skip).Take(take).ToList();
             return _context.Set<Recipe>()
                 .Include(x => x.Tags)
                 .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
-                .Where(x => x.Title.ToLower().Contains(searchQuery)).Skip(skip).Take(take).ToList();
+                .ThenInclude(y => y.IngredientItems)
+                .Include(x => x.Steps)
+                .OrderByDescending(x => x.LikesCount)
+                .Where(x => x.Title.ToLower().Contains(searchQuery))
+                .Skip(skip).Take(take).ToList();
         }
 
         public void Add(Recipe newRecipe)

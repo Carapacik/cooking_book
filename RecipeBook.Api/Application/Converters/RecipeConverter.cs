@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using RecipeBook.Api.Application.Dtos;
 using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Services.Entities;
 
@@ -31,6 +32,23 @@ namespace RecipeBook.Api.Application.Converters
                         Name = y
                     }).ToList()
                 }).ToList()
+            };
+        }
+
+        public static RecipeItemDto Convert(this Recipe recipe)
+        {
+            return new()
+            {
+                RecipeId = recipe.RecipeId,
+                Title = recipe.Title,
+                Description = recipe.Description,
+                ImageUrl = recipe.ImageUrl,
+                CookingTimeInMinutes = recipe.CookingTimeInMinutes,
+                PortionsCount = recipe.PortionsCount,
+                LikesCount = recipe.LikesCount,
+                FavoritesCount = recipe.FavoritesCount,
+                Username = recipe.UserId + " name",
+                Tags = recipe.Tags.Select(x => x.Name).ToList()
             };
         }
     }

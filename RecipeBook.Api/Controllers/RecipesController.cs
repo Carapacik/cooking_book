@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
-using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services;
 using RecipeBook.Api.Application.Services.Entities;
@@ -15,7 +15,7 @@ namespace RecipeBook.Api.Controllers
     [Route("api/[controller]")]
     public class RecipesController : ControllerBase
     {
-        private readonly IRecipeRepository _recipeRepository; // для получения данных
+        private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -32,23 +32,19 @@ namespace RecipeBook.Api.Controllers
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             var formFile = Request.Form.Files[0];
-            var addRecipeCommand = new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData);
-            var newRecipe = _recipeService.AddRecipe(addRecipeCommand);
-
+            var newRecipe = _recipeService.AddRecipe(new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData));
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
-        
+
         [HttpGet]
-        public List<Recipe> GetRecipes(
-            [FromQuery]int take, 
-            [FromQuery]int skip, 
-            [FromQuery]string searchQuery)
+        public List<RecipeItemDto> GetRecipes(
+            [FromQuery] int skip,
+            [FromQuery] int take,
+            [FromQuery] string searchQuery)
         {
-
-            var searchResult = _recipeRepository.Search(take, skip, searchQuery);
-
-            return searchResult;
+            var searchResult = _recipeRepository.Search(skip, take, searchQuery);
+            return searchResult.Select(x => x.Convert()).ToList();
         }
 
         [HttpGet("recipe-of-day")]
@@ -59,7 +55,7 @@ namespace RecipeBook.Api.Controllers
                 RecipeId = 1,
                 Title = "Тыквенный супчик на кокосовом молоке",
                 Description = "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас!",
-                ImageUrl = "assets/images/recipe_of_day.png",
+                ImageUrl = "images/recipe_of_day.png",
                 CookingTimeInMinutes = 35,
                 LikesCount = 365,
                 Username = "@glazest"

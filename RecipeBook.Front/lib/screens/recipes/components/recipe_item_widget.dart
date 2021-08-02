@@ -34,7 +34,7 @@ class RecipeItemWidget extends StatelessWidget {
         children: [
           RecipeImageWithAuthor(
             imageUrl: recipeItem.imageUrl,
-            username: recipeItem.username,
+            username: recipeItem.username.toString(),
             size: 430,
           ),
           Padding(

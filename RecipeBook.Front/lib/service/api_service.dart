@@ -47,25 +47,46 @@ class ApiService {
         //   'Access-Control-Allow-Credentials': true
         // }),
       );
+      print(response);
     } on DioError catch (e) {
       throw Exception(e.message);
     }
     return response;
   }
 
-  Future<Response> getRequestWithParam(String endPoint, int? skip, int? take) async {
+  Future<Response> getInitialWithParam(
+    String endPoint,
+    int take,
+  ) async {
     Response response;
     try {
       response = await _dio.get<String>(
         endPoint,
-        queryParameters: {'skip': skip, 'take': take},
-        // Для работы Dio нужен включённый CORS на сервере с API
-        // options: Options(headers: {
-        //   'Access-Control-Allow-Origin': '*',
-        //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-        //   'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-        //   'Access-Control-Allow-Credentials': true
-        // }),
+        queryParameters: {
+          'take': take,
+        },
+      );
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response;
+  }
+
+  Future<Response> getRequestWithParam({
+    required String endPoint,
+    required int skip,
+    required int take,
+    String? searchQuery,
+  }) async {
+    Response response;
+    try {
+      response = await _dio.get<String>(
+        endPoint,
+        queryParameters: {
+          'skip': skip,
+          'take': take,
+          searchQuery ?? 'searchQuery': searchQuery,
+        },
       );
     } on DioError catch (e) {
       throw Exception(e.message);

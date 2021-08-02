@@ -7,6 +7,6 @@ namespace RecipeBook.Api.Application.Repositories
     {
         Recipe GetById(int id);
         void Add(Recipe recipe);
-        List<Recipe> Search(int take, int skip, string searchQuery);
+        List<Recipe> Search(int skip, int take, string searchQuery);
     }
 }

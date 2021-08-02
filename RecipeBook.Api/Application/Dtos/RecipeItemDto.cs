@@ -2,7 +2,7 @@
 
 namespace RecipeBook.Api.Application.Dtos
 {
-    public class RecipeDto
+    public class RecipeItemDto
     {
         public int RecipeId { get; set; }
         public string Title { get; set; }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,7 +36,7 @@ class _RecipesPageState extends State<RecipesPage> {
       description:
           "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
       imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
-      username: "@horilka",
+      username: "@aaass",
       tags: ["десерты", "клубника", "сливки"],
       favoritesCount: 10,
       likesCount: 8,
@@ -47,7 +49,7 @@ class _RecipesPageState extends State<RecipesPage> {
       description:
           "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
       imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
-      username: "@horilka",
+      username: "@dass",
       tags: ["десерты", "клубника", "сливки"],
       favoritesCount: 10,
       likesCount: 8,
@@ -56,14 +58,17 @@ class _RecipesPageState extends State<RecipesPage> {
     ),
   ];
 
-  Future getTopRecipes() async {
+  Future getInitialRecipes() async {
     Response response;
 
     try {
-      response = await apiService.getRequestWithParam("recipes", 0, 5);
+      response = await apiService.getInitialWithParam("recipes", 5);
       if (response.statusCode == 200) {
+        var data = jsonDecode(response.data as String) as List<dynamic>;
         setState(() {
-          print(response.data);
+          for (final item in data) {
+            recipeList.add(RecipeItem.fromJson(item as Map<String, dynamic>));
+          }
         });
       } else {
         // затычка, код не 200
@@ -77,7 +82,7 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   void initState() {
     apiService = ApiService();
-    getTopRecipes();
+    getInitialRecipes();
     super.initState();
   }
 
