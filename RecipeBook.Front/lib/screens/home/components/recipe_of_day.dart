@@ -29,12 +29,6 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    apiService.dispose();
-    super.dispose();
-  }
-
   Future getRecipeOfDay() async {
     Response response;
 

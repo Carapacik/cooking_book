@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Api.Application.Services.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Api.Application.Services;
 
 namespace RecipeBook.Api.Controllers
 {
@@ -8,20 +7,18 @@ namespace RecipeBook.Api.Controllers
     [Route("[controller]")]
     public class StaticController : ControllerBase
     {
-        private readonly StaticStorageSettings _staticStorageSettings;
+        private readonly StaticService _staticService;
 
-        public StaticController(StaticStorageSettings staticStorageSettings)
+        public StaticController(StaticService staticService)
         {
-            _staticStorageSettings = staticStorageSettings;
+            _staticService = staticService;
         }
 
-        [HttpGet("{filename}")]
-        public IActionResult GetImage(string filename)
+        [HttpGet("{fileName}")]
+        public IActionResult GetImage(string fileName)
         {
-            var r = System.IO.File.ReadAllBytes($"{_staticStorageSettings.RecipeImagesPath}\\{filename}");
-            var fileExtension = filename.Split('.').LastOrDefault();
-
-            return new FileContentResult(r, $"image/{fileExtension}");
+            var result = _staticService.GetFile(fileName);
+            return new FileContentResult(result.Content, $"image/{result.Extension}");
         }
     }
 }

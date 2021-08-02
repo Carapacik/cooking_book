@@ -30,10 +30,6 @@ class ApiService {
     return response.data;
   }
 
-  void dispose() {
-    _dio.clear();
-  }
-
   Future<Response> getRequest(String endPoint) async {
     Response response;
     try {
@@ -47,7 +43,6 @@ class ApiService {
         //   'Access-Control-Allow-Credentials': true
         // }),
       );
-      print(response);
     } on DioError catch (e) {
       throw Exception(e.message);
     }

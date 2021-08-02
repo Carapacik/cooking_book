@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
@@ -25,24 +24,20 @@ namespace RecipeBook.Api.Application.Services
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var imageResult = SaveFile(addCommand.FileAdapter, _staticStorageSettings.RecipeImagesPath);
+            var imageResult = SaveFile(addCommand.FileAdapter, _staticStorageSettings.BasePath);
             var recipe = addCommand.Convert(imageResult);
             _recipeRepository.Add(recipe);
 
             return recipe;
         }
 
-        private static SaveImageResult SaveFile(FormFileAdapter file, string basePath)
+        private static SaveFileResult SaveFile(FormFileAdapter file, string basePath)
         {
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
-            var newFilePath = $@"{basePath}\{fileName}";
-            using (var fs = File.Create(newFilePath))
-            {
-                fs.Write(file.Data);
-            }
+            var newFilePath = $@"{basePath}\images\{fileName}";
+            File.WriteAllBytes(newFilePath, file.Data);
 
-            var folderName = basePath.Split(@"\").Last();
-            return new SaveImageResult($"{folderName}/{fileName}");
+            return new SaveFileResult($"{fileName}");
         }
     }
 }

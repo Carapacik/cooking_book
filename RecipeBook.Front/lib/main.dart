@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/ingredient_notifier.dart';
+import 'package:recipebook/controllers/recipe_notifier.dart';
 import 'package:recipebook/controllers/step_notifier.dart';
 import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/error/error_page.dart';
@@ -17,12 +18,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => StepNotifier(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => IngredientNotifier(),
-        )
+        ChangeNotifierProvider(create: (_) => StepNotifier()),
+        ChangeNotifierProvider(create: (_) => IngredientNotifier()),
+        ChangeNotifierProvider(create: (_) => RecipeNotifier())
       ],
       child: App(),
     ),
@@ -38,7 +36,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routeInformationParser: VxInformationParser(),
       routerDelegate: VxNavigator(routes: {
-        '/': (_, __) => MaterialPage(child: HomePage()),
+        '/': (_, __) => const MaterialPage(child: HomePage()),
         RecipeRoutes.homeRoute: (_, __) => const MaterialPage(child: HomePage()),
         RecipeRoutes.addRecipeRoute: (_, __) => MaterialPage(child: AddRecipePage()),
         RecipeRoutes.recipesRoute: (_, __) => MaterialPage(child: RecipesPage()),

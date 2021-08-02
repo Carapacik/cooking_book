@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/models/recipe_item.dart';
+import 'package:provider/provider.dart';
+import 'package:recipebook/controllers/recipe_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/route.dart';
-import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
+import 'package:recipebook/screens/recipes/components/recipe_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
@@ -28,48 +29,34 @@ class RecipesPage extends StatefulWidget {
 
 class _RecipesPageState extends State<RecipesPage> {
   late ApiService apiService;
+  int skipCounter = 4;
+  late RecipeNotifier recipeNotifier;
 
-  List<RecipeItem> recipeList = [
-    RecipeItem(
-      recipeId: 0,
-      title: "Клубничная панна-котта",
-      description:
-          "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
-      imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
-      username: "@aaass",
-      tags: ["десерты", "клубника", "сливки"],
-      favoritesCount: 10,
-      likesCount: 8,
-      cookingTimeInMinutes: 35,
-      portionsCount: 5,
-    ),
-    RecipeItem(
-      recipeId: 1,
-      title: "sssубничная панна-котта",
-      description:
-          "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
-      imageUrl: "https://eda.ru/img/eda/c620x415/s1.eda.ru/StaticContent/Photos/120131083619/170816150250/p_O.jpg",
-      username: "@dass",
-      tags: ["десерты", "клубника", "сливки"],
-      favoritesCount: 10,
-      likesCount: 8,
-      cookingTimeInMinutes: 35,
-      portionsCount: 5,
-    ),
-  ];
+  Future getMoreRecipes() async {
+    Response response;
+
+    try {
+      response = await apiService.getRequestWithParam(endPoint: "recipes", take: 4, skip: skipCounter);
+      if (response.statusCode == 200) {
+        skipCounter += 4;
+
+        recipeNotifier.addRecipes(jsonDecode(response.data as String) as List<dynamic>);
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
 
   Future getInitialRecipes() async {
     Response response;
 
     try {
-      response = await apiService.getInitialWithParam("recipes", 5);
+      response = await apiService.getInitialWithParam("recipes", 4);
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.data as String) as List<dynamic>;
-        setState(() {
-          for (final item in data) {
-            recipeList.add(RecipeItem.fromJson(item as Map<String, dynamic>));
-          }
-        });
+        recipeNotifier.addInitialRecipes(jsonDecode(response.data as String) as List<dynamic>);
       } else {
         // затычка, код не 200
       }
@@ -87,7 +74,15 @@ class _RecipesPageState extends State<RecipesPage> {
   }
 
   @override
+  void dispose() {
+    recipeNotifier.clearList();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    recipeNotifier = Provider.of<RecipeNotifier>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -163,24 +158,27 @@ class _RecipesPageState extends State<RecipesPage> {
                     ],
                   ),
                   const SizedBox(height: 80),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: recipeList.length,
-                    itemBuilder: (context, index) {
-                      return RecipeItemWidget(
-                        recipeItem: recipeList[index],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 40);
-                    },
-                  ),
+                  const RecipeListWidget(),
+                  // ListView.separated(
+                  //   shrinkWrap: true,
+                  //   itemCount: recipeList.length,
+                  //   itemBuilder: (context, index) {
+                  //     return RecipeItemWidget(
+                  //       recipeItem: recipeList[index],
+                  //     );
+                  //   },
+                  //   separatorBuilder: (BuildContext context, int index) {
+                  //     return const SizedBox(height: 40);
+                  //   },
+                  // ),
                   const SizedBox(height: 65),
                   ButtonOutlinedWidget(
                     text: "Загрузить еще",
                     width: 309,
                     height: 60,
-                    onPressed: () {},
+                    onPressed: () {
+                      getMoreRecipes();
+                    },
                   ),
                   const SizedBox(height: 108),
                 ],

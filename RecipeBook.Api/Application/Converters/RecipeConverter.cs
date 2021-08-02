@@ -7,11 +7,11 @@ namespace RecipeBook.Api.Application.Converters
 {
     public static class RecipeConverter
     {
-        public static Recipe Convert(this AddRecipeCommand addRecipeCommandDto, SaveImageResult saveImageResult)
+        public static Recipe Convert(this AddRecipeCommand addRecipeCommandDto, SaveFileResult saveFileResult)
         {
             return new()
             {
-                ImageUrl = saveImageResult.ImageUri,
+                ImageUrl = saveFileResult.RelativeUri,
                 Title = addRecipeCommandDto.Title,
                 Description = addRecipeCommandDto.Description,
                 CookingTimeInMinutes = addRecipeCommandDto.CookingTimeInMinutes,

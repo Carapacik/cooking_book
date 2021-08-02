@@ -180,32 +180,32 @@ class RecipeTagsList extends StatelessWidget {
             style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
           ),
         ),
-        const SizedBox(width: 5),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          height: 25,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Palette.orange.withOpacity(0.2),
-          ),
-          child: Text(
-            tags[1],
-            style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
-          ),
-        ),
-        const SizedBox(width: 5),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          height: 25,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Palette.orange.withOpacity(0.2),
-          ),
-          child: Text(
-            tags[2],
-            style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
-          ),
-        ),
+        // const SizedBox(width: 5),
+        // Container(
+        //   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        //   height: 25,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(5),
+        //     color: Palette.orange.withOpacity(0.2),
+        //   ),
+        //   child: Text(
+        //     tags[1],
+        //     style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
+        //   ),
+        // ),
+        // const SizedBox(width: 5),
+        // Container(
+        //   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        //   height: 25,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(5),
+        //     color: Palette.orange.withOpacity(0.2),
+        //   ),
+        //   child: Text(
+        //     tags[2],
+        //     style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
+        //   ),
+        // ),
       ],
     );
   }
