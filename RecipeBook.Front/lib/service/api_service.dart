@@ -58,7 +58,7 @@ class ApiService {
     try {
       response = await _dio.get<String>(
         endPoint,
-        queryParameters: {'skip': '', 'take': ''},
+        queryParameters: {'skip': skip, 'take': take},
         // Для работы Dio нужен включённый CORS на сервере с API
         // options: Options(headers: {
         //   'Access-Control-Allow-Origin': '*',

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
+using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services;
 using RecipeBook.Api.Application.Services.Entities;
@@ -36,7 +38,18 @@ namespace RecipeBook.Api.Controllers
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
+        
+        [HttpGet]
+        public List<Recipe> GetRecipes(
+            [FromQuery]int take, 
+            [FromQuery]int skip, 
+            [FromQuery]string searchQuery)
+        {
 
+            var searchResult = _recipeRepository.Search(take, skip, searchQuery);
+
+            return searchResult;
+        }
 
         [HttpGet("recipe-of-day")]
         public RecipeOfDayDto GetRecipeOfDay()
