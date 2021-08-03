@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
+using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services;
 using RecipeBook.Api.Application.Services.Entities;
@@ -51,7 +52,6 @@ namespace RecipeBook.Api.Controllers
         public RecipeOfDayDto GetRecipeOfDay()
         {
             var recipe = _recipeRepository.GetRecipeOfDay();
-
             return recipe.ConvertToRecipeOfDayDto();
         }
     }

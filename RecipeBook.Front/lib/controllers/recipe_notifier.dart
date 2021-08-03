@@ -8,12 +8,10 @@ class RecipeNotifier extends ChangeNotifier {
 
   UnmodifiableListView<RecipeItem> get recipeList => UnmodifiableListView(_recipeList);
 
-  addInitialRecipes(List<dynamic> data) {
+
+  addClearRecipes(List<dynamic> data) {
     _recipeList.clear();
-    for (final item in data) {
-      _recipeList.add(RecipeItem.fromJson(item as Map<String, dynamic>));
-    }
-    notifyListeners();
+    addRecipes(data);
   }
 
   addRecipes(List<dynamic> data) {

@@ -141,11 +141,7 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
-                      const Center(
-                        child: SearchWidget(
-                          width: 716,
-                        ),
-                      ),
+                      Center(child: SearchWidget(width: 716)),
                       const SizedBox(height: 24),
                     ],
                   ),

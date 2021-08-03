@@ -22,7 +22,8 @@ namespace RecipeBook.Api.Infrastructure.Repositories
 
         public Recipe GetById(int id)
         {
-            return _context.Set<Recipe>().Include(x => x.Tags)
+            return _context.Set<Recipe>()
+                .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
                     .ThenInclude(y => y.IngredientItems)
@@ -31,7 +32,8 @@ namespace RecipeBook.Api.Infrastructure.Repositories
 
         public Recipe GetRecipeOfDay()
         {
-            return _context.Set<Recipe>().Include(x => x.Tags)
+            return _context.Set<Recipe>()
+                .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
                     .ThenInclude(y => y.IngredientItems)
@@ -41,7 +43,8 @@ namespace RecipeBook.Api.Infrastructure.Repositories
 
         public IEnumerable<Recipe> Search(int skip, int take, string searchQuery)
         {
-            var query = _context.Set<Recipe>().Include(x => x.Tags)
+            var query = _context.Set<Recipe>()
+                .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
                     .ThenInclude(y => y.IngredientItems)
@@ -50,9 +53,9 @@ namespace RecipeBook.Api.Infrastructure.Repositories
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 var trimmedQuery = searchQuery.ToLower().Trim();
-                query = query.Where(
-                    x => x.Title.ToLower().Contains(trimmedQuery)
-                         || x.Tags.Any(y => y.Name.ToLower().Contains(trimmedQuery)));
+                query = query.Where(x =>
+                    x.Title.ToLower().Contains(trimmedQuery)
+                    || x.Tags.Any(y => y.Name.ToLower().Contains(trimmedQuery)));
             }
 
             return query.OrderByDescending(x => x.LikesCount)

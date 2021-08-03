@@ -22,8 +22,8 @@ namespace RecipeBook.Api.Application.Services
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var imageResult = _staticService.SaveFile(addCommand.FileAdapter, "images");
-            var recipe = addCommand.Convert(imageResult);
+            var filePath = _staticService.SaveFile(addCommand.FileAdapter, "images");
+            var recipe = addCommand.Convert(filePath);
             _recipeRepository.Add(recipe);
             return recipe;
         }

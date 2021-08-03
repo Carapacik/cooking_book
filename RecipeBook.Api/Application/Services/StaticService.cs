@@ -25,8 +25,7 @@ namespace RecipeBook.Api.Application.Services
         {
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
             var newFilePath = $"{_staticStorageSettings.BasePath}\\{path}\\{fileName}";
-            File.WriteAllBytes(newFilePath, file.Data);
-
+            File.WriteAllBytes(newFilePath, file.Data); // Exception
             return new SaveFileResult($"{fileName}");
         }
     }

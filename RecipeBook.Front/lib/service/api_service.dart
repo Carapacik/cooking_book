@@ -80,7 +80,7 @@ class ApiService {
         queryParameters: {
           'skip': skip,
           'take': take,
-          searchQuery ?? 'searchQuery': searchQuery,
+          'searchQuery': searchQuery,
         },
       );
     } on DioError catch (e) {

@@ -17,7 +17,6 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/search_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RecipesPage extends StatefulWidget {
@@ -29,9 +28,42 @@ class RecipesPage extends StatefulWidget {
 
 class _RecipesPageState extends State<RecipesPage> {
   late ApiService apiService;
-  int skipCounter = 4;
   late RecipeNotifier recipeNotifier;
+  TextEditingController? textController = TextEditingController();
   bool isEndOfList = false;
+  int skipCounter = 4;
+
+  Future searchRecipes(String searchQuery) async {
+    Response response;
+
+    try {
+      response = await apiService.getRequestWithParam(
+        endPoint: "recipes",
+        take: 4,
+        skip: skipCounter,
+        searchQuery: searchQuery,
+      );
+      if (response.statusCode == 200) {
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length != 4) {
+          setState(() {
+            isEndOfList = true;
+          });
+        }
+        if (skipCounter == 0) {
+          recipeNotifier.addClearRecipes(listOfRecipes);
+        } else {
+          recipeNotifier.addRecipes(listOfRecipes);
+        }
+        skipCounter += 4;
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
 
   Future getMoreRecipes() async {
     Response response;
@@ -47,7 +79,6 @@ class _RecipesPageState extends State<RecipesPage> {
         }
         skipCounter += 4;
         recipeNotifier.addRecipes(listOfRecipes);
-
       } else {
         // затычка, код не 200
       }
@@ -63,7 +94,7 @@ class _RecipesPageState extends State<RecipesPage> {
     try {
       response = await apiService.getInitialWithParam("recipes", 4);
       if (response.statusCode == 200) {
-        recipeNotifier.addInitialRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
       } else {
         // затычка, код не 200
       }
@@ -155,7 +186,48 @@ class _RecipesPageState extends State<RecipesPage> {
                         "Поиск рецепта",
                         style: Theme.of(context).textTheme.b24,
                       ),
-                      const SearchWidget(width: 779),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 73,
+                            width: 779,
+                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Palette.shadowColor,
+                                  offset: Offset(0, 8),
+                                  blurRadius: 42,
+                                )
+                              ],
+                            ),
+                            child: TextField(
+                              controller: textController,
+                              cursorColor: Palette.orange,
+                              style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Название блюда...",
+                                hintStyle: Theme.of(context).textTheme.r16,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          ButtonContainedWidget(
+                            text: "Поиск",
+                            width: 152,
+                            height: 73,
+                            onPressed: () {
+                              skipCounter = 0;
+                              isEndOfList = false;
+                              searchRecipes(textController!.text);
+                            },
+                          ),
+                        ],
+                      )
                     ],
                   ),
                   const SizedBox(height: 80),

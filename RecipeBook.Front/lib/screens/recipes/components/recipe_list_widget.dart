@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/controllers/recipe_notifier.dart';
 import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
+import 'package:recipebook/theme.dart';
 
 class RecipeListWidget extends StatelessWidget {
   const RecipeListWidget({Key? key}) : super(key: key);
@@ -12,18 +13,24 @@ class RecipeListWidget extends StatelessWidget {
 
     return Column(
       children: [
-        ListView.separated(
-          shrinkWrap: true,
-          itemCount: recipeNotifier.recipeList.length,
-          itemBuilder: (context, index) {
-            return RecipeItemWidget(
-              recipeItem: recipeNotifier.recipeList[index],
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 40);
-          },
-        ),
+        if (recipeNotifier.recipeList.isNotEmpty)
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: recipeNotifier.recipeList.length,
+            itemBuilder: (context, index) {
+              return RecipeItemWidget(
+                recipeItem: recipeNotifier.recipeList[index],
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(height: 40);
+            },
+          )
+        else
+          Text(
+            "Результатов не найдено",
+            style: Theme.of(context).textTheme.m24,
+          )
       ],
     );
   }

@@ -297,7 +297,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                             return "Не должно быть пустым";
                                           }
                                           final result = int.tryParse(value) ?? "";
-                                          if (result == ""){
+                                          if (result == "") {
                                             return "Должно быть целым";
                                           }
                                           return null;
@@ -322,7 +322,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                             return "Не должно быть пустым";
                                           }
                                           final result = int.tryParse(value) ?? "";
-                                          if (result == ""){
+                                          if (result == "") {
                                             return "Должно быть целым";
                                           }
                                           return null;
