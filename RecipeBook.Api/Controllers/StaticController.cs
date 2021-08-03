@@ -7,17 +7,17 @@ namespace RecipeBook.Api.Controllers
     [Route("[controller]")]
     public class StaticController : ControllerBase
     {
-        private readonly StaticService _staticService;
+        private readonly IStaticService _staticService;
 
-        public StaticController(StaticService staticService)
+        public StaticController(IStaticService staticService)
         {
             _staticService = staticService;
         }
 
-        [HttpGet("images/{fileName}")]
-        public IActionResult GetImage(string fileName)
+        [HttpGet("{path}/{fileName}")]
+        public IActionResult GetImage(string path, string fileName)
         {
-            var result = _staticService.GetFile(fileName);
+            var result = _staticService.GetFile($"{path}\\{fileName}");
             return new FileContentResult(result.Content, $"image/{result.Extension}");
         }
     }

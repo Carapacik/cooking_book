@@ -15,17 +15,16 @@ namespace RecipeBook.Api.Application.Services
             _staticStorageSettings = staticStorageSettings;
         }
 
-        public GetFileResult GetFile(string imagePath)
+        public GetFileResult GetFile(string filePath)
         {
-            return new(
-                File.ReadAllBytes($"{_staticStorageSettings.BasePath}\\{imagePath}"),
-                imagePath.Split('.').LastOrDefault());
+            return new(File.ReadAllBytes($"{_staticStorageSettings.BasePath}\\{filePath}"),
+                filePath.Split('.').LastOrDefault());
         }
 
-        public SaveFileResult SaveFile(FormFileAdapter file)
+        public SaveFileResult SaveFile(FormFileAdapter file, string path)
         {
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
-            var newFilePath = $@"{_staticStorageSettings.BasePath}\images\{fileName}";
+            var newFilePath = $"{_staticStorageSettings.BasePath}\\{path}\\{fileName}";
             File.WriteAllBytes(newFilePath, file.Data);
 
             return new SaveFileResult($"{fileName}");

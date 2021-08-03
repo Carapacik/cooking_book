@@ -21,7 +21,7 @@ import 'package:recipebook/widgets/search_widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class RecipesPage extends StatefulWidget {
-  RecipesPage({Key? key}) : super(key: key);
+  const RecipesPage({Key? key}) : super(key: key);
 
   @override
   _RecipesPageState createState() => _RecipesPageState();

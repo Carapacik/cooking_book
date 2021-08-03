@@ -44,22 +44,15 @@ namespace RecipeBook.Api.Controllers
             [FromQuery] string searchQuery)
         {
             var searchResult = _recipeRepository.Search(skip, take, searchQuery);
-            return searchResult.Select(x => x.Convert()).ToList();
+            return searchResult.Select(x => x.ConvertToRecipeDto()).ToList();
         }
 
         [HttpGet("recipe-of-day")]
         public RecipeOfDayDto GetRecipeOfDay()
         {
-            return new()
-            {
-                RecipeId = 1,
-                Title = "Тыквенный супчик на кокосовом молоке",
-                Description = "Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас!",
-                ImageUrl = "images/recipe_of_day.png",
-                CookingTimeInMinutes = 35,
-                LikesCount = 365,
-                Username = "@glazest"
-            };
+            var recipe = _recipeRepository.GetRecipeOfDay();
+
+            return recipe.ConvertToRecipeOfDayDto();
         }
     }
 }

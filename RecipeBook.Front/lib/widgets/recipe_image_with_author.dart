@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 
@@ -14,6 +14,7 @@ class RecipeImageWithAuthor extends StatelessWidget {
   final String imageUrl;
   final String username;
   final double size;
+  static const baseImageStorage = "http://localhost:5000/static/images/";
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +31,12 @@ class RecipeImageWithAuthor extends StatelessWidget {
               bottomRight: Radius.circular(72),
             ),
           ),
-          // child: CachedNetworkImage(
-          child: Image.asset(
-            CookingImages.homeBackground,
+          child: CachedNetworkImage(
+            imageUrl: baseImageStorage + imageUrl,
             fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+              child: CircularProgressIndicator(value: downloadProgress.progress, color: Palette.orange),
+            ),
           ),
         ),
         Container(

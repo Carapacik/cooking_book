@@ -35,7 +35,21 @@ namespace RecipeBook.Api.Application.Converters
             };
         }
 
-        public static RecipeDto Convert(this Recipe recipe)
+        public static RecipeOfDayDto ConvertToRecipeOfDayDto(this Recipe recipe)
+        {
+            return new()
+            {
+                RecipeId = recipe.RecipeId,
+                Title = recipe.Title,
+                Description = recipe.Description,
+                ImageUrl = recipe.ImageUrl,
+                CookingTimeInMinutes = recipe.CookingTimeInMinutes,
+                LikesCount = recipe.LikesCount,
+                Username = recipe.UserId + " name"
+            };
+        }
+
+        public static RecipeDto ConvertToRecipeDto(this Recipe recipe)
         {
             return new()
             {

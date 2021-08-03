@@ -22,10 +22,9 @@ namespace RecipeBook.Api.Application.Services
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var imageResult = _staticService.SaveFile(addCommand.FileAdapter);
+            var imageResult = _staticService.SaveFile(addCommand.FileAdapter, "images");
             var recipe = addCommand.Convert(imageResult);
             _recipeRepository.Add(recipe);
-
             return recipe;
         }
     }

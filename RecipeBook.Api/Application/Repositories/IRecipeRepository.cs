@@ -5,8 +5,9 @@ namespace RecipeBook.Api.Application.Repositories
 {
     public interface IRecipeRepository
     {
-        Recipe GetById(int id);
         void Add(Recipe recipe);
-        List<Recipe> Search(int skip, int take, string searchQuery);
+        Recipe GetById(int id);
+        Recipe GetRecipeOfDay();
+        IEnumerable<Recipe> Search(int skip, int take, string searchQuery);
     }
 }
