@@ -8,7 +8,7 @@
             Extension = extension;
         }
 
-        public byte[] Content { get; set; }
-        public string Extension { get; set; }
+        public byte[] Content { get; }
+        public string Extension { get; }
     }
 }

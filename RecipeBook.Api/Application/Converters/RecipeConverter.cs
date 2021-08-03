@@ -35,7 +35,7 @@ namespace RecipeBook.Api.Application.Converters
             };
         }
 
-        public static RecipeItemDto Convert(this Recipe recipe)
+        public static RecipeDto Convert(this Recipe recipe)
         {
             return new()
             {

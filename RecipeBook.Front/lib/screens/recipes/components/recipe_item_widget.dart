@@ -34,7 +34,7 @@ class RecipeItemWidget extends StatelessWidget {
         children: [
           RecipeImageWithAuthor(
             imageUrl: recipeItem.imageUrl,
-            username: recipeItem.username.toString(),
+            username: recipeItem.username,
             size: 430,
           ),
           Padding(
@@ -84,7 +84,8 @@ class RecipeItemWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
-                      width: 600,
+                      width: 580,
+                      height: 95,
                       child: Text(
                         recipeItem.description,
                         style: Theme.of(context).textTheme.r18,
@@ -180,6 +181,7 @@ class RecipeTagsList extends StatelessWidget {
             style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
           ),
         ),
+        // пока один контейнер, потом будет лист тэгов
         // const SizedBox(width: 5),
         // Container(
         //   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),

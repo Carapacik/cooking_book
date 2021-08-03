@@ -296,6 +296,10 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
                                           }
+                                          final result = int.tryParse(value) ?? "";
+                                          if (result == ""){
+                                            return "Должно быть целым";
+                                          }
                                           return null;
                                         },
                                         onSaved: (value) {
@@ -316,6 +320,10 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
+                                          }
+                                          final result = int.tryParse(value) ?? "";
+                                          if (result == ""){
+                                            return "Должно быть целым";
                                           }
                                           return null;
                                         },

@@ -14,7 +14,7 @@ namespace RecipeBook.Api.Controllers
             _staticService = staticService;
         }
 
-        [HttpGet("{fileName}")]
+        [HttpGet("images/{fileName}")]
         public IActionResult GetImage(string fileName)
         {
             var result = _staticService.GetFile(fileName);

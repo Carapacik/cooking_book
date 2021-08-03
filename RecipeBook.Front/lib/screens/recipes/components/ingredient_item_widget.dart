@@ -72,7 +72,7 @@ class IngredientItemWidget extends StatelessWidget {
                   return null;
                 },
                 onSaved: (value) {
-                  ingredientNotifier.ingredientList[index].ingredientNames = value!.trim().split(",");
+                  ingredientNotifier.ingredientList[index].ingredientNames = value!.trim().split("\n");
                 },
               ),
             ],

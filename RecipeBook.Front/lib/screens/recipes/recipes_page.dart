@@ -31,6 +31,7 @@ class _RecipesPageState extends State<RecipesPage> {
   late ApiService apiService;
   int skipCounter = 4;
   late RecipeNotifier recipeNotifier;
+  bool isEndOfList = false;
 
   Future getMoreRecipes() async {
     Response response;
@@ -38,9 +39,15 @@ class _RecipesPageState extends State<RecipesPage> {
     try {
       response = await apiService.getRequestWithParam(endPoint: "recipes", take: 4, skip: skipCounter);
       if (response.statusCode == 200) {
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length != 4) {
+          setState(() {
+            isEndOfList = true;
+          });
+        }
         skipCounter += 4;
+        recipeNotifier.addRecipes(listOfRecipes);
 
-        recipeNotifier.addRecipes(jsonDecode(response.data as String) as List<dynamic>);
       } else {
         // затычка, код не 200
       }
@@ -71,12 +78,6 @@ class _RecipesPageState extends State<RecipesPage> {
     apiService = ApiService();
     getInitialRecipes();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    recipeNotifier.clearList();
-    super.dispose();
   }
 
   @override
@@ -159,27 +160,16 @@ class _RecipesPageState extends State<RecipesPage> {
                   ),
                   const SizedBox(height: 80),
                   const RecipeListWidget(),
-                  // ListView.separated(
-                  //   shrinkWrap: true,
-                  //   itemCount: recipeList.length,
-                  //   itemBuilder: (context, index) {
-                  //     return RecipeItemWidget(
-                  //       recipeItem: recipeList[index],
-                  //     );
-                  //   },
-                  //   separatorBuilder: (BuildContext context, int index) {
-                  //     return const SizedBox(height: 40);
-                  //   },
-                  // ),
                   const SizedBox(height: 65),
-                  ButtonOutlinedWidget(
-                    text: "Загрузить еще",
-                    width: 309,
-                    height: 60,
-                    onPressed: () {
-                      getMoreRecipes();
-                    },
-                  ),
+                  if (!isEndOfList)
+                    ButtonOutlinedWidget(
+                      text: "Загрузить еще",
+                      width: 309,
+                      height: 60,
+                      onPressed: () {
+                        getMoreRecipes();
+                      },
+                    ),
                   const SizedBox(height: 108),
                 ],
               ),

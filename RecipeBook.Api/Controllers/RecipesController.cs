@@ -38,7 +38,7 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet]
-        public List<RecipeItemDto> GetRecipes(
+        public List<RecipeDto> GetRecipes(
             [FromQuery] int skip,
             [FromQuery] int take,
             [FromQuery] string searchQuery)

@@ -15,32 +15,25 @@ namespace RecipeBook.Api.Infrastructure.Repositories
             _context = context;
         }
 
-        public Recipe GetById(int id)
+        private List<Recipe> GetAll()
         {
             return _context.Set<Recipe>()
                 .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
                     .ThenInclude(y => y.IngredientItems)
-                .FirstOrDefault(x => x.RecipeId == id);
+                .ToList();
+        }
+        public Recipe GetById(int id)
+        {
+            return GetAll().FirstOrDefault(x => x.RecipeId == id);
         }
 
         public List<Recipe> Search(int skip, int take, string searchQuery)
         {
-            if (string.IsNullOrEmpty(searchQuery))
-                return _context.Set<Recipe>()
-                    .Include(x => x.Tags)
-                    .Include(x => x.Steps)
-                    .Include(x => x.Ingredients)
-                        .ThenInclude(y => y.IngredientItems)
-                    .OrderByDescending(x => x.LikesCount)
-                    .Skip(skip).Take(take).ToList();
-            return _context.Set<Recipe>()
-                .Include(x => x.Tags)
-                .Include(x => x.Steps)
-                .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
-                .OrderByDescending(x => x.LikesCount)
+            if (string.IsNullOrWhiteSpace(searchQuery))
+                return GetAll().OrderByDescending(x => x.LikesCount).Skip(skip).Take(take).ToList();
+            return GetAll().OrderByDescending(x => x.LikesCount)
                 .Where(x => x.Title.ToLower().Contains(searchQuery))
                 .Skip(skip).Take(take).ToList();
         }

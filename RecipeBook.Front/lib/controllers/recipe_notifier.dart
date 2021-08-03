@@ -9,20 +9,15 @@ class RecipeNotifier extends ChangeNotifier {
   UnmodifiableListView<RecipeItem> get recipeList => UnmodifiableListView(_recipeList);
 
   addInitialRecipes(List<dynamic> data) {
-    clearList();
-    for (var item in data) {
-      print(item);
+    _recipeList.clear();
+    for (final item in data) {
       _recipeList.add(RecipeItem.fromJson(item as Map<String, dynamic>));
     }
     notifyListeners();
   }
 
   addRecipes(List<dynamic> data) {
-    if (_recipeList.length > 4){
-      clearList();
-    }
-    for (var item in data) {
-      print(item);
+    for (final item in data) {
       _recipeList.add(RecipeItem.fromJson(item as Map<String, dynamic>));
     }
     notifyListeners();
@@ -31,9 +26,5 @@ class RecipeNotifier extends ChangeNotifier {
   removeItem(int recipeId) {
     _recipeList.removeWhere((item) => item.recipeId == recipeId);
     notifyListeners();
-  }
-
-  clearList() {
-    _recipeList.clear();
   }
 }
