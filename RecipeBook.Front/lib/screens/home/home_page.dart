@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 1000),
+              padding: const EdgeInsets.only(top: 900),
               child: SvgPicture.asset(
                 CookingImages.wave2,
                 color: Palette.wave,
@@ -147,46 +147,48 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
-                      Center(child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            height: 73,
-                            width: 716,
-                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Palette.shadowColor,
-                                  offset: Offset(0, 8),
-                                  blurRadius: 42,
-                                )
-                              ],
-                            ),
-                            child: TextField(
-                              controller: textController,
-                              cursorColor: Palette.orange,
-                              style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Название блюда...",
-                                hintStyle: Theme.of(context).textTheme.r16,
+                      Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              height: 73,
+                              width: 716,
+                              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Palette.shadowColor,
+                                    offset: Offset(0, 8),
+                                    blurRadius: 42,
+                                  )
+                                ],
+                              ),
+                              child: TextField(
+                                controller: textController,
+                                cursorColor: Palette.orange,
+                                style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Название блюда...",
+                                  hintStyle: Theme.of(context).textTheme.r16,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          ButtonContainedWidget(
-                            text: "Поиск",
-                            width: 152,
-                            height: 73,
-                            onPressed: () {
-                              context.beamToNamed("/recipes?searchQuery=${textController!.text}");
-                            },
-                          ),
-                        ],
-                      )),
+                            const SizedBox(width: 16),
+                            ButtonContainedWidget(
+                              text: "Поиск",
+                              width: 152,
+                              height: 73,
+                              onPressed: () {
+                                context.beamToNamed("/recipes?searchQuery=${textController!.text}");
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 24),
                     ],
                   ),

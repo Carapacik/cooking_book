@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,6 +63,11 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
           username: recipeOfDay.username,
           size: 543,
         ),
+        TextButton(
+            onPressed: () {
+              context.beamToNamed("/recipes/${recipeOfDay.recipeId}");
+            },
+            child: Text("детальный рецепт")),
         Container(
           margin: const EdgeInsets.only(left: 62),
           width: 513,

@@ -199,11 +199,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                   child: Center(
                                     child: DottedBorder(
                                       borderType: BorderType.RRect,
-                                      color: !isFilePicked
-                                          ? Colors.red
-                                          : result == null
-                                              ? Palette.orange
-                                              : Colors.green,
+                                      color: _getColor(),
                                       radius: const Radius.circular(20),
                                       child: SizedBox(
                                         height: 269,
@@ -215,27 +211,13 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                               CookingIcons.upload,
                                               height: 42,
                                               width: 42,
-                                              color: !isFilePicked
-                                                  ? Colors.red
-                                                  : result == null
-                                                      ? Palette.orange
-                                                      : Colors.green,
+                                              color: _getColor(),
                                             ),
                                             const SizedBox(height: 30),
                                             Text(
-                                              !isFilePicked
-                                                  ? "Необходимо загрузить\nфотографию"
-                                                  : result == null
-                                                      ? "Загрузите фото\nготового блюда"
-                                                      : "Фотография готова\nк отправке",
+                                              _getText(),
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context).textTheme.r16.copyWith(
-                                                    color: !isFilePicked
-                                                        ? Colors.red
-                                                        : result == null
-                                                            ? Palette.orange
-                                                            : Colors.green,
-                                                  ),
+                                              style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
                                             ),
                                           ],
                                         ),
@@ -411,5 +393,25 @@ class _AddRecipePageState extends State<AddRecipePage> {
         ),
       ),
     );
+  }
+
+  Color _getColor() {
+    if (!isFilePicked) {
+      return Colors.red;
+    } else if (result == null) {
+      return Palette.orange;
+    } else {
+      return Colors.green;
+    }
+  }
+
+  String _getText() {
+    if (!isFilePicked) {
+      return "Необходимо загрузить\nфотографию";
+    } else if (result == null) {
+      return "Загрузите фото\nготового блюда";
+    } else {
+      return "Фотография готова\nк отправке";
+    }
   }
 }

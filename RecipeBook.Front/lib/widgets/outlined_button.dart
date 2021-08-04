@@ -30,7 +30,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
           backgroundColor: Colors.transparent,
           primary: Palette.orange,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-          side: const BorderSide(color: Palette.orange),
+          side: BorderSide(color: text != "" ? Palette.orange : Palette.grey.withOpacity(0.7)),
         ),
         onPressed: onPressed,
         child: icon == null
@@ -38,21 +38,27 @@ class ButtonOutlinedWidget extends StatelessWidget {
                 text,
                 style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
               )
-            : Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
+            : text != ""
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 24,
+                        color: Palette.orange,
+                      ),
+                      SizedBox(width: padding),
+                      Text(
+                        text,
+                        style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                      ),
+                    ],
+                  )
+                : Icon(
                     icon,
                     size: 24,
-                    color: Palette.orange,
+                    color: Palette.grey.withOpacity(0.7),
                   ),
-                  SizedBox(width: padding),
-                  Text(
-                    text,
-                    style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
-                  ),
-                ],
-              ),
       ),
     );
   }

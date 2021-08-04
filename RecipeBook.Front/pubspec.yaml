@@ -1,5 +1,5 @@
 name: recipebook
-description: Al recipes in one place
+description: All recipes in one place
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -34,6 +34,5 @@ flutter:
   uses-material-design: true
   assets:
     - google_fonts/
-    - assets/
     - assets/icons/
     - assets/images/

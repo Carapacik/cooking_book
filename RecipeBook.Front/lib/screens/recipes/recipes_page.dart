@@ -131,7 +131,7 @@ class _RecipesPageState extends State<RecipesPage> {
               width: MediaQuery.of(context).size.width,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 1000),
+              padding: const EdgeInsets.only(top: 900),
               child: SvgPicture.asset(
                 CookingImages.wave2,
                 color: Palette.wave,

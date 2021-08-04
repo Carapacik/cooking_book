@@ -36,7 +36,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
               ),
               child: Text(
                 "Recipes",
-                style: Theme.of(context).textTheme.b24,
+                style: Theme.of(context).textTheme.b24.copyWith(color: Palette.orange),
               ),
             ),
             const SizedBox(width: 80),

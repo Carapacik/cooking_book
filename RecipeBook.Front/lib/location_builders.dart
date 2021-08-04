@@ -21,8 +21,8 @@ class HomeLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         BeamPage(
-          key: ValueKey('home'),
-          title: 'Home',
+          key: const ValueKey('home'),
+          title: 'Главная',
           child: HomePage(),
         ),
       ];
@@ -35,8 +35,8 @@ class FavoriteLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         BeamPage(
-          key: ValueKey('favorite'),
-          title: 'Favorite',
+          key: const ValueKey('favorite'),
+          title: 'Избранное',
           child: const FavoritePage(),
         ),
       ];
@@ -81,11 +81,11 @@ class RecipeLocation extends BeamLocation<BeamState> {
     }
 
     if (state.uri.pathSegments.contains('add')) {
-      final pageTitle = 'Добавить рецепт';
+      const pageTitle = 'Добавить рецепт';
 
       beamPages.add(
         BeamPage(
-          key: ValueKey('recipe-add'),
+          key: const ValueKey('recipe-add'),
           title: pageTitle,
           child: AddRecipePage(),
         ),
