@@ -12,10 +12,11 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/search_widget.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  final TextEditingController? textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,30 +101,36 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 42),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CategoryCardWidget(
-                        iconPath: CookingIcons.menu,
-                        title: "Простые блюда",
-                        description: "Время приготвления таких блюд не более 1 часа",
-                      ),
-                      CategoryCardWidget(
-                        iconPath: CookingIcons.cook,
-                        title: "Детское",
-                        description: "Самые полезные блюда которые можно детям любого возраста",
-                      ),
-                      CategoryCardWidget(
-                        iconPath: CookingIcons.chef,
-                        title: "От шеф-поваров",
-                        description: "Требуют умения, времени и терпения, зато как в ресторане",
-                      ),
-                      CategoryCardWidget(
-                        iconPath: CookingIcons.confetti,
-                        title: "На праздник",
-                        description: "Чем удивить гостей, чтобы все были сыты за праздничным столом",
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CategoryCardWidget(
+                          iconPath: CookingIcons.menu,
+                          title: "Простые блюда",
+                          searchQuery: "простое",
+                          description: "Время приготвления таких блюд не более 1 часа",
+                        ),
+                        CategoryCardWidget(
+                          iconPath: CookingIcons.cook,
+                          title: "Детское",
+                          searchQuery: "детское",
+                          description: "Самые полезные блюда которые можно детям любого возраста",
+                        ),
+                        CategoryCardWidget(
+                          iconPath: CookingIcons.chef,
+                          title: "От шеф-поваров",
+                          searchQuery: "шеф-повар",
+                          description: "Требуют умения, времени и терпения, зато как в ресторане",
+                        ),
+                        CategoryCardWidget(
+                          iconPath: CookingIcons.confetti,
+                          title: "На праздник",
+                          searchQuery: "праздник",
+                          description: "Чем удивить гостей, чтобы все были сыты за праздничным столом",
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 157),
                   const RecipeOfDayWidget(),
@@ -140,7 +147,46 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
                       ),
                       const SizedBox(height: 64),
-                      Center(child: SearchWidget(width: 716)),
+                      Center(child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 73,
+                            width: 716,
+                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Palette.shadowColor,
+                                  offset: Offset(0, 8),
+                                  blurRadius: 42,
+                                )
+                              ],
+                            ),
+                            child: TextField(
+                              controller: textController,
+                              cursorColor: Palette.orange,
+                              style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Название блюда...",
+                                hintStyle: Theme.of(context).textTheme.r16,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          ButtonContainedWidget(
+                            text: "Поиск",
+                            width: 152,
+                            height: 73,
+                            onPressed: () {
+                              context.beamToNamed("/recipes?searchQuery=${textController!.text}");
+                            },
+                          ),
+                        ],
+                      )),
                       const SizedBox(height: 24),
                     ],
                   ),

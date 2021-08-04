@@ -17,7 +17,7 @@ namespace RecipeBook.Api.Application.Services
 
         public GetFileResult GetFile(string filePath)
         {
-            return new(File.ReadAllBytes($"{_staticStorageSettings.BasePath}\\{filePath}"),
+            return new GetFileResult(File.ReadAllBytes($"{_staticStorageSettings.BasePath}\\{filePath}"),
                 filePath.Split('.').LastOrDefault());
         }
 

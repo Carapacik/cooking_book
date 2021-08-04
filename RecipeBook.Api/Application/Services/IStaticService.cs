@@ -5,7 +5,7 @@ namespace RecipeBook.Api.Application.Services
 {
     public interface IStaticService
     {
-        GetFileResult GetFile(string imagePath);
+        GetFileResult GetFile(string path);
         SaveFileResult SaveFile(FormFileAdapter file, string path);
     }
 }

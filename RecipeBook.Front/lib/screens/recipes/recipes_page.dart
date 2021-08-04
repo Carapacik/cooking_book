@@ -32,9 +32,9 @@ class _RecipesPageState extends State<RecipesPage> {
   late RecipeNotifier recipeNotifier;
   TextEditingController? textController = TextEditingController();
   bool isEndOfList = false;
-  int skipCounter = 4;
+  int skipCounter = 0;
 
-  Future searchRecipes(String searchQuery) async {
+  Future searchRecipes() async {
     Response response;
 
     try {
@@ -42,7 +42,7 @@ class _RecipesPageState extends State<RecipesPage> {
         endPoint: "recipes",
         take: 4,
         skip: skipCounter,
-        searchQuery: searchQuery,
+        searchQuery: widget.searchQuery,
       );
       if (response.statusCode == 200) {
         final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
@@ -51,6 +51,7 @@ class _RecipesPageState extends State<RecipesPage> {
             isEndOfList = true;
           });
         }
+        recipeNotifier.resultString = "'${widget.searchQuery}' не найдено";
         if (skipCounter == 0) {
           recipeNotifier.addClearRecipes(listOfRecipes);
         } else {
@@ -78,8 +79,8 @@ class _RecipesPageState extends State<RecipesPage> {
             isEndOfList = true;
           });
         }
-        skipCounter += 4;
         recipeNotifier.addRecipes(listOfRecipes);
+        skipCounter += 4;
       } else {
         // затычка, код не 200
       }
@@ -96,13 +97,11 @@ class _RecipesPageState extends State<RecipesPage> {
       response = await apiService.getInitialWithParam("recipes", 4);
       if (response.statusCode == 200) {
         recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        skipCounter += 4;
       } else {
         // затычка, код не 200
       }
     } on Exception catch (e) {
-      setState(() {
-        isEndOfList = true;
-      });
       // возможно перенаправление на отдельную страницу
       print(e);
     }
@@ -111,14 +110,17 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   void initState() {
     apiService = ApiService();
-    getInitialRecipes();
+    if (widget.searchQuery != null) {
+      searchRecipes();
+    } else {
+      getInitialRecipes();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     recipeNotifier = Provider.of<RecipeNotifier>(context);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -167,18 +169,42 @@ class _RecipesPageState extends State<RecipesPage> {
                       CategoryCardWidget(
                         iconPath: CookingIcons.menu,
                         title: "Простые блюда",
+                        onPressed: () {
+                          skipCounter = 0;
+                          isEndOfList = false;
+                          widget.searchQuery = "простое";
+                          searchRecipes();
+                        },
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.cook,
                         title: "Детское",
+                        onPressed: () {
+                          skipCounter = 0;
+                          isEndOfList = false;
+                          widget.searchQuery = "детское";
+                          searchRecipes();
+                        },
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.chef,
                         title: "От шеф-поваров",
+                        onPressed: () {
+                          skipCounter = 0;
+                          isEndOfList = false;
+                          widget.searchQuery = "шеф-повар";
+                          searchRecipes();
+                        },
                       ),
                       CategoryCardWidget(
                         iconPath: CookingIcons.confetti,
                         title: "На праздник",
+                        onPressed: () {
+                          skipCounter = 0;
+                          isEndOfList = false;
+                          widget.searchQuery = "праздник";
+                          searchRecipes();
+                        },
                       ),
                     ],
                   ),
@@ -227,7 +253,8 @@ class _RecipesPageState extends State<RecipesPage> {
                             onPressed: () {
                               skipCounter = 0;
                               isEndOfList = false;
-                              searchRecipes(textController!.text);
+                              widget.searchQuery = textController!.text;
+                              searchRecipes();
                             },
                           ),
                         ],

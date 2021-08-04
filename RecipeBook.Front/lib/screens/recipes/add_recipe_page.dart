@@ -199,7 +199,11 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                   child: Center(
                                     child: DottedBorder(
                                       borderType: BorderType.RRect,
-                                      color: isFilePicked ? Palette.orange : Colors.red,
+                                      color: !isFilePicked
+                                          ? Colors.red
+                                          : result == null
+                                              ? Palette.orange
+                                              : Colors.green,
                                       radius: const Radius.circular(20),
                                       child: SizedBox(
                                         height: 269,
@@ -211,14 +215,26 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                               CookingIcons.upload,
                                               height: 42,
                                               width: 42,
-                                              color: isFilePicked ? Palette.orange : Colors.red,
+                                              color: !isFilePicked
+                                                  ? Colors.red
+                                                  : result == null
+                                                      ? Palette.orange
+                                                      : Colors.green,
                                             ),
                                             const SizedBox(height: 30),
                                             Text(
-                                              isFilePicked ? "Загрузите фото\nготового блюда" : "Необходимо загрузить\nфотографию",
+                                              !isFilePicked
+                                                  ? "Необходимо загрузить\nфотографию"
+                                                  : result == null
+                                                      ? "Загрузите фото\nготового блюда"
+                                                      : "Фотография готова\nк отправке",
                                               textAlign: TextAlign.center,
                                               style: Theme.of(context).textTheme.r16.copyWith(
-                                                    color: isFilePicked ? Palette.orange : Colors.red,
+                                                    color: !isFilePicked
+                                                        ? Colors.red
+                                                        : result == null
+                                                            ? Palette.orange
+                                                            : Colors.green,
                                                   ),
                                             ),
                                           ],

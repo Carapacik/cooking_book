@@ -5,6 +5,7 @@ import 'package:recipebook/model/recipe_item.dart';
 
 class RecipeNotifier extends ChangeNotifier {
   List<RecipeItem> _recipeList = [];
+  String resultString = "Идёт загрузка...";
 
   UnmodifiableListView<RecipeItem> get recipeList => UnmodifiableListView(_recipeList);
 

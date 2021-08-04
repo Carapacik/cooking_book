@@ -23,7 +23,7 @@ class HomeLocation extends BeamLocation<BeamState> {
         BeamPage(
           key: ValueKey('home'),
           title: 'Home',
-          child: const HomePage(),
+          child: HomePage(),
         ),
       ];
 }

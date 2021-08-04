@@ -28,7 +28,7 @@ class RecipeListWidget extends StatelessWidget {
           )
         else
           Text(
-            "Результатов не найдено",
+            recipeNotifier.resultString,
             style: Theme.of(context).textTheme.m24,
           )
       ],

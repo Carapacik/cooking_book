@@ -9,7 +9,7 @@ namespace RecipeBook.Api.Application.Converters
     {
         public static Recipe Convert(this AddRecipeCommand addRecipeCommandDto, SaveFileResult saveFileResult)
         {
-            return new()
+            return new Recipe
             {
                 ImageUrl = saveFileResult.RelativeUri,
                 Title = addRecipeCommandDto.Title,
@@ -37,7 +37,7 @@ namespace RecipeBook.Api.Application.Converters
 
         public static RecipeOfDayDto ConvertToRecipeOfDayDto(this Recipe recipe)
         {
-            return new()
+            return new RecipeOfDayDto
             {
                 RecipeId = recipe.RecipeId,
                 Title = recipe.Title,
@@ -51,7 +51,7 @@ namespace RecipeBook.Api.Application.Converters
 
         public static RecipeDto ConvertToRecipeDto(this Recipe recipe)
         {
-            return new()
+            return new RecipeDto
             {
                 RecipeId = recipe.RecipeId,
                 Title = recipe.Title,
@@ -68,7 +68,7 @@ namespace RecipeBook.Api.Application.Converters
 
         public static RecipeDetailDto ConvertToRecipeDetailDto(this Recipe recipe)
         {
-            return new()
+            return new RecipeDetailDto
             {
                 RecipeId = recipe.RecipeId,
                 Title = recipe.Title,
