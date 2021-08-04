@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/models/recipe_item.dart';
+import 'package:recipebook/model/recipe_item.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
 class RecipeItemWidget extends StatelessWidget {
-  RecipeItemWidget({Key? key, required this.recipeItem}) : super(key: key);
+  const RecipeItemWidget({Key? key, required this.recipeItem}) : super(key: key);
 
   final RecipeItem recipeItem;
 

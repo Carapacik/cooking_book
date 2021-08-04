@@ -22,34 +22,18 @@ namespace RecipeBook.Api.Infrastructure.Repositories
 
         public Recipe GetById(int id)
         {
-            return _context.Set<Recipe>()
-                .Include(x => x.Tags)
-                .Include(x => x.Steps)
-                .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
-                .AsQueryable().FirstOrDefault(x => x.RecipeId == id);
+            return GetQuery().FirstOrDefault(x => x.RecipeId == id);
         }
 
         public Recipe GetRecipeOfDay()
         {
-            return _context.Set<Recipe>()
-                .Include(x => x.Tags)
-                .Include(x => x.Steps)
-                .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
-                .AsQueryable().OrderBy(x => x.RecipeId).LastOrDefault();
+            return GetQuery().OrderBy(x => x.LikesCount).LastOrDefault();
         }
 
 
         public IEnumerable<Recipe> Search(int skip, int take, string searchQuery)
         {
-            var query = _context.Set<Recipe>()
-                .Include(x => x.Tags)
-                .Include(x => x.Steps)
-                .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
-                .AsQueryable();
-
+            var query = GetQuery();
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 var trimmedQuery = searchQuery.ToLower().Trim();
@@ -62,6 +46,16 @@ namespace RecipeBook.Api.Infrastructure.Repositories
                 .Skip(skip)
                 .Take(take)
                 .ToList();
+        }
+
+        private IQueryable<Recipe> GetQuery()
+        {
+            return _context.Set<Recipe>()
+                .Include(x => x.Tags)
+                .Include(x => x.Steps)
+                .Include(x => x.Ingredients)
+                    .ThenInclude(y => y.IngredientItems)
+                .AsQueryable();
         }
     }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,13 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/ingredient_notifier.dart';
-import 'package:recipebook/controllers/step_notifier.dart';
-import 'package:recipebook/models/add_recipe.dart';
+import 'package:recipebook/model/add_recipe.dart';
+import 'package:recipebook/notifier/ingredient_notifier.dart';
+import 'package:recipebook/notifier/step_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dart';
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
@@ -23,7 +23,6 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class AddRecipePage extends StatefulWidget {
   AddRecipePage({Key? key}) : super(key: key);
@@ -89,7 +88,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        context.beamBack();
                       },
                       style: TextButton.styleFrom(primary: Palette.orange),
                       child: Row(
@@ -145,11 +144,9 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     try {
                                       await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
                                     } catch (e) {
-                                      context.vxNav.push(Uri.parse(RecipeRoutes.errorRoute));
+                                      context.beamToNamed("/error");
                                     }
-                                    debugPrint("next page is detail recipe with id = ${int.parse(nextPageIndex)}");
-                                    // тут будет перенаправление на страницу с рецептом с id = nextPageIndex
-                                    // когда я её сделаю ))
+                                    context.beamToNamed("/recipes/$nextPageIndex");
                                   }
                                 },
                         ),

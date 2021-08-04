@@ -3,7 +3,7 @@ import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 
 class FormTextFieldWidget extends StatefulWidget {
-  FormTextFieldWidget({
+  const FormTextFieldWidget({
     this.height,
     this.width,
     required this.hintText,

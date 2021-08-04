@@ -1,14 +1,14 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/recipe_notifier.dart';
+import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/recipes/components/recipe_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
@@ -17,10 +17,11 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class RecipesPage extends StatefulWidget {
-  const RecipesPage({Key? key}) : super(key: key);
+  RecipesPage({this.searchQuery, Key? key}) : super(key: key);
+
+  String? searchQuery;
 
   @override
   _RecipesPageState createState() => _RecipesPageState();
@@ -99,6 +100,9 @@ class _RecipesPageState extends State<RecipesPage> {
         // затычка, код не 200
       }
     } on Exception catch (e) {
+      setState(() {
+        isEndOfList = true;
+      });
       // возможно перенаправление на отдельную страницу
       print(e);
     }
@@ -151,7 +155,7 @@ class _RecipesPageState extends State<RecipesPage> {
                         width: 278,
                         height: 60,
                         onPressed: () {
-                          context.vxNav.push(Uri.parse(RecipeRoutes.addRecipeRoute));
+                          context.beamToNamed("/recipes/add");
                         },
                       ),
                     ],

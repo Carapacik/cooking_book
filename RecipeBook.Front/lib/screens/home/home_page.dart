@@ -1,10 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/home/components/recipe_of_day.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
@@ -13,7 +13,6 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/search_widget.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -75,7 +74,7 @@ class HomePage extends StatelessWidget {
                         width: 278,
                         height: 60,
                         onPressed: () {
-                          context.vxNav.push(Uri.parse(RecipeRoutes.addRecipeRoute));
+                          context.beamToNamed("/recipes/add");
                         },
                       ),
                       const SizedBox(width: 24),
@@ -83,7 +82,7 @@ class HomePage extends StatelessWidget {
                         text: "Войти",
                         width: 216,
                         height: 60,
-                        onPressed: null,
+                        onPressed: () {},
                       ),
                     ],
                   ),

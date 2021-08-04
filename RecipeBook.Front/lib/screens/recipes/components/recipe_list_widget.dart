@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/recipe_notifier.dart';
+import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
 import 'package:recipebook/theme.dart';
 

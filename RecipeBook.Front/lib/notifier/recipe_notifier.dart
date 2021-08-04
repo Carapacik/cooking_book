@@ -1,13 +1,12 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:recipebook/models/recipe_item.dart';
+import 'package:recipebook/model/recipe_item.dart';
 
 class RecipeNotifier extends ChangeNotifier {
   List<RecipeItem> _recipeList = [];
 
   UnmodifiableListView<RecipeItem> get recipeList => UnmodifiableListView(_recipeList);
-
 
   addClearRecipes(List<dynamic> data) {
     _recipeList.clear();

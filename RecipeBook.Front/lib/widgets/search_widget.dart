@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:recipebook/controllers/recipe_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
@@ -21,7 +19,6 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   final textController = TextEditingController();
   late ApiService apiService;
-  late RecipeNotifier recipeNotifier;
 
   @override
   void initState() {

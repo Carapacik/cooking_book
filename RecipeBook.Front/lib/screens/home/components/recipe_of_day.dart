@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/models/recipe_of_day.dart';
+import 'package:recipebook/model/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';

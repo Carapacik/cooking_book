@@ -65,5 +65,28 @@ namespace RecipeBook.Api.Application.Converters
                 Tags = recipe.Tags.Select(x => x.Name).ToList()
             };
         }
+
+        public static RecipeDetailDto ConvertToRecipeDetailDto(this Recipe recipe)
+        {
+            return new()
+            {
+                RecipeId = recipe.RecipeId,
+                Title = recipe.Title,
+                Description = recipe.Description,
+                ImageUrl = recipe.ImageUrl,
+                CookingTimeInMinutes = recipe.CookingTimeInMinutes,
+                PortionsCount = recipe.PortionsCount,
+                LikesCount = recipe.LikesCount,
+                FavoritesCount = recipe.FavoritesCount,
+                Username = recipe.UserId + " name",
+                Tags = recipe.Tags.Select(x => x.Name).ToList(),
+                Steps = recipe.Steps.Select(x => x.Description).ToList(),
+                Ingredients = recipe.Ingredients.Select(x => new IngredientDto
+                {
+                    Title = x.Title,
+                    IngredientNames = x.IngredientItems.Select(y => y.Name).ToList()
+                }).ToList()
+            };
+        }
     }
 }

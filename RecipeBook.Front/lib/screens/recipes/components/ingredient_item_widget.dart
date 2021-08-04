@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/ingredient_notifier.dart';
+import 'package:recipebook/notifier/ingredient_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 
 class IngredientItemWidget extends StatelessWidget {
-  IngredientItemWidget({
-    required this.index,
-    Key? key,
-  }) : super(key: key);
+  const IngredientItemWidget({required this.index, Key? key}) : super(key: key);
 
   final int index;
 

@@ -1,10 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/route.dart';
+import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class HeaderWidget extends StatefulWidget {
   const HeaderWidget({Key? key, this.currentSelectedPage}) : super(key: key);
@@ -29,48 +29,32 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           children: [
             TextButton(
               onPressed: () {
-                context.vxNav.push(Uri.parse(RecipeRoutes.homeRoute));
+                context.beamToNamed('/');
               },
               style: TextButton.styleFrom(
                 primary: Palette.orange,
               ),
-              child: const Text(
+              child: Text(
                 "Recipes",
-                style: TextStyle(
-                  color: Palette.orange,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context).textTheme.b24,
               ),
             ),
             const SizedBox(width: 80),
             ...List.generate(
               headerButtons.length,
-              (index) => Padding(
-                padding: EdgeInsets.only(left: index == 0 ? 0 : 40),
-                child: TextButton(
-                  onPressed: () {
-                    context.vxNav.push(Uri.parse(HeaderButtons.getById(index).route));
-                  },
-                  style: TextButton.styleFrom(
-                    primary: Palette.orange,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      HeaderButtons.getById(index).name,
+              (index) => TextButton(
+                onPressed: () {
+                  context.beamToNamed(HeaderButtons.getById(index).route);
+                },
+                style: TextButton.styleFrom(
+                  primary: Palette.orange,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                  child: Text(HeaderButtons.getById(index).name,
                       style: widget.currentSelectedPage?.index == index
-                          ? const TextStyle(
-                              color: Palette.mainLighten2,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            )
-                          : const TextStyle(
-                              color: Palette.grey,
-                              fontSize: 18,
-                            ),
-                    ),
-                  ),
+                          ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
+                          : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey)),
                 ),
               ),
             ),
@@ -86,13 +70,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     height: 38,
                   ),
                   const SizedBox(width: 14),
-                  const Text(
+                  Text(
                     "Войти",
-                    style: TextStyle(
-                      color: Palette.orange,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
                   )
                 ],
               ),
