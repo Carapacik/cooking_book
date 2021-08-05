@@ -8,7 +8,7 @@ namespace RecipeBook.Api.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<UserRating> builder)
         {
-            builder.ToTable("UserRating").HasKey(x => new {x.RecipeId, x.UserId});
+            builder.ToTable("UserRating").HasKey(x => new { x.RecipeId, x.UserId });
         }
     }
 }

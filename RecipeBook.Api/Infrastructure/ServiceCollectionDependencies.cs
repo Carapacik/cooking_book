@@ -12,6 +12,7 @@ namespace RecipeBook.Api.Infrastructure
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<IStaticService, StaticService>();
         }
     }
 }

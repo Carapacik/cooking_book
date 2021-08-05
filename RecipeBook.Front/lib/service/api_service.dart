@@ -49,6 +49,46 @@ class ApiService {
     return response;
   }
 
+  Future<Response> getInitialWithParam(
+    String endPoint,
+    int take,
+  ) async {
+    Response response;
+    try {
+      response = await _dio.get<String>(
+        endPoint,
+        queryParameters: {
+          'take': take,
+        },
+      );
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response;
+  }
+
+  Future<Response> getRequestWithParam({
+    required String endPoint,
+    required int skip,
+    required int take,
+    String? searchQuery,
+  }) async {
+    Response response;
+    try {
+      response = await _dio.get<String>(
+        endPoint,
+        queryParameters: {
+          'skip': skip,
+          'take': take,
+          'searchQuery': searchQuery,
+        },
+      );
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response;
+  }
+
   initializeInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {

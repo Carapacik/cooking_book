@@ -1,10 +1,13 @@
-﻿using RecipeBook.Api.Application.Entities;
+﻿using System.Collections.Generic;
+using RecipeBook.Api.Application.Entities;
 
 namespace RecipeBook.Api.Application.Repositories
 {
     public interface IRecipeRepository
     {
-        Recipe GetById(int id);
         void Add(Recipe recipe);
+        Recipe GetById(int id);
+        Recipe GetRecipeOfDay();
+        IEnumerable<Recipe> Search(int skip, int take, string searchQuery);
     }
 }

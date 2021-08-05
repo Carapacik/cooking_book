@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using RecipeBook.Api.Application.Converters;
+﻿using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Entities;
 using RecipeBook.Api.Application.Repositories;
 using RecipeBook.Api.Application.Services.Entities;
@@ -11,12 +8,12 @@ namespace RecipeBook.Api.Application.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        private readonly StorageSettings _storageSettings;
+        private readonly IStaticService _staticService;
 
-        public RecipeService(IRecipeRepository recipeRepository, StorageSettings storageSettings)
+        public RecipeService(IRecipeRepository recipeRepository, IStaticService staticService)
         {
             _recipeRepository = recipeRepository;
-            _storageSettings = storageSettings;
+            _staticService = staticService;
         }
 
         public void DeleteRecipe()
@@ -25,24 +22,10 @@ namespace RecipeBook.Api.Application.Services
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var imageResult = SaveFile(addCommand.FileAdapter, _storageSettings.ImagePath);
-            var recipe = addCommand.Convert(imageResult);
+            var filePath = _staticService.SaveFile(addCommand.FileAdapter, "images");
+            var recipe = addCommand.Convert(filePath);
             _recipeRepository.Add(recipe);
-
             return recipe;
-        }
-
-        private SaveImageResult SaveFile(FormFileAdapter file, string basePath)
-        {
-            var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
-            var newFilePath = $@"{basePath}\{fileName}";
-            using (var fs = File.Create(newFilePath))
-            {
-                fs.Write(file.Data);
-            }
-
-            var folderName = basePath.Split(@"\").Last();
-            return new SaveImageResult($"{folderName}/{fileName}");
         }
     }
 }

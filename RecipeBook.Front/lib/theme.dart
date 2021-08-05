@@ -33,11 +33,23 @@ extension TextThemeExt on TextTheme {
         fontWeight: FontWeight.w700,
       );
 
+  TextStyle get m24 => headline3!.copyWith(
+        color: Palette.orange.withOpacity(0.5),
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+      );
+
   TextStyle get b20 => headline4!.copyWith(
         color: Palette.mainLighten1,
         fontSize: 20,
         fontWeight: FontWeight.w700,
         height: 30 / 20,
+      );
+
+  TextStyle get b18 => bodyText1!.copyWith(
+        color: Palette.main,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
       );
 
   TextStyle get r18 => bodyText1!.copyWith(

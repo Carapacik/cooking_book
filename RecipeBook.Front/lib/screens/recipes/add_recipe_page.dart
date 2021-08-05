@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,13 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/ingredient_notifier.dart';
-import 'package:recipebook/controllers/step_notifier.dart';
-import 'package:recipebook/models/add_recipe.dart';
+import 'package:recipebook/model/add_recipe.dart';
+import 'package:recipebook/notifier/ingredient_notifier.dart';
+import 'package:recipebook/notifier/step_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/route.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dart';
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
@@ -23,16 +23,9 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class AddRecipePage extends StatefulWidget {
   AddRecipePage({Key? key}) : super(key: key);
-
-  String? recipeTitle;
-  String? recipeDescription;
-  String? cookingTime;
-  String? portionsCount;
-  List<String> tags = [];
 
   @override
   _AddRecipePageState createState() => _AddRecipePageState();
@@ -48,6 +41,12 @@ class _AddRecipePageState extends State<AddRecipePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FilePickerResult? result;
   bool isFilePicked = true;
+
+  String? recipeTitle;
+  String? recipeDescription;
+  String? cookingTime;
+  String? portionsCount;
+  List<String> tags = [];
 
   @override
   void initState() {
@@ -89,18 +88,17 @@ class _AddRecipePageState extends State<AddRecipePage> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        context.beamBack();
                       },
                       style: TextButton.styleFrom(primary: Palette.orange),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SvgPicture.asset(
-                            CookingIcons.arrowBack,
-                            height: 12,
-                            width: 18,
+                          const Icon(
+                            Icons.arrow_back,
+                            size: 18,
                           ),
-                          const SizedBox(width: 13),
+                          const SizedBox(width: 12),
                           Text(
                             "Назад",
                             style: Theme.of(context).textTheme.n18,
@@ -128,11 +126,11 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     form.save();
 
                                     final AddRecipe recipe = AddRecipe(
-                                      title: widget.recipeTitle!,
-                                      description: widget.recipeDescription!,
-                                      cookingTimeInMinutes: int.parse(widget.cookingTime!),
-                                      portionsCount: int.parse(widget.portionsCount!),
-                                      tags: widget.tags,
+                                      title: recipeTitle!,
+                                      description: recipeDescription!,
+                                      cookingTimeInMinutes: int.parse(cookingTime!),
+                                      portionsCount: int.parse(portionsCount!),
+                                      tags: tags,
                                       steps: stepNotifier.stepList,
                                       ingredients: ingredientNotifier.ingredientList.toList(),
                                     );
@@ -146,11 +144,9 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     try {
                                       await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
                                     } catch (e) {
-                                      context.vxNav.push(Uri.parse(RecipeRoutes.errorRoute));
+                                      context.beamToNamed("/error");
                                     }
-                                    debugPrint("next page is detail recipe with id = ${int.parse(nextPageIndex)}");
-                                    // тут будет перенаправление на страницу с рецептом с id = nextPageIndex
-                                    // когда я её сделаю ))
+                                    context.beamToNamed("/recipes/$nextPageIndex");
                                   }
                                 },
                         ),
@@ -203,7 +199,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                   child: Center(
                                     child: DottedBorder(
                                       borderType: BorderType.RRect,
-                                      color: isFilePicked ? Palette.orange : Colors.red,
+                                      color: _getColor(),
                                       radius: const Radius.circular(20),
                                       child: SizedBox(
                                         height: 269,
@@ -215,15 +211,13 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                               CookingIcons.upload,
                                               height: 42,
                                               width: 42,
-                                              color: isFilePicked ? Palette.orange : Colors.red,
+                                              color: _getColor(),
                                             ),
                                             const SizedBox(height: 30),
                                             Text(
-                                              isFilePicked ? "Загрузите фото\nготового блюда" : "Необходимо загрузить\nфотографию",
+                                              _getText(),
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context).textTheme.r16.copyWith(
-                                                    color: isFilePicked ? Palette.orange : Colors.red,
-                                                  ),
+                                              style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
                                             ),
                                           ],
                                         ),
@@ -251,7 +245,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.recipeTitle = value;
+                                      recipeTitle = value;
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -268,7 +262,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.recipeDescription = value;
+                                      recipeDescription = value;
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -282,7 +276,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.tags = value!.trim().split(",");
+                                      tags = value!.trim().split(",");
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -297,10 +291,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
                                           }
+                                          final result = int.tryParse(value) ?? "";
+                                          if (result == "") {
+                                            return "Должно быть целым";
+                                          }
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          widget.cookingTime = value;
+                                          cookingTime = value;
                                         },
                                       ),
                                       const SizedBox(width: 11),
@@ -318,10 +316,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           if (value!.isEmpty) {
                                             return "Не должно быть пустым";
                                           }
+                                          final result = int.tryParse(value) ?? "";
+                                          if (result == "") {
+                                            return "Должно быть целым";
+                                          }
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          widget.portionsCount = value;
+                                          portionsCount = value;
                                         },
                                       ),
                                       const SizedBox(width: 11),
@@ -366,20 +368,21 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           ),
                         ),
                         SizedBox(
-                            width: 790,
-                            child: Column(
-                              children: [
-                                const StepListWidget(),
-                                ButtonOutlinedWidget(
-                                  text: "Добавить шаг",
-                                  width: 380,
-                                  height: 60,
-                                  onPressed: () {
-                                    stepNotifier.addStep();
-                                  },
-                                ),
-                              ],
-                            )),
+                          width: 790,
+                          child: Column(
+                            children: [
+                              const StepListWidget(),
+                              ButtonOutlinedWidget(
+                                text: "Добавить шаг",
+                                width: 380,
+                                height: 60,
+                                onPressed: () {
+                                  stepNotifier.addStep();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 106),
@@ -391,5 +394,25 @@ class _AddRecipePageState extends State<AddRecipePage> {
         ),
       ),
     );
+  }
+
+  Color _getColor() {
+    if (!isFilePicked) {
+      return Colors.red;
+    } else if (result == null) {
+      return Palette.orange;
+    } else {
+      return Colors.green;
+    }
+  }
+
+  String _getText() {
+    if (!isFilePicked) {
+      return "Необходимо загрузить\nфотографию";
+    } else if (result == null) {
+      return "Загрузите фото\nготового блюда";
+    } else {
+      return "Фотография готова\nк отправке";
+    }
   }
 }

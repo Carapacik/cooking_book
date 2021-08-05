@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/controllers/step_notifier.dart';
+import 'package:recipebook/notifier/step_notifier.dart';
 import 'package:recipebook/screens/recipes/components/step_item_widget.dart';
 
 class StepListWidget extends StatelessWidget {

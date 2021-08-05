@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/models/recipe_of_day.dart';
+import 'package:recipebook/model/recipe_of_day.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
 class RecipeOfDayWidget extends StatefulWidget {
   const RecipeOfDayWidget({Key? key}) : super(key: key);
@@ -56,40 +58,25 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Container(
-              width: 543,
-              height: 543,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(72),
-                  bottomRight: Radius.circular(72),
-                ),
-              ),
-              child: Image.asset(
-                recipeOfDay.imageUrl,
-                fit: BoxFit.cover,
+        TextButton(
+          onPressed: () {
+            context.beamToNamed("/recipes/${recipeOfDay.recipeId}");
+          },
+          style: TextButton.styleFrom(
+            primary: Palette.orange,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(72),
+                bottomRight: Radius.circular(72),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 38),
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.horizontal(right: Radius.circular(5)),
-              ),
-              child: Text(
-                recipeOfDay.username,
-                style: Theme.of(context).textTheme.r16.copyWith(
-                      color: Palette.orange,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            )
-          ],
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: RecipeImageWithAuthor(
+            imageUrl: recipeOfDay.imageUrl,
+            username: recipeOfDay.username,
+            size: 543,
+          ),
         ),
         Container(
           margin: const EdgeInsets.only(left: 62),
@@ -100,11 +87,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SvgPicture.asset(
-                    CookingIcons.heartEmpty,
+                  const Icon(
+                    Icons.favorite_outline,
                     color: Palette.grey,
-                    height: 20,
-                    width: 20,
+                    size: 20,
                   ),
                   const SizedBox(width: 7),
                   Text(
@@ -112,11 +98,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                     style: Theme.of(context).textTheme.r16,
                   ),
                   const SizedBox(width: 27),
-                  SvgPicture.asset(
-                    CookingIcons.timer,
+                  const Icon(
+                    Icons.timer,
+                    size: 20,
                     color: Palette.grey,
-                    height: 20,
-                    width: 20,
                   ),
                   const SizedBox(width: 7),
                   Text(

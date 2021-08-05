@@ -25,11 +25,11 @@ namespace RecipeBook.Api
             services.AddDependencies();
             services.AddDbContext<RecipeBookDbContext>(conf =>
                 conf.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
-            services.AddSingleton(Configuration.GetSection("StorageSettings").Get<StorageSettings>());
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "RecipeBook.Api", Version = "v1"}); });
+            services.AddSingleton(Configuration.GetSection("StaticStorageSettings").Get<StaticStorageSettings>());
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" }); });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
