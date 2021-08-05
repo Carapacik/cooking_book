@@ -1,14 +1,21 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:recipebook/model/recipe_item.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/screens/recipes/components/recipe_tag_list_widget.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
 class RecipeItemWidget extends StatelessWidget {
-  const RecipeItemWidget({Key? key, required this.recipeItem}) : super(key: key);
+  const RecipeItemWidget({
+    this.isDetail,
+    required this.recipeItem,
+    Key? key,
+  }) : super(key: key);
 
   final RecipeItem recipeItem;
+  final bool? isDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +39,33 @@ class RecipeItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          RecipeImageWithAuthor(
-            imageUrl: recipeItem.imageUrl,
-            username: recipeItem.username,
-            size: 430,
-          ),
+          if (isDetail == null)
+            TextButton(
+              onPressed: () {
+                context.beamToNamed("/recipes/${recipeItem.recipeId}");
+              },
+              style: TextButton.styleFrom(
+                primary: Palette.orange,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(72),
+                    bottomRight: Radius.circular(72),
+                  ),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: RecipeImageWithAuthor(
+                imageUrl: recipeItem.imageUrl,
+                username: recipeItem.username,
+                size: 430,
+              ),
+            )
+          else
+            RecipeImageWithAuthor(
+              imageUrl: recipeItem.imageUrl,
+              username: recipeItem.username,
+              size: 430,
+            ),
           Padding(
             padding: const EdgeInsets.only(left: 50, top: 36, right: 30),
             child: Column(
@@ -153,62 +182,6 @@ class RecipeItemWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class RecipeTagsList extends StatelessWidget {
-  const RecipeTagsList({
-    Key? key,
-    required this.tags,
-  }) : super(key: key);
-
-  final List<String> tags;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          height: 25,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Palette.orange.withOpacity(0.2),
-          ),
-          child: Text(
-            tags[0],
-            style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
-          ),
-        ),
-        // пока один контейнер, потом будет лист тэгов
-        // const SizedBox(width: 5),
-        // Container(
-        //   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        //   height: 25,
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(5),
-        //     color: Palette.orange.withOpacity(0.2),
-        //   ),
-        //   child: Text(
-        //     tags[1],
-        //     style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
-        //   ),
-        // ),
-        // const SizedBox(width: 5),
-        // Container(
-        //   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        //   height: 25,
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(5),
-        //     color: Palette.orange.withOpacity(0.2),
-        //   ),
-        //   child: Text(
-        //     tags[2],
-        //     style: Theme.of(context).textTheme.r14.copyWith(color: Palette.orange),
-        //   ),
-        // ),
-      ],
     );
   }
 }

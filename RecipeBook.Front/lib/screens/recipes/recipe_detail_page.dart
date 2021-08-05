@@ -21,20 +21,30 @@ class RecipeDetailPage extends StatelessWidget {
 
   final String recipeId;
 
-  RecipeDetail recipe = RecipeDetail(
+  final RecipeDetail recipeDetail = RecipeDetail(
     recipeId: 1,
-    title: "sssубничная панна-котта",
+    title: "Клубничная панна-котта",
     description:
         "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
     imageUrl: "49eb8e8b-476f-4404-b2ff-deecab0e699e.png",
-    username: "@horilka",
+    username: "@дод",
     tags: ["десерты", "клубника", "сливки"],
     favoritesCount: 10,
     likesCount: 8,
     cookingTimeInMinutes: 35,
     portionsCount: 5,
-    steps: [],
+    steps: [
+      "Приготовим панна котту: Зальем желатин молоком и поставим на 30 минут для набухания. В сливки добавим сахар и ванильный сахар. Доводим до кипения (не кипятим!)."
+    ],
     ingredients: [
+      Ingredient(
+        title: "Для панна котты",
+        ingredientNames: [
+          "Сливки-20-30% - 500мл",
+          "Молоко - 100мл.",
+          "Желатин - 2ч.л.",
+        ],
+      ),
       Ingredient(
         title: "Для клубничного желе",
         ingredientNames: [
@@ -88,7 +98,7 @@ class RecipeDetailPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      recipe.title,
+                      recipeDetail.title,
                       style: Theme.of(context).textTheme.b42,
                     ),
                     Row(
@@ -115,51 +125,95 @@ class RecipeDetailPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 50),
                 RecipeItemWidget(
+                  isDetail: true,
                   recipeItem: RecipeItem(
-                    recipeId: recipe.recipeId,
-                    title: recipe.title,
-                    description: recipe.description,
-                    imageUrl: recipe.imageUrl,
-                    username: recipe.username,
-                    tags: recipe.tags,
-                    favoritesCount: recipe.favoritesCount,
-                    likesCount: recipe.likesCount,
-                    cookingTimeInMinutes: recipe.cookingTimeInMinutes,
-                    portionsCount: recipe.portionsCount,
+                    recipeId: recipeDetail.recipeId,
+                    title: recipeDetail.title,
+                    description: recipeDetail.description,
+                    imageUrl: recipeDetail.imageUrl,
+                    username: recipeDetail.username,
+                    tags: recipeDetail.tags,
+                    favoritesCount: recipeDetail.favoritesCount,
+                    likesCount: recipeDetail.likesCount,
+                    cookingTimeInMinutes: recipeDetail.cookingTimeInMinutes,
+                    portionsCount: recipeDetail.portionsCount,
                   ),
                 ),
                 const SizedBox(height: 40),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Ингредиенты",
-                          style: Theme.of(context).textTheme.b20.copyWith(color: Palette.orange),
-                        ),
-                        // ListView.builder(
-                        //   shrinkWrap: true,
-                        //   itemCount: recipe.ingredients.length,
-                        //   itemBuilder: (context, index) {
-                        //     return Padding(
-                        //       padding: const EdgeInsets.only(top: 20),
-                        //       child: Column(
-                        //         children: [
-                        //           Text(
-                        //             recipe.ingredients[index].title,
-                        //             style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
-                        //           ),
-                        //           const SizedBox(height: 10),
-                        //         ],
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
-                      ],
+                    SizedBox(
+                      width: 396,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Ингредиенты",
+                            style: Theme.of(context).textTheme.b20.copyWith(color: Palette.orange),
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: recipeDetail.ingredients.length,
+                            itemBuilder: (context, index) {
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: recipeDetail.ingredients[index].ingredientNames.length + 1,
+                                itemBuilder: (context, id) {
+                                  if (id == 0) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Text(
+                                        recipeDetail.ingredients[index].title,
+                                        style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                                      ),
+                                    );
+                                  } else {
+                                    return Text(
+                                      recipeDetail.ingredients[index].ingredientNames[id - 1],
+                                      style: Theme.of(context).textTheme.r18,
+                                    );
+                                  }
+                                },
+                                separatorBuilder: (BuildContext context, int index) {
+                                  return const SizedBox(height: 10);
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: const [
+                          BoxShadow(
+                            offset: Offset(0, 16),
+                            blurRadius: 72,
+                            color: Palette.shadowColor,
+                          )
+                        ],
+                      ),
+                      width: 790,
+                      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 73),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Шаг 1",
+                            style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            recipeDetail.steps[0],
+                            style: Theme.of(context).textTheme.r18,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],

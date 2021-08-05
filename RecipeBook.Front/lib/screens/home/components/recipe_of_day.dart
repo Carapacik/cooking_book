@@ -58,16 +58,26 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RecipeImageWithAuthor(
-          imageUrl: recipeOfDay.imageUrl,
-          username: recipeOfDay.username,
-          size: 543,
-        ),
         TextButton(
-            onPressed: () {
-              context.beamToNamed("/recipes/${recipeOfDay.recipeId}");
-            },
-            child: Text("детальный рецепт")),
+          onPressed: () {
+            context.beamToNamed("/recipes/${recipeOfDay.recipeId}");
+          },
+          style: TextButton.styleFrom(
+            primary: Palette.orange,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(72),
+                bottomRight: Radius.circular(72),
+              ),
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: RecipeImageWithAuthor(
+            imageUrl: recipeOfDay.imageUrl,
+            username: recipeOfDay.username,
+            size: 543,
+          ),
+        ),
         Container(
           margin: const EdgeInsets.only(left: 62),
           width: 513,
