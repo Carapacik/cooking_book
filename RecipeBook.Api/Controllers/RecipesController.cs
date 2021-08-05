@@ -2,12 +2,12 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RecipeBook.Api.Application.Converters;
 using RecipeBook.Api.Application.Dtos;
-using RecipeBook.Api.Application.Repositories;
-using RecipeBook.Api.Application.Services;
-using RecipeBook.Api.Application.Services.Entities;
-using RecipeBook.Api.Infrastructure;
+using RecipeBook.Api.Converters;
+using RecipeBook.Application;
+using RecipeBook.Application.Services;
+using RecipeBook.Application.Services.Entities;
+using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Api.Controllers
 {

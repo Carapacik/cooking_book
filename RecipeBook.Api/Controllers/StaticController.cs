@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Api.Application.Services;
+using RecipeBook.Application.Services;
 
 namespace RecipeBook.Api.Controllers
 {

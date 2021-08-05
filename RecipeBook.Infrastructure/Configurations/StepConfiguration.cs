@@ -1,0 +1,11 @@
+﻿namespace RecipeBook.Infrastructure.Configurations
+{
+    public class StepConfiguration : IEntityTypeConfiguration<Step>
+    {
+        public void Configure(EntityTypeBuilder<Step> builder)
+        {
+            builder.ToTable("Step").HasKey(item => item.StepId);
+            builder.Property(x => x.Description).IsRequired();
+        }
+    }
+}

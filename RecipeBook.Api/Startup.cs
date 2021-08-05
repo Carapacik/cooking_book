@@ -5,8 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using RecipeBook.Api.Application.Services.Entities;
-using RecipeBook.Api.Infrastructure;
+using RecipeBook.Infrastructure;
 
 namespace RecipeBook.Api
 {
