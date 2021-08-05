@@ -27,12 +27,6 @@ import 'package:recipebook/widgets/outlined_button.dart';
 class AddRecipePage extends StatefulWidget {
   AddRecipePage({Key? key}) : super(key: key);
 
-  String? recipeTitle;
-  String? recipeDescription;
-  String? cookingTime;
-  String? portionsCount;
-  List<String> tags = [];
-
   @override
   _AddRecipePageState createState() => _AddRecipePageState();
 }
@@ -47,6 +41,12 @@ class _AddRecipePageState extends State<AddRecipePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FilePickerResult? result;
   bool isFilePicked = true;
+
+  String? recipeTitle;
+  String? recipeDescription;
+  String? cookingTime;
+  String? portionsCount;
+  List<String> tags = [];
 
   @override
   void initState() {
@@ -126,11 +126,11 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                     form.save();
 
                                     final AddRecipe recipe = AddRecipe(
-                                      title: widget.recipeTitle!,
-                                      description: widget.recipeDescription!,
-                                      cookingTimeInMinutes: int.parse(widget.cookingTime!),
-                                      portionsCount: int.parse(widget.portionsCount!),
-                                      tags: widget.tags,
+                                      title: recipeTitle!,
+                                      description: recipeDescription!,
+                                      cookingTimeInMinutes: int.parse(cookingTime!),
+                                      portionsCount: int.parse(portionsCount!),
+                                      tags: tags,
                                       steps: stepNotifier.stepList,
                                       ingredients: ingredientNotifier.ingredientList.toList(),
                                     );
@@ -245,7 +245,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.recipeTitle = value;
+                                      recipeTitle = value;
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -262,7 +262,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.recipeDescription = value;
+                                      recipeDescription = value;
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -276,7 +276,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                       return null;
                                     },
                                     onSaved: (value) {
-                                      widget.tags = value!.trim().split(",");
+                                      tags = value!.trim().split(",");
                                     },
                                   ),
                                   const SizedBox(height: 20),
@@ -298,7 +298,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          widget.cookingTime = value;
+                                          cookingTime = value;
                                         },
                                       ),
                                       const SizedBox(width: 11),
@@ -323,7 +323,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                                           return null;
                                         },
                                         onSaved: (value) {
-                                          widget.portionsCount = value;
+                                          portionsCount = value;
                                         },
                                       ),
                                       const SizedBox(width: 11),
@@ -368,20 +368,21 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           ),
                         ),
                         SizedBox(
-                            width: 790,
-                            child: Column(
-                              children: [
-                                const StepListWidget(),
-                                ButtonOutlinedWidget(
-                                  text: "Добавить шаг",
-                                  width: 380,
-                                  height: 60,
-                                  onPressed: () {
-                                    stepNotifier.addStep();
-                                  },
-                                ),
-                              ],
-                            )),
+                          width: 790,
+                          child: Column(
+                            children: [
+                              const StepListWidget(),
+                              ButtonOutlinedWidget(
+                                text: "Добавить шаг",
+                                width: 380,
+                                height: 60,
+                                onPressed: () {
+                                  stepNotifier.addStep();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 106),
