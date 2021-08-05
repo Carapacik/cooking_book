@@ -1,4 +1,5 @@
 ﻿using RecipeBook.Application.Services.Entities;
+using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Application.Services
 {

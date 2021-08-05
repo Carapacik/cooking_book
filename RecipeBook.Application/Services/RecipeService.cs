@@ -1,4 +1,7 @@
-﻿using RecipeBook.Application.Services.Entities;
+﻿using RecipeBook.Application.Converters;
+using RecipeBook.Application.Services.Entities;
+using RecipeBook.Domain.Entities;
+using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Application.Services
 {
@@ -13,9 +16,7 @@ namespace RecipeBook.Application.Services
             _staticService = staticService;
         }
 
-        public void DeleteRecipe()
-        {
-        }
+
 
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
@@ -23,6 +24,10 @@ namespace RecipeBook.Application.Services
             var recipe = addCommand.Convert(filePath);
             _recipeRepository.Add(recipe);
             return recipe;
+        }
+        
+        public void DeleteRecipe()
+        {
         }
     }
 }

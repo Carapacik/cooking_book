@@ -1,4 +1,8 @@
-﻿namespace RecipeBook.Infrastructure.Configurations
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RecipeBook.Domain.Entities;
+
+namespace RecipeBook.Infrastructure.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {

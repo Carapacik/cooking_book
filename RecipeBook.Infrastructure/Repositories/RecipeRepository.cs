@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using RecipeBook.Domain.Entities;
+using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Infrastructure.Repositories
 {
@@ -15,6 +18,12 @@ namespace RecipeBook.Infrastructure.Repositories
         public void Add(Recipe newRecipe)
         {
             _context.Set<Recipe>().Add(newRecipe);
+        }
+
+        public void Edit(Recipe recipe)
+        {
+            var oldRecipe = GetById(recipe.RecipeId);
+            oldRecipe.Title = recipe.Title;
         }
 
         public Recipe GetById(int id)
@@ -51,7 +60,7 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
-                .ThenInclude(y => y.IngredientItems)
+                    .ThenInclude(y => y.IngredientItems)
                 .AsQueryable();
         }
     }

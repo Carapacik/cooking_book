@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace RecipeBook.Api.Converters
+namespace RecipeBook.Application.Converters
 {
     public class FormFileAdapter
     {

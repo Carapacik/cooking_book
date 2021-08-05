@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using RecipeBook.Api.Application.Dtos;
+using RecipeBook.Application.Dtos;
 using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Entities;
 
-namespace RecipeBook.Api.Converters
+namespace RecipeBook.Application.Converters
 {
     public static class RecipeConverter
     {

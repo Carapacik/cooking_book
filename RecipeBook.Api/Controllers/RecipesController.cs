@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RecipeBook.Api.Application.Dtos;
-using RecipeBook.Api.Converters;
 using RecipeBook.Application;
+using RecipeBook.Application.Converters;
+using RecipeBook.Application.Dtos;
 using RecipeBook.Application.Services;
 using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Repositories;
@@ -35,6 +35,15 @@ namespace RecipeBook.Api.Controllers
             var newRecipe = _recipeService.AddRecipe(new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData));
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
+        }
+        
+        [HttpPut]
+        [DisableRequestSizeLimit]
+        public int EditRecipe()
+        {
+            var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
+            var formFile = Request.Form.Files[0];
+            return 0;
         }
 
         [HttpGet("{id:int}")]

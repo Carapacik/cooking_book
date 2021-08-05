@@ -1,4 +1,4 @@
-﻿namespace RecipeBook.Api.Application.Dtos
+﻿namespace RecipeBook.Application.Dtos
 {
     public class RecipeOfDayDto
     {

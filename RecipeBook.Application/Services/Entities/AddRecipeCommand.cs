@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using RecipeBook.Application.Converters;
+using RecipeBook.Application.Dtos;
 
 namespace RecipeBook.Application.Services.Entities
 {
