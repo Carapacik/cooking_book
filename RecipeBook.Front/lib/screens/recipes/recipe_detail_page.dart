@@ -29,40 +29,6 @@ class RecipeDetailPage extends StatefulWidget {
 }
 
 class _RecipeDetailPageState extends State<RecipeDetailPage> {
-  // final RecipeDetail recipeDetail = RecipeDetail(
-  //   recipeId: 1,
-  //   title: "Клубничная панна-котта",
-  //   description:
-  //       "Десерт, который невероятно легко и быстро готовится. Советую подавать его порционно в красивых бокалах, украсив взбитыми сливками, свежими ягодами и мятой.",
-  //   imageUrl: "49eb8e8b-476f-4404-b2ff-deecab0e699e.png",
-  //   username: "@дод",
-  //   tags: ["десерты", "клубника", "сливки"],
-  //   favoritesCount: 10,
-  //   likesCount: 8,
-  //   cookingTimeInMinutes: 35,
-  //   portionsCount: 5,
-  //   steps: [
-  //     "Приготовим панна котту: Зальем желатин молоком и поставим на 30 минут для набухания. В сливки добавим сахар и ванильный сахар. Доводим до кипения (не кипятим!)."
-  //   ],
-  //   ingredients: [
-  //     Ingredient(
-  //       title: "Для панна котты",
-  //       ingredientNames: [
-  //         "Сливки-20-30% - 500мл",
-  //         "Молоко - 100мл.",
-  //         "Желатин - 2ч.л.",
-  //       ],
-  //     ),
-  //     Ingredient(
-  //       title: "Для клубничного желе",
-  //       ingredientNames: [
-  //         "Сливки-20-30% - 500мл",
-  //         "Молоко - 100мл.",
-  //         "Желатин - 2ч.л.",
-  //       ],
-  //     ),
-  //   ],
-  // );
   late ApiService apiService;
   late RecipeDetail recipeDetail;
   bool isLoading = true;
@@ -89,7 +55,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
       }
     } on Exception catch (e) {
       // возможно перенаправление на отдельную страницу
-      isLoading = false;
       print(e);
     }
   }
