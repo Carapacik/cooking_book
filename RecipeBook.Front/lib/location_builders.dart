@@ -9,7 +9,7 @@ import 'package:recipebook/screens/recipes/recipes_page.dart';
 final recipeLocationBuilder = BeamerLocationBuilder(
   beamLocations: [
     HomeLocation(),
-    RecipeLocation(),
+    RecipesLocation(),
     FavoriteLocation(),
   ],
 );
@@ -42,7 +42,7 @@ class FavoriteLocation extends BeamLocation<BeamState> {
       ];
 }
 
-class RecipeLocation extends BeamLocation<BeamState> {
+class RecipesLocation extends BeamLocation<BeamState> {
   @override
   List<String> get pathBlueprints => [
         '/recipes/add',
@@ -52,7 +52,7 @@ class RecipeLocation extends BeamLocation<BeamState> {
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    final beamPages = [...HomeLocation().buildPages(context, state)];
+    final List<BeamPage> beamPages = [];
 
     if (state.pathBlueprintSegments.contains('recipes')) {
       final searchQuery = state.queryParameters['searchQuery'] ?? '';
@@ -60,20 +60,23 @@ class RecipeLocation extends BeamLocation<BeamState> {
 
       beamPages.add(
         BeamPage(
-          key: ValueKey('recipe-$searchQuery'),
+          key: ValueKey('recipes-$searchQuery'),
           title: pageTitle,
           child: RecipesPage(searchQuery: searchQuery),
         ),
       );
     }
 
+
     if (state.pathParameters.containsKey('recipeId')) {
       final recipeId = state.pathParameters['recipeId'];
       const pageTitle = 'Детальный рецепт';
+      // final result = int.tryParse(recipeId!) ?? "";
+      // if (result == "") {}
 
       beamPages.add(
         BeamPage(
-          key: ValueKey('recipe-$recipeId'),
+          key: ValueKey('recipes-$recipeId'),
           title: pageTitle,
           child: RecipeDetailPage(recipeId: recipeId!),
         ),
@@ -85,22 +88,22 @@ class RecipeLocation extends BeamLocation<BeamState> {
 
       beamPages.add(
         BeamPage(
-          key: const ValueKey('recipe-add'),
+          key: const ValueKey('recipes-add'),
           title: pageTitle,
-          child: AddRecipePage(),
+          child: const AddRecipePage(),
         ),
       );
     }
 
     if (state.uri.pathSegments.contains('edit')) {
       final recipeId = state.pathParameters['recipeId'];
-      const pageTitle = 'Редактирование рецепта';
+      const pageTitle = 'Редактировать рецепта';
 
       beamPages.add(
         BeamPage(
-          key: ValueKey('recipe-$recipeId-edit'),
+          key: ValueKey('recipes-$recipeId-edit'),
           title: pageTitle,
-          child: AddRecipePage(), // редактирование рецепта
+          child: AddRecipePage(recipeId: recipeId,), // редактирование рецепта
         ),
       );
     }

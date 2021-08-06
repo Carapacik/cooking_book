@@ -16,6 +16,8 @@ class StepItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
+    final TextEditingController controller = TextEditingController();
+    controller.text = stepNotifier.stepList[index];
 
     return Container(
       width: 790,
@@ -54,6 +56,7 @@ class StepItemWidget extends StatelessWidget {
           ),
           const SizedBox(height: 21),
           FormTextFieldWidget(
+            controller: controller,
             textarea: true,
             height: 170,
             hintText: "Описание шага",

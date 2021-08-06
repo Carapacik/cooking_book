@@ -6,6 +6,8 @@ class IngredientNotifier extends ChangeNotifier {
 
   List<Ingredient> get ingredientList => _ingredientList;
 
+  replaceList(List<Ingredient> newList) => _ingredientList = newList;
+
   addNewIngredient() {
     _ingredientList.add(Ingredient(title: "", ingredientNames: []));
     notifyListeners();

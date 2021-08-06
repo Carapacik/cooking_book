@@ -201,47 +201,58 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                             ),
                             SizedBox(
                               width: 790,
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: recipeDetail.steps.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(24),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          offset: Offset(0, 16),
-                                          blurRadius: 72,
-                                          color: Palette.shadowColor,
-                                        )
-                                      ],
-                                    ),
-                                    width: 790,
-                                    padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 73),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Шаг ${index + 1}",
-                                          style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                              child: Column(
+                                children: [
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: recipeDetail.steps.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(24),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              offset: Offset(0, 16),
+                                              blurRadius: 72,
+                                              color: Palette.shadowColor,
+                                            )
+                                          ],
                                         ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          recipeDetail.steps[index],
-                                          style: Theme.of(context).textTheme.r18,
+                                        width: 790,
+                                        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 73),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Шаг ${index + 1}",
+                                              style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              recipeDetail.steps[index],
+                                              style: Theme.of(context).textTheme.r18,
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (BuildContext context, int index) {
-                                  return const SizedBox(height: 20);
-                                },
+                                      );
+                                    },
+                                    separatorBuilder: (BuildContext context, int index) {
+                                      return const SizedBox(height: 20);
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 40),
+                                  Text(
+                                    "Приятного аппетита!",
+                                    style: Theme.of(context).textTheme.m24,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
+                        const SizedBox(height: 105),
                       ],
                     ),
                 ],

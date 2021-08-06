@@ -37,13 +37,13 @@ namespace RecipeBook.Api.Controllers
             return newRecipe.RecipeId;
         }
         
-        [HttpPut]
+        [HttpPatch("{id:int}/edit")]
         [DisableRequestSizeLimit]
-        public int EditRecipe()
+        public int EditRecipe(int id)
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             var formFile = Request.Form.Files[0];
-            return 0;
+            return 1;
         }
 
         [HttpGet("{id:int}")]

@@ -57,6 +57,7 @@ class _RecipesPageState extends State<RecipesPage> {
         } else {
           recipeNotifier.addRecipes(listOfRecipes);
         }
+        textController?.text = widget.searchQuery!;
         skipCounter += 4;
       } else {
         // затычка, код не 200

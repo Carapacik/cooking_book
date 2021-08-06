@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/add_recipe.dart';
+import 'package:recipebook/model/recipe_detail.dart';
 import 'package:recipebook/notifier/ingredient_notifier.dart';
 import 'package:recipebook/notifier/step_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
@@ -25,23 +27,27 @@ import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class AddRecipePage extends StatefulWidget {
-  AddRecipePage({Key? key}) : super(key: key);
+  const AddRecipePage({Key? key, this.recipeId}) : super(key: key);
+
+  final String? recipeId;
 
   @override
   _AddRecipePageState createState() => _AddRecipePageState();
 }
 
 class _AddRecipePageState extends State<AddRecipePage> {
-  late ApiService apiService;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final tagsController = TextEditingController();
   final cookingTimeController = TextEditingController();
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  static const baseImageStorage = "http://localhost:5000/static/images/";
+  late ApiService apiService;
+  RecipeDetail? recipeDetail;
   FilePickerResult? result;
   bool isFilePicked = true;
-
+  bool isLoading = true;
   String? recipeTitle;
   String? recipeDescription;
   String? cookingTime;
@@ -51,7 +57,34 @@ class _AddRecipePageState extends State<AddRecipePage> {
   @override
   void initState() {
     apiService = ApiService();
+    if (widget.recipeId != null) {
+      getDetailRecipe();
+    }
     super.initState();
+  }
+
+  Future getDetailRecipe() async {
+    Response response;
+
+    try {
+      response = await apiService.getRequest("recipes/${widget.recipeId}");
+      if (response.statusCode == 200) {
+        recipeDetail = RecipeDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+        titleController.text = recipeDetail!.title;
+        descriptionController.text = recipeDetail!.description;
+        cookingTimeController.text = recipeDetail!.cookingTimeInMinutes.toString();
+        portionsCountController.text = recipeDetail!.portionsCount.toString();
+        tagsController.text = recipeDetail!.tags.join(", ");
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
   }
 
   @override
@@ -68,6 +101,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
   Widget build(BuildContext context) {
     final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
     final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+
+    if (widget.recipeId != null) {
+      if (isLoading) {
+        return const Center(child: CircularProgressIndicator(color: Palette.orange));
+      }
+      stepNotifier.replaceList(recipeDetail!.steps);
+      ingredientNotifier.replaceList(recipeDetail!.ingredients);
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -168,66 +209,30 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       child: Row(
                         children: [
                           TextButton(
-                            onPressed: () async {
-                              result = await FilePicker.platform.pickFiles(type: FileType.image);
-                              if (result == null) {
-                                setState(() {
-                                  isFilePicked = false;
-                                });
-                              } else {
-                                setState(() {
-                                  isFilePicked = true;
-                                });
-                              }
-                            },
-                            clipBehavior: Clip.antiAlias,
-                            style: TextButton.styleFrom(
-                              backgroundColor: Palette.uploadPhotoBackground,
-                              primary: Palette.orange,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(72),
-                                  bottomRight: Radius.circular(72),
-                                ),
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  height: 430,
-                                  width: 430,
-                                  child: Center(
-                                    child: DottedBorder(
-                                      borderType: BorderType.RRect,
-                                      color: _getColor(),
-                                      radius: const Radius.circular(20),
-                                      child: SizedBox(
-                                        height: 269,
-                                        width: 269,
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(height: 80),
-                                            SvgPicture.asset(
-                                              CookingIcons.upload,
-                                              height: 42,
-                                              width: 42,
-                                              color: _getColor(),
-                                            ),
-                                            const SizedBox(height: 30),
-                                            Text(
-                                              _getText(),
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                              onPressed: () async {
+                                result = await FilePicker.platform.pickFiles(type: FileType.image);
+                                if (result == null) {
+                                  setState(() {
+                                    isFilePicked = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isFilePicked = true;
+                                  });
+                                }
+                              },
+                              clipBehavior: Clip.antiAlias,
+                              style: TextButton.styleFrom(
+                                backgroundColor: Palette.uploadPhotoBackground,
+                                primary: Palette.orange,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(72),
+                                    bottomRight: Radius.circular(72),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                              child: _getUploadedImageButton()),
                           Padding(
                             padding: const EdgeInsets.only(left: 53, right: 70),
                             child: SizedBox(
@@ -399,20 +404,112 @@ class _AddRecipePageState extends State<AddRecipePage> {
   Color _getColor() {
     if (!isFilePicked) {
       return Colors.red;
-    } else if (result == null) {
-      return Palette.orange;
     } else {
-      return Colors.green;
+      return Palette.orange;
     }
   }
 
   String _getText() {
     if (!isFilePicked) {
       return "Необходимо загрузить\nфотографию";
-    } else if (result == null) {
-      return "Загрузите фото\nготового блюда";
     } else {
-      return "Фотография готова\nк отправке";
+      return "Загрузите фото\nготового блюда";
+    }
+  }
+
+  Widget _getUploadedImageButton() {
+    if (result != null) {
+      return SizedBox(
+        height: 430,
+        width: 430,
+        child: Image.memory(
+          result!.files.single.bytes!,
+          fit: BoxFit.cover,
+        ),
+      );
+    } else if (!isFilePicked) {
+      return Stack(
+        children: [
+          SizedBox(
+            height: 430,
+            width: 430,
+            child: Center(
+              child: DottedBorder(
+                borderType: BorderType.RRect,
+                color: _getColor(),
+                radius: const Radius.circular(20),
+                child: SizedBox(
+                  height: 269,
+                  width: 269,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      SvgPicture.asset(
+                        CookingIcons.upload,
+                        height: 42,
+                        width: 42,
+                        color: _getColor(),
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        _getText(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else if (recipeDetail != null) {
+      return SizedBox(
+        height: 430,
+        width: 430,
+        child: CachedNetworkImage(
+          imageUrl: baseImageStorage + recipeDetail!.imageUrl,
+          fit: BoxFit.cover,
+        ),
+      );
+    } else {
+      return Stack(
+        children: [
+          SizedBox(
+            height: 430,
+            width: 430,
+            child: Center(
+              child: DottedBorder(
+                borderType: BorderType.RRect,
+                color: _getColor(),
+                radius: const Radius.circular(20),
+                child: SizedBox(
+                  height: 269,
+                  width: 269,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      SvgPicture.asset(
+                        CookingIcons.upload,
+                        height: 42,
+                        width: 42,
+                        color: _getColor(),
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        _getText(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
     }
   }
 }
