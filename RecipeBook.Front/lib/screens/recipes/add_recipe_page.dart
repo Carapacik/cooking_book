@@ -513,8 +513,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
               'recipe': jsonEncode(recipe),
               'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
             });
-          }
-          else {
+          } else {
             formData = FormData.fromMap({
               'recipe': jsonEncode(recipe),
             });

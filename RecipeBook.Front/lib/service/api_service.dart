@@ -17,7 +17,6 @@ class ApiService {
     initializeInterceptors();
   }
 
-
   Future patchRequest(String endPoint, dynamic data) async {
     Response response;
     try {
@@ -119,5 +118,4 @@ class ApiService {
       },
     ));
   }
-
 }

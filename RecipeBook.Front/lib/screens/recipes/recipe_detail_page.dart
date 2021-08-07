@@ -241,7 +241,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                       return const SizedBox(height: 20);
                                     },
                                   ),
-
                                   const SizedBox(height: 40),
                                   Text(
                                     "Приятного аппетита!",
