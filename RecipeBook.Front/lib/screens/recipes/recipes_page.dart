@@ -174,6 +174,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "простое";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -184,6 +190,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "детское";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -194,6 +206,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "шеф-повар";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -204,6 +222,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "праздник";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -255,6 +279,12 @@ class _RecipesPageState extends State<RecipesPage> {
                               skipCounter = 0;
                               isEndOfList = false;
                               widget.searchQuery = textController!.text;
+                              context.currentBeamLocation.update(
+                                (state) => state.copyWith(
+                                  pathBlueprintSegments: ['recipes'],
+                                  queryParameters: {'searchQuery': widget.searchQuery!},
+                                ),
+                              );
                               searchRecipes();
                             },
                           ),

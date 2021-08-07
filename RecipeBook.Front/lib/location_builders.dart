@@ -1,5 +1,7 @@
 import 'package:beamer/beamer.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:recipebook/screens/error/error_page.dart';
 import 'package:recipebook/screens/favorite/favorite_page.dart';
 import 'package:recipebook/screens/home/home_page.dart';
 import 'package:recipebook/screens/recipes/add_recipe_page.dart';

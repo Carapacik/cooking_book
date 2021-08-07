@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecipeBook.Application;
@@ -42,8 +43,12 @@ namespace RecipeBook.Api.Controllers
         public int EditRecipe(int id)
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
-            var formFile = Request.Form.Files[0];
-            return 1;
+            IFormFile formFile;
+            if (Request.Form.Files.Count > 0)
+            {
+               formFile = Request.Form.Files[0];
+            }
+            return id;
         }
 
         [HttpGet("{id:int}")]

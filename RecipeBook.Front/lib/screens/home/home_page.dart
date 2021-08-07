@@ -12,6 +12,7 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipebook/widgets/registration_dialog.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -83,7 +84,9 @@ class HomePage extends StatelessWidget {
                         text: "Войти",
                         width: 216,
                         height: 60,
-                        onPressed: () {},
+                        onPressed: () {
+                          registrationDialog(context);
+                        },
                       ),
                     ],
                   ),

@@ -152,44 +152,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Добавить новый рецепт",
+                          recipeDetail == null ? "Добавить новый рецепт" : "Редактировать рецепт",
                           style: Theme.of(context).textTheme.b42,
                         ),
                         ButtonContainedWidget(
-                          text: "Опубликовать",
+                          text: recipeDetail == null ? "Опубликовать" : "Изменить",
                           width: 278,
                           height: 60,
-                          onPressed: result == null
-                              ? null
-                              : () async {
-                                  final form = _formKey.currentState!;
-                                  if (form.validate()) {
-                                    form.save();
-
-                                    final AddRecipe recipe = AddRecipe(
-                                      title: recipeTitle!,
-                                      description: recipeDescription!,
-                                      cookingTimeInMinutes: int.parse(cookingTime!),
-                                      portionsCount: int.parse(portionsCount!),
-                                      tags: tags,
-                                      steps: stepNotifier.stepList,
-                                      ingredients: ingredientNotifier.ingredientList.toList(),
-                                    );
-
-                                    final formData = FormData.fromMap({
-                                      'recipe': jsonEncode(recipe),
-                                      'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
-                                    });
-
-                                    String nextPageIndex = "";
-                                    try {
-                                      await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
-                                    } catch (e) {
-                                      context.beamToNamed("/error");
-                                    }
-                                    context.beamToNamed("/recipes/$nextPageIndex");
-                                  }
-                                },
+                          onPressed: _getSendingFunction(context),
                         ),
                       ],
                     ),
@@ -511,5 +481,66 @@ class _AddRecipePageState extends State<AddRecipePage> {
         ],
       );
     }
+  }
+
+  VoidCallback? _getSendingFunction(BuildContext context) {
+    if (!isFilePicked || (isFilePicked && result == null && recipeDetail == null)) {
+      // Кнопка не будет нажиматься
+      return null;
+    }
+
+    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
+    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    return () async {
+      final form = _formKey.currentState!;
+      if (form.validate()) {
+        form.save();
+
+        final AddRecipe recipe = AddRecipe(
+          title: recipeTitle!,
+          description: recipeDescription!,
+          cookingTimeInMinutes: int.parse(cookingTime!),
+          portionsCount: int.parse(portionsCount!),
+          tags: tags.map((e) => e.trim()).where((element) => element.isNotEmpty).toSet().toList(),
+          steps: stepNotifier.stepList,
+          ingredients: ingredientNotifier.ingredientList.toList(),
+        );
+
+        late FormData formData;
+        if (recipeDetail != null) {
+          if (result != null) {
+            formData = FormData.fromMap({
+              'recipe': jsonEncode(recipe),
+              'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+            });
+          }
+          else {
+            formData = FormData.fromMap({
+              'recipe': jsonEncode(recipe),
+            });
+          }
+          try {
+            late String nextPageIndex;
+            await apiService.patchRequest("recipes/${recipeDetail!.recipeId}/edit", formData).then((value) => nextPageIndex = value.toString());
+            context.beamToNamed("/recipes/$nextPageIndex");
+          } catch (e) {
+            context.beamToNamed("/error?e=$e");
+          }
+        } else {
+          formData = FormData.fromMap({
+            'recipe': jsonEncode(recipe),
+            'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+          });
+
+          try {
+            late String nextPageIndex;
+            await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
+            context.beamToNamed("/recipes/$nextPageIndex");
+          } catch (e) {
+            context.beamToNamed("/error?e=$e");
+          }
+        }
+      }
+    };
   }
 }

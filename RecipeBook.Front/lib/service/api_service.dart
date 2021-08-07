@@ -17,6 +17,20 @@ class ApiService {
     initializeInterceptors();
   }
 
+
+  Future patchRequest(String endPoint, dynamic data) async {
+    Response response;
+    try {
+      response = await _dio.patch(
+        endPoint,
+        data: data,
+      );
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response.data;
+  }
+
   Future postRequest(String endPoint, dynamic data) async {
     Response response;
     try {
@@ -105,4 +119,5 @@ class ApiService {
       },
     ));
   }
+
 }

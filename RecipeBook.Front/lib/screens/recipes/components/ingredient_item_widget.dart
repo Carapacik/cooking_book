@@ -26,6 +26,8 @@ class IngredientItemWidget extends StatelessWidget {
           children: [
             const Expanded(child: SizedBox()),
             IconButton(
+              splashRadius: 1,
+              splashColor: Colors.transparent,
               onPressed: () {
                 ingredientNotifier.deleteIngredient(index);
               },
