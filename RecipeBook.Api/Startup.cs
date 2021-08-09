@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using RecipeBook.Api.Application.Services.Entities;
-using RecipeBook.Api.Infrastructure;
+using RecipeBook.Application.Services.Entities;
+using RecipeBook.Infrastructure;
 
 namespace RecipeBook.Api
 {
@@ -25,7 +25,7 @@ namespace RecipeBook.Api
             services.AddDependencies();
             services.AddDbContext<RecipeBookDbContext>(conf =>
                 conf.UseNpgsql(Configuration.GetConnectionString("ConnectionString")));
-            services.AddSingleton(Configuration.GetSection("StaticStorageSettings").Get<StaticStorageSettings>());
+            services.AddSingleton(Configuration.GetSection("FileStorageSettings").Get<FileStorageSettings>());
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" }); });
         }
 

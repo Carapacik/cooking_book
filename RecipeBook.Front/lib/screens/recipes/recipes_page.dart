@@ -19,7 +19,10 @@ import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class RecipesPage extends StatefulWidget {
-  RecipesPage({this.searchQuery, Key? key}) : super(key: key);
+  RecipesPage({
+    this.searchQuery,
+    Key? key,
+  }) : super(key: key);
 
   String? searchQuery;
 
@@ -57,6 +60,7 @@ class _RecipesPageState extends State<RecipesPage> {
         } else {
           recipeNotifier.addRecipes(listOfRecipes);
         }
+        textController?.text = widget.searchQuery!;
         skipCounter += 4;
       } else {
         // затычка, код не 200
@@ -173,6 +177,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "простое";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -183,6 +193,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "детское";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -193,6 +209,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "шеф-повар";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -203,6 +225,12 @@ class _RecipesPageState extends State<RecipesPage> {
                           skipCounter = 0;
                           isEndOfList = false;
                           widget.searchQuery = "праздник";
+                          context.currentBeamLocation.update(
+                            (state) => state.copyWith(
+                              pathBlueprintSegments: ['recipes'],
+                              queryParameters: {'searchQuery': widget.searchQuery!},
+                            ),
+                          );
                           searchRecipes();
                         },
                       ),
@@ -254,6 +282,12 @@ class _RecipesPageState extends State<RecipesPage> {
                               skipCounter = 0;
                               isEndOfList = false;
                               widget.searchQuery = textController!.text;
+                              context.currentBeamLocation.update(
+                                (state) => state.copyWith(
+                                  pathBlueprintSegments: ['recipes'],
+                                  queryParameters: {'searchQuery': widget.searchQuery!},
+                                ),
+                              );
                               searchRecipes();
                             },
                           ),

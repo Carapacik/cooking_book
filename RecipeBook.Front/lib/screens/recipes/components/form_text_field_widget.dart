@@ -4,9 +4,9 @@ import 'package:recipebook/theme.dart';
 
 class FormTextFieldWidget extends StatefulWidget {
   const FormTextFieldWidget({
+    required this.hintText,
     this.height,
     this.width,
-    required this.hintText,
     this.controller,
     this.onSaved,
     this.maxLength,
@@ -14,6 +14,7 @@ class FormTextFieldWidget extends StatefulWidget {
     this.textarea,
     this.validator,
     this.keyboardType,
+    this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,7 @@ class FormTextFieldWidget extends StatefulWidget {
   final TextInputType? keyboardType;
   final FormFieldValidator<String>? validator;
   final FormFieldSetter<String>? onSaved;
+  final ValueChanged<String>? onChanged;
 
   @override
   _FormTextFieldWidgetState createState() => _FormTextFieldWidgetState();
@@ -39,6 +41,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       height: widget.height,
       width: widget.width ?? double.infinity,
       child: TextFormField(
+        onChanged: widget.onChanged,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         validator: widget.validator,
@@ -57,7 +60,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
             borderRadius: BorderRadius.circular(16),
           ),
           errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red),
+            borderSide: const BorderSide(color: Palette.red),
             borderRadius: BorderRadius.circular(16),
           ),
           focusedBorder: OutlineInputBorder(

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RecipeBook.Api.Application.Converters;
-using RecipeBook.Api.Application.Dtos;
-using RecipeBook.Api.Application.Repositories;
-using RecipeBook.Api.Application.Services;
-using RecipeBook.Api.Application.Services.Entities;
-using RecipeBook.Api.Infrastructure;
+using RecipeBook.Api.Converters;
+using RecipeBook.Api.Dtos;
+using RecipeBook.Application;
+using RecipeBook.Application.Services;
+using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Api.Controllers
 {
@@ -32,9 +32,20 @@ namespace RecipeBook.Api.Controllers
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             var formFile = Request.Form.Files[0];
-            var newRecipe = _recipeService.AddRecipe(new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData));
+            var newRecipe = _recipeService.AddRecipe(recipeData.ConvertToAddRecipeCommand(FormFileAdapter.Create(formFile)));
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
+        }
+
+        [HttpPatch("{id:int}/edit")]
+        [DisableRequestSizeLimit]
+        public int EditRecipe(int id)
+        {
+            var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
+            IFormFile formFile;
+            if (Request.Form.Files.Count > 0) formFile = Request.Form.Files[0];
+            // потом дополню
+            return id;
         }
 
         [HttpGet("{id:int}")]

@@ -5,6 +5,8 @@ class StepNotifier extends ChangeNotifier {
 
   List<String> get stepList => _stepList;
 
+  replaceList(List<String> newList) => _stepList = newList;
+
   addStep() {
     _stepList.add("");
     notifyListeners();

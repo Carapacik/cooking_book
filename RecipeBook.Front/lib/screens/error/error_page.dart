@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 
-class ConnectionLostPage extends StatelessWidget {
-  const ConnectionLostPage({Key? key}) : super(key: key);
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({
+    this.errorMessage,
+    Key? key,
+  }) : super(key: key);
+
+  final String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +17,19 @@ class ConnectionLostPage extends StatelessWidget {
       body: Column(
         children: [
           const HeaderWidget(),
-          Center(
-            child: Text(
-              "Ошибка",
-              style: Theme.of(context).textTheme.b72.copyWith(color: Colors.red),
+          Padding(
+            padding: const EdgeInsets.only(top: 200),
+            child: Column(
+              children: [
+                Text(
+                  "Ошибка",
+                  style: Theme.of(context).textTheme.b72.copyWith(
+                        color: Palette.red,
+                        fontWeight: FontWeight.w900,
+                      ),
+                ),
+                if (errorMessage != null) Text(errorMessage!),
+              ],
             ),
           )
         ],

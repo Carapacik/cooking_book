@@ -2,6 +2,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Api", "RecipeBook.Api\RecipeBook.Api.csproj", "{2C1F6998-4567-4FAF-8CF1-78F41B1C233B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Infrastructure", "RecipeBook.Infrastructure\RecipeBook.Infrastructure.csproj", "{02328356-1FF5-4FCF-A444-0B20A48DDD94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Application", "RecipeBook.Application\RecipeBook.Application.csproj", "{104167CF-54A6-4408-A989-FF164C4331CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Domain", "RecipeBook.Domain\RecipeBook.Domain.csproj", "{50A13138-6481-464D-9C67-FF8CB083F452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Migrations", "RecipeBook.Migrations\RecipeBook.Migrations.csproj", "{45D75D14-291F-4F80-944E-5D57CE9C3945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +20,21 @@ Global
 		{2C1F6998-4567-4FAF-8CF1-78F41B1C233B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C1F6998-4567-4FAF-8CF1-78F41B1C233B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C1F6998-4567-4FAF-8CF1-78F41B1C233B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02328356-1FF5-4FCF-A444-0B20A48DDD94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02328356-1FF5-4FCF-A444-0B20A48DDD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02328356-1FF5-4FCF-A444-0B20A48DDD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02328356-1FF5-4FCF-A444-0B20A48DDD94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104167CF-54A6-4408-A989-FF164C4331CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104167CF-54A6-4408-A989-FF164C4331CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104167CF-54A6-4408-A989-FF164C4331CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104167CF-54A6-4408-A989-FF164C4331CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50A13138-6481-464D-9C67-FF8CB083F452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50A13138-6481-464D-9C67-FF8CB083F452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50A13138-6481-464D-9C67-FF8CB083F452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50A13138-6481-464D-9C67-FF8CB083F452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

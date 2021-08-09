@@ -5,6 +5,7 @@ import 'package:recipebook/location_builders.dart';
 import 'package:recipebook/notifier/ingredient_notifier.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/notifier/step_notifier.dart';
+import 'package:recipebook/screens/error/error_page.dart';
 import 'package:recipebook/theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -24,6 +25,7 @@ void main() {
 
 class App extends StatelessWidget {
   final routerDelegate = BeamerDelegate(
+    notFoundPage: BeamPage(title: "Ошибка", child: const ErrorPage()),
     locationBuilder: recipeLocationBuilder,
   );
 
