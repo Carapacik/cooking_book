@@ -45,7 +45,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   final cookingTimeController = TextEditingController();
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  static const baseImageStorage = "http://localhost:5000/static/images/";
+  static const baseImageStorage = "http://localhost:5000/storage/images/";
   late ApiService apiService;
   RecipeDetail? recipeDetail;
   FilePickerResult? result;
@@ -196,7 +196,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                               },
                               clipBehavior: Clip.antiAlias,
                               style: TextButton.styleFrom(
-                                backgroundColor: Palette.uploadPhotoBackground,
+                                backgroundColor: !isFilePicked ? Palette.red.withOpacity(0.4) : Palette.uploadPhotoBackground,
                                 primary: Palette.orange,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
@@ -376,7 +376,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
 
   Color _getColor() {
     if (!isFilePicked) {
-      return Colors.red;
+      return Palette.red;
     } else {
       return Palette.orange;
     }

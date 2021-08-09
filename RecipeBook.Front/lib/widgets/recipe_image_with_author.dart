@@ -14,7 +14,7 @@ class RecipeImageWithAuthor extends StatelessWidget {
   final String imageUrl;
   final String username;
   final double size;
-  static const baseImageStorage = "http://localhost:5000/static/images/";
+  static const baseImageStorage = "http://localhost:5000/storage/images/";
 
   @override
   Widget build(BuildContext context) {

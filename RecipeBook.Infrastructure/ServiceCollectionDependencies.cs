@@ -14,7 +14,7 @@ namespace RecipeBook.Infrastructure
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRecipeService, RecipeService>();
-            services.AddScoped<IStaticService, StaticService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
         public static void ConfigureDatabase(this DbContextOptionsBuilder dbOptions, string connectionString)

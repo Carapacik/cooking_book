@@ -32,7 +32,7 @@ namespace RecipeBook.Api.Controllers
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             var formFile = Request.Form.Files[0];
-            var newRecipe = _recipeService.AddRecipe(recipeData.Convert(FormFileAdapter.Create(formFile)));
+            var newRecipe = _recipeService.AddRecipe(recipeData.ConvertToAddRecipeCommand(FormFileAdapter.Create(formFile)));
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }

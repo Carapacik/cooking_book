@@ -7,7 +7,7 @@ namespace RecipeBook.Api.Converters
 {
     public static class AddRecipeCommandConverter
     {
-        public static AddRecipeCommand Convert(this AddRecipeCommandDto recipe, FormFileAdapter fileAdapter)
+        public static AddRecipeCommand ConvertToAddRecipeCommand(this AddRecipeCommandDto recipe, FormFileAdapter fileAdapter)
         {
             return new AddRecipeCommand(recipe.Title,
                 recipe.Description,
@@ -23,7 +23,7 @@ namespace RecipeBook.Api.Converters
                         Name = y
                     }).ToList()
                 }).ToList(),
-                fileAdapter.Convert()
+                fileAdapter.ConvertToStorageFile()
             );
         }
     }

@@ -2,11 +2,11 @@
 
 namespace RecipeBook.Api.Converters
 {
-    public static class FileConverter
+    public static class StorageFileConverter
     {
-        public static RecipeFile Convert(this FormFileAdapter fileAdapter)
+        public static StorageFile ConvertToStorageFile(this FormFileAdapter fileAdapter)
         {
-            return new RecipeFile
+            return new StorageFile
             {
                 Data = fileAdapter.Data,
                 FileExtension = fileAdapter.FileExtension

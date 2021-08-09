@@ -1,5 +1,4 @@
-﻿using System;
-using RecipeBook.Domain.Entities;
+﻿using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Infrastructure.Repositories

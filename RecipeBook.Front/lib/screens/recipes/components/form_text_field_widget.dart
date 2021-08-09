@@ -60,7 +60,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
             borderRadius: BorderRadius.circular(16),
           ),
           errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red),
+            borderSide: const BorderSide(color: Palette.red),
             borderRadius: BorderRadius.circular(16),
           ),
           focusedBorder: OutlineInputBorder(

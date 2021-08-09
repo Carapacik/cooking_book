@@ -6,18 +6,21 @@ import 'package:recipebook/screens/recipes/components/form_text_field_widget.dar
 import 'package:recipebook/theme.dart';
 
 class StepItemWidget extends StatelessWidget {
-  const StepItemWidget({
+  StepItemWidget({
     required this.index,
     Key? key,
   }) : super(key: key);
 
   final int index;
+  TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    final TextEditingController controller = TextEditingController();
-    controller.text = stepNotifier.stepList[index];
+    if (stepNotifier.stepList[index] != "") {
+      controller = TextEditingController();
+      controller!.text = stepNotifier.stepList[index];
+    }
 
     return Container(
       width: 790,

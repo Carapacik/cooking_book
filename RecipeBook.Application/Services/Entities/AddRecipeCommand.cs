@@ -12,7 +12,7 @@ namespace RecipeBook.Application.Services.Entities
             List<string> tags,
             List<string> steps,
             List<Ingredient> ingredients,
-            RecipeFile file)
+            StorageFile storageFile)
         {
             Title = title;
             Description = description;
@@ -21,7 +21,7 @@ namespace RecipeBook.Application.Services.Entities
             Tags = tags;
             Steps = steps;
             Ingredients = ingredients;
-            File = file;
+            StorageFile = storageFile;
         }
 
         public string Title { get; init; }
@@ -31,6 +31,6 @@ namespace RecipeBook.Application.Services.Entities
         public List<string> Tags { get; init; }
         public List<string> Steps { get; init; }
         public List<Ingredient> Ingredients { get; }
-        public RecipeFile File { get; }
+        public StorageFile StorageFile { get; }
     }
 }

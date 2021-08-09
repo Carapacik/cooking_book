@@ -17,11 +17,9 @@ namespace RecipeBook.Migrations
                 .Build();
 
             var builder = new DbContextOptionsBuilder<RecipeBookDbContext>();
-
             var connectionString = configuration.GetConnectionString("ConnectionString");
-
             builder.ConfigureDatabase(connectionString);
-
+            
             return new RecipeBookDbContext(builder.Options);
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace RecipeBook.Application.Services.Entities
 {
-    public class StaticStorageSettings
+    public class FileStorageSettings
     {
         public string BasePath { get; set; }
     }

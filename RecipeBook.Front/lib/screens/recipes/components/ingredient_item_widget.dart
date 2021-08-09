@@ -5,20 +5,24 @@ import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 
 class IngredientItemWidget extends StatelessWidget {
-  const IngredientItemWidget({
+  IngredientItemWidget({
     required this.index,
     Key? key,
   }) : super(key: key);
 
   final int index;
+  TextEditingController? titleController;
+  TextEditingController? itemsController;
 
   @override
   Widget build(BuildContext context) {
     final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController itemsController = TextEditingController();
-    titleController.text = ingredientNotifier.ingredientList[index].title;
-    itemsController.text = ingredientNotifier.ingredientList[index].ingredientNames.join("\n");
+    if (ingredientNotifier.ingredientList[index].title != "") {
+      titleController = TextEditingController();
+      itemsController = TextEditingController();
+      titleController!.text = ingredientNotifier.ingredientList[index].title;
+      itemsController!.text = ingredientNotifier.ingredientList[index].ingredientNames.join("\n");
+    }
 
     return Column(
       children: [

@@ -2,9 +2,9 @@
 
 namespace RecipeBook.Application.Services
 {
-    public interface IStaticService
+    public interface IFileStorageService
     {
         GetFileResult GetFile(string path);
-        SaveFileResult SaveFile(RecipeFile file, string path);
+        SaveFileResult SaveFile(StorageFile file, string path);
     }
 }

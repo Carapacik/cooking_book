@@ -5,25 +5,25 @@ using RecipeBook.Application.Services.Entities;
 
 namespace RecipeBook.Application.Services
 {
-    public class StaticService : IStaticService
+    public class FileStorageService : IFileStorageService
     {
-        private readonly StaticStorageSettings _staticStorageSettings;
+        private readonly FileStorageSettings _fileStorageSettings;
 
-        public StaticService(StaticStorageSettings staticStorageSettings)
+        public FileStorageService(FileStorageSettings fileStorageSettings)
         {
-            _staticStorageSettings = staticStorageSettings;
+            _fileStorageSettings = fileStorageSettings;
         }
 
         public GetFileResult GetFile(string filePath)
         {
-            return new GetFileResult(File.ReadAllBytes($"{_staticStorageSettings.BasePath}\\{filePath}"),
+            return new GetFileResult(File.ReadAllBytes($"{_fileStorageSettings.BasePath}\\{filePath}"),
                 filePath.Split('.').LastOrDefault());
         }
 
-        public SaveFileResult SaveFile(RecipeFile file, string path)
+        public SaveFileResult SaveFile(StorageFile file, string path)
         {
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
-            var newFilePath = $"{_staticStorageSettings.BasePath}\\{path}\\{fileName}";
+            var newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
             File.WriteAllBytes(newFilePath, file.Data); // Exception
             return new SaveFileResult($"{fileName}");
         }
