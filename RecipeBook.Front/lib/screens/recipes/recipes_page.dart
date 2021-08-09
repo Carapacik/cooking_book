@@ -19,7 +19,10 @@ import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class RecipesPage extends StatefulWidget {
-  RecipesPage({this.searchQuery, Key? key}) : super(key: key);
+  RecipesPage({
+    this.searchQuery,
+    Key? key,
+  }) : super(key: key);
 
   String? searchQuery;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using RecipeBook.Application.Converters;
 using RecipeBook.Application.Services.Entities;
 
 namespace RecipeBook.Application.Services
@@ -21,7 +20,7 @@ namespace RecipeBook.Application.Services
                 filePath.Split('.').LastOrDefault());
         }
 
-        public SaveFileResult SaveFile(FormFileAdapter file, string path)
+        public SaveFileResult SaveFile(RecipeFile file, string path)
         {
             var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
             var newFilePath = $"{_staticStorageSettings.BasePath}\\{path}\\{fileName}";

@@ -1,30 +1,36 @@
 ﻿using System.Collections.Generic;
-using RecipeBook.Application.Converters;
-using RecipeBook.Application.Dtos;
+using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Application.Services.Entities
 {
     public class AddRecipeCommand
     {
-        public AddRecipeCommand(FormFileAdapter formFileAdapter, AddRecipeCommandDto addRecipeCommandDto)
+        public AddRecipeCommand(string title,
+            string description,
+            int cookingTimeInMinutes,
+            int portionsCount,
+            List<string> tags,
+            List<string> steps,
+            List<Ingredient> ingredients,
+            RecipeFile file)
         {
-            FileAdapter = formFileAdapter;
-            Title = addRecipeCommandDto.Title;
-            Description = addRecipeCommandDto.Description;
-            CookingTimeInMinutes = addRecipeCommandDto.CookingTimeInMinutes;
-            PortionsCount = addRecipeCommandDto.PortionsCount;
-            Tags = addRecipeCommandDto.Tags;
-            Steps = addRecipeCommandDto.Steps;
-            Ingredients = addRecipeCommandDto.Ingredients;
+            Title = title;
+            Description = description;
+            CookingTimeInMinutes = cookingTimeInMinutes;
+            PortionsCount = portionsCount;
+            Tags = tags;
+            Steps = steps;
+            Ingredients = ingredients;
+            File = file;
         }
 
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int CookingTimeInMinutes { get; set; }
-        public int PortionsCount { get; set; }
-        public List<string> Tags { get; set; }
-        public List<string> Steps { get; set; }
-        public List<IngredientDto> Ingredients { get; set; }
-        public FormFileAdapter FileAdapter { get; set; }
+        public string Title { get; init; }
+        public string Description { get; init; }
+        public int CookingTimeInMinutes { get; init; }
+        public int PortionsCount { get; init; }
+        public List<string> Tags { get; init; }
+        public List<string> Steps { get; init; }
+        public List<Ingredient> Ingredients { get; }
+        public RecipeFile File { get; }
     }
 }

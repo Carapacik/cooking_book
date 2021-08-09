@@ -3,11 +3,10 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RecipeBook.Api.Converters;
+using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
-using RecipeBook.Application.Converters;
-using RecipeBook.Application.Dtos;
 using RecipeBook.Application.Services;
-using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Api.Controllers
@@ -33,21 +32,19 @@ namespace RecipeBook.Api.Controllers
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             var formFile = Request.Form.Files[0];
-            var newRecipe = _recipeService.AddRecipe(new AddRecipeCommand(FormFileAdapter.Create(formFile), recipeData));
+            var newRecipe = _recipeService.AddRecipe(recipeData.Convert(FormFileAdapter.Create(formFile)));
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
-        
+
         [HttpPatch("{id:int}/edit")]
         [DisableRequestSizeLimit]
         public int EditRecipe(int id)
         {
             var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
             IFormFile formFile;
-            if (Request.Form.Files.Count > 0)
-            {
-               formFile = Request.Form.Files[0];
-            }
+            if (Request.Form.Files.Count > 0) formFile = Request.Form.Files[0];
+            // потом дополню
             return id;
         }
 

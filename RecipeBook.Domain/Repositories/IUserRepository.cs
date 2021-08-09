@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using RecipeBook.Domain.Entities;
+﻿using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Domain.Repositories
 {

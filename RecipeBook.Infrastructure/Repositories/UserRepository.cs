@@ -1,4 +1,5 @@
-﻿using RecipeBook.Domain.Entities;
+﻿using System;
+using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Infrastructure.Repositories
@@ -7,7 +8,6 @@ namespace RecipeBook.Infrastructure.Repositories
     {
         public void Add(User user)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

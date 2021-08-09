@@ -7,7 +7,6 @@ import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/registration_dialog.dart';
 
 void notAuthDialog(BuildContext context) {
-
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24),

@@ -18,8 +18,8 @@ import 'package:recipebook/widgets/outlined_button.dart';
 
 class RecipeDetailPage extends StatefulWidget {
   const RecipeDetailPage({
-    Key? key,
     required this.recipeId,
+    Key? key,
   }) : super(key: key);
 
   final String recipeId;

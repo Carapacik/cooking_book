@@ -1,5 +1,4 @@
-﻿using RecipeBook.Application.Converters;
-using RecipeBook.Application.Services.Entities;
+﻿using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -17,15 +16,14 @@ namespace RecipeBook.Application.Services
         }
 
 
-
         public Recipe AddRecipe(AddRecipeCommand addCommand)
         {
-            var filePath = _staticService.SaveFile(addCommand.FileAdapter, "images");
+            var filePath = _staticService.SaveFile(addCommand.File, "images");
             var recipe = addCommand.Convert(filePath);
             _recipeRepository.Add(recipe);
             return recipe;
         }
-        
+
         public void DeleteRecipe()
         {
         }

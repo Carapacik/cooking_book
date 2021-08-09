@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace RecipeBook.Api.Migrations
+namespace RecipeBook.Migrations.Migrations
 {
     public partial class Init : Migration
     {
@@ -104,7 +104,7 @@ namespace RecipeBook.Api.Migrations
                     TagId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    RecipeId = table.Column<int>(type: "integer", nullable: true)
+                    RecipeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,7 +114,7 @@ namespace RecipeBook.Api.Migrations
                         column: x => x.RecipeId,
                         principalTable: "Recipe",
                         principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

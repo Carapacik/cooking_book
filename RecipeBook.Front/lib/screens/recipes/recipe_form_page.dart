@@ -26,16 +26,19 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-class AddRecipePage extends StatefulWidget {
-  const AddRecipePage({Key? key, this.recipeId}) : super(key: key);
+class RecipeFormPage extends StatefulWidget {
+  const RecipeFormPage({
+    this.recipeId,
+    Key? key,
+  }) : super(key: key);
 
   final String? recipeId;
 
   @override
-  _AddRecipePageState createState() => _AddRecipePageState();
+  _RecipeFormPageState createState() => _RecipeFormPageState();
 }
 
-class _AddRecipePageState extends State<AddRecipePage> {
+class _RecipeFormPageState extends State<RecipeFormPage> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final tagsController = TextEditingController();

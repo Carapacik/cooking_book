@@ -60,7 +60,7 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Include(x => x.Tags)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
-                    .ThenInclude(y => y.IngredientItems)
+                .ThenInclude(y => y.IngredientItems)
                 .AsQueryable();
         }
     }

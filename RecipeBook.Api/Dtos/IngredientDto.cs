@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RecipeBook.Application.Dtos
+namespace RecipeBook.Api.Dtos
 {
     public class IngredientDto
     {

@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Application", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Domain", "RecipeBook.Domain\RecipeBook.Domain.csproj", "{50A13138-6481-464D-9C67-FF8CB083F452}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeBook.Migrations", "RecipeBook.Migrations\RecipeBook.Migrations.csproj", "{45D75D14-291F-4F80-944E-5D57CE9C3945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{50A13138-6481-464D-9C67-FF8CB083F452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50A13138-6481-464D-9C67-FF8CB083F452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50A13138-6481-464D-9C67-FF8CB083F452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D75D14-291F-4F80-944E-5D57CE9C3945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
