@@ -2,7 +2,7 @@
 {
     public class SaveFileResult
     {
-        public SaveFileResult(string relativeUri)
+        public SaveFileResult( string relativeUri )
         {
             RelativeUri = relativeUri;
         }

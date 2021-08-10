@@ -9,23 +9,28 @@ namespace RecipeBook.Application.Services
     {
         private readonly FileStorageSettings _fileStorageSettings;
 
-        public FileStorageService(FileStorageSettings fileStorageSettings)
+        public FileStorageService( FileStorageSettings fileStorageSettings )
         {
             _fileStorageSettings = fileStorageSettings;
         }
 
-        public GetFileResult GetFile(string filePath)
+        public GetFileResult GetFile( string path )
         {
-            return new GetFileResult(File.ReadAllBytes($"{_fileStorageSettings.BasePath}\\{filePath}"),
-                filePath.Split('.').LastOrDefault());
+            return new GetFileResult( File.ReadAllBytes( $"{_fileStorageSettings.BasePath}\\{path}" ),
+                path.Split( '.' ).LastOrDefault() );
         }
 
-        public SaveFileResult SaveFile(StorageFile file, string path)
+        public void RemoveFile( string path, string fileName )
         {
-            var fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
-            var newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
-            File.WriteAllBytes(newFilePath, file.Data); // Exception
-            return new SaveFileResult($"{fileName}");
+            File.Delete( $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}" );
+        }
+
+        public SaveFileResult SaveFile( StorageFile file, string path )
+        {
+            string fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
+            string newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
+            File.WriteAllBytes( newFilePath, file.Data ); // Exception
+            return new SaveFileResult( $"{fileName}" );
         }
     }
 }

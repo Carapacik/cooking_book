@@ -6,10 +6,10 @@ namespace RecipeBook.Infrastructure.Configurations
 {
     public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {
-        public void Configure(EntityTypeBuilder<Tag> builder)
+        public void Configure( EntityTypeBuilder<Tag> builder )
         {
-            builder.ToTable("Tag").HasKey(item => item.TagId);
-            builder.Property(x => x.Name).IsRequired();
+            builder.ToTable( "Tag" ).HasKey( item => item.TagId );
+            builder.Property( x => x.Name ).IsRequired();
         }
     }
 }

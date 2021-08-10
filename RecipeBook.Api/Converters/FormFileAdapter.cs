@@ -9,21 +9,19 @@ namespace RecipeBook.Api.Converters
         public byte[] Data { get; set; }
         public string FileExtension { get; set; }
 
-        public static FormFileAdapter Create(IFormFile formFile)
+        public static FormFileAdapter Create( IFormFile formFile )
         {
+            if ( formFile == null ) return null;
+
             byte[] bytes;
-            using (var ms = new MemoryStream())
-            using (var stream = formFile.OpenReadStream())
+            using ( MemoryStream ms = new() )
+            using ( Stream stream = formFile.OpenReadStream() )
             {
-                stream.CopyTo(ms);
+                stream.CopyTo( ms );
                 bytes = ms.ToArray();
             }
 
-            return new FormFileAdapter
-            {
-                FileExtension = formFile.FileName.Split('.').Last(),
-                Data = bytes
-            };
+            return new FormFileAdapter { FileExtension = formFile.FileName.Split( '.' ).Last(), Data = bytes };
         }
     }
 }

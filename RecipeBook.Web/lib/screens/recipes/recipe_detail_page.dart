@@ -13,6 +13,7 @@ import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
+import 'package:recipebook/widgets/delete_dialog.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
@@ -117,7 +118,9 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                             width: 60,
                             height: 60,
                             icon: Icons.delete_outline,
-                            onPressed: () {},
+                            onPressed: () {
+                              deleteDialog(context, _deleteRecipe(context, recipeDetail.recipeId));
+                            },
                           ),
                           const SizedBox(width: 18),
                           ButtonContainedWidget(
@@ -261,5 +264,18 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         ),
       ),
     );
+  }
+
+  VoidCallback? _deleteRecipe(BuildContext context, int id) {
+    return () async {
+      try {
+        await apiService.deleteRequest("recipes/$id/delete");
+        Navigator.of(context).pop();
+        context.beamToNamed("/");
+      } catch (e) {
+        Navigator.of(context).pop();
+        context.beamToNamed("/error?e=$e");
+      }
+    };
   }
 }

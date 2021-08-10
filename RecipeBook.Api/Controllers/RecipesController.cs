@@ -7,19 +7,20 @@ using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
 using RecipeBook.Application.Services;
+using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
 namespace RecipeBook.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route( "api/[controller]" )]
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RecipesController(IRecipeRepository recipeRepository, IUnitOfWork unitOfWork, IRecipeService recipeService)
+        public RecipesController( IRecipeRepository recipeRepository, IUnitOfWork unitOfWork, IRecipeService recipeService )
         {
             _recipeRepository = recipeRepository;
             _unitOfWork = unitOfWork;
@@ -30,35 +31,44 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
-            var formFile = Request.Form.Files[0];
-            var newRecipe = _recipeService.AddRecipe(recipeData.ConvertToAddRecipeCommand(FormFileAdapter.Create(formFile)));
+            AddRecipeCommandDto recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>( Request.Form[ "recipe" ] );
+            IFormFile formFile = null;
+            if ( Request.Form.Files.Count > 0 ) formFile = Request.Form.Files[ 0 ];
+            Recipe newRecipe = _recipeService.AddRecipe( recipeData.ConvertToAddRecipeCommand( FormFileAdapter.Create( formFile ) ) );
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
 
-        [HttpPatch("{id:int}/edit")]
-        [DisableRequestSizeLimit]
-        public int EditRecipe(int id)
+        [HttpDelete( "{id:int}/delete" )]
+        public void DeleteRecipe( int id )
         {
-            var recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>(Request.Form["recipe"]);
-            IFormFile formFile;
-            if (Request.Form.Files.Count > 0) formFile = Request.Form.Files[0];
-            // потом дополню
-            return id;
+            _recipeService.DeleteRecipe( id );
+            _unitOfWork.Commit();
         }
 
-        [HttpGet("{id:int}")]
-        public RecipeDetailDto GetDetailRecipe(int id)
+        [HttpPatch( "{id:int}/edit" )]
+        [DisableRequestSizeLimit]
+        public int EditRecipe( int id )
         {
-            var recipe = _recipeRepository.GetById(id);
+            EditRecipeCommandDto recipeData = JsonConvert.DeserializeObject<EditRecipeCommandDto>( Request.Form[ "recipe" ] );
+            IFormFile formFile = null;
+            if ( Request.Form.Files.Count > 0 ) formFile = Request.Form.Files[ 0 ];
+            Recipe newRecipe = _recipeService.EditRecipe( recipeData.ConvertToEditRecipeCommand( FormFileAdapter.Create( formFile ) ) );
+            _unitOfWork.Commit();
+            return newRecipe.RecipeId;
+        }
+
+        [HttpGet( "{id:int}" )]
+        public RecipeDetailDto GetDetailRecipe( int id )
+        {
+            Recipe recipe = _recipeRepository.GetById( id );
             return recipe.ConvertToRecipeDetailDto();
         }
 
-        [HttpGet("recipe-of-day")]
+        [HttpGet( "recipe-of-day" )]
         public RecipeOfDayDto GetRecipeOfDay()
         {
-            var recipe = _recipeRepository.GetRecipeOfDay();
+            Recipe recipe = _recipeRepository.GetRecipeOfDay();
             return recipe.ConvertToRecipeOfDayDto();
         }
 
@@ -66,10 +76,10 @@ namespace RecipeBook.Api.Controllers
         public List<RecipeDto> GetRecipes(
             [FromQuery] int skip,
             [FromQuery] int take,
-            [FromQuery] string searchQuery)
+            [FromQuery] string searchQuery )
         {
-            var searchResult = _recipeRepository.Search(skip, take, searchQuery);
-            return searchResult.Select(x => x.ConvertToRecipeDto()).ToList();
+            IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
+            return searchResult.Select( x => x.ConvertToRecipeDto() ).ToList();
         }
     }
 }

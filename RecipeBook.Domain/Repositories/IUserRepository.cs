@@ -4,6 +4,6 @@ namespace RecipeBook.Domain.Repositories
 {
     public interface IUserRepository
     {
-        void Add(User user);
+        void Add( User user );
     }
 }

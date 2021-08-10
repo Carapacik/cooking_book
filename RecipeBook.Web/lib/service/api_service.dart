@@ -43,6 +43,16 @@ class ApiService {
     return response.data;
   }
 
+  Future deleteRequest(String endPoint) async {
+    Response response;
+    try {
+      response = await _dio.delete(endPoint);
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response.data;
+  }
+
   Future<Response> getRequest(String endPoint) async {
     Response response;
     try {

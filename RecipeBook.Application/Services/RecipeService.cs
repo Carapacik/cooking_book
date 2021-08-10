@@ -10,26 +10,38 @@ namespace RecipeBook.Application.Services
         private readonly IFileStorageService _fileStorageService;
         private readonly IRecipeRepository _recipeRepository;
 
-        public RecipeService(IRecipeRepository recipeRepository, IFileStorageService fileStorageService)
+        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService )
         {
             _recipeRepository = recipeRepository;
             _fileStorageService = fileStorageService;
         }
 
 
-        public Recipe AddRecipe(AddRecipeCommand addCommand)
+        public Recipe AddRecipe( AddRecipeCommand addCommand )
         {
-            var filePath = _fileStorageService.SaveFile(addCommand.StorageFile, "images");
-            var recipe = ConvertToRecipe(addCommand, filePath);
-            _recipeRepository.Add(recipe);
+            SaveFileResult filePath = _fileStorageService.SaveFile( addCommand.StorageFile, "images" );
+            Recipe recipe = ConvertToRecipe( addCommand, filePath );
+            _recipeRepository.Add( recipe );
             return recipe;
         }
 
-        public void DeleteRecipe()
+        public Recipe EditRecipe( EditRecipeCommand editCommand )
         {
+            SaveFileResult filePath = null;
+            if ( editCommand.StorageFile == null ) filePath = _fileStorageService.SaveFile( editCommand.StorageFile, "images" );
+            Recipe recipe = ConvertToRecipe( editCommand, filePath );
+            _recipeRepository.Edit( recipe );
+            return recipe;
         }
 
-        private static Recipe ConvertToRecipe(AddRecipeCommand addRecipeCommandDto, SaveFileResult saveFileResult)
+        public void DeleteRecipe( int id )
+        {
+            string imagePath = _recipeRepository.GetById( id ).ImageUrl;
+            _fileStorageService.RemoveFile( "images", imagePath );
+            _recipeRepository.Delete( id );
+        }
+
+        private static Recipe ConvertToRecipe( AddRecipeCommand addRecipeCommandDto, SaveFileResult saveFileResult )
         {
             return new Recipe
             {
@@ -38,15 +50,24 @@ namespace RecipeBook.Application.Services
                 Description = addRecipeCommandDto.Description,
                 CookingTimeInMinutes = addRecipeCommandDto.CookingTimeInMinutes,
                 PortionsCount = addRecipeCommandDto.PortionsCount,
-                Tags = addRecipeCommandDto.Tags.Select(x => new Tag
-                {
-                    Name = x
-                }).ToList(),
-                Steps = addRecipeCommandDto.Steps.Select(x => new Step
-                {
-                    Description = x
-                }).ToList(),
+                Tags = addRecipeCommandDto.Tags.Select( x => new Tag { Name = x } ).ToList(),
+                Steps = addRecipeCommandDto.Steps.Select( x => new Step { Description = x } ).ToList(),
                 Ingredients = addRecipeCommandDto.Ingredients.ToList()
+            };
+        }
+
+        private static Recipe ConvertToRecipe( EditRecipeCommand editRecipeCommandDto, SaveFileResult saveFileResult )
+        {
+            return new Recipe
+            {
+                ImageUrl = saveFileResult.RelativeUri,
+                Title = editRecipeCommandDto.Title,
+                Description = editRecipeCommandDto.Description,
+                CookingTimeInMinutes = editRecipeCommandDto.CookingTimeInMinutes,
+                PortionsCount = editRecipeCommandDto.PortionsCount,
+                Tags = editRecipeCommandDto.Tags.Select( x => new Tag { Name = x } ).ToList(),
+                Steps = editRecipeCommandDto.Steps.Select( x => new Step { Description = x } ).ToList(),
+                Ingredients = editRecipeCommandDto.Ingredients.ToList()
             };
         }
     }

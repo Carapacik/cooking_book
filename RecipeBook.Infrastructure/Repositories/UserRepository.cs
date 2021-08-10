@@ -5,7 +5,7 @@ namespace RecipeBook.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        public void Add(User user)
+        public void Add( User user )
         {
         }
     }

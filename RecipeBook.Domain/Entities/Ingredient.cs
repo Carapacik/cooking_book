@@ -4,7 +4,7 @@ namespace RecipeBook.Domain.Entities
 {
     public class Ingredient
     {
-        public int IngredientId { get; private set; }
+        public int IngredientId { get; set; }
         public string Title { get; set; }
 
         public int RecipeId { get; set; }
