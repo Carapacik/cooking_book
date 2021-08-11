@@ -3,9 +3,9 @@ using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Application.Services.Entities
 {
-    public class AddRecipeCommand
+    public class RecipeCommand
     {
-        public AddRecipeCommand( string title,
+        public RecipeCommand( string title,
             string description,
             int cookingTimeInMinutes,
             int portionsCount,

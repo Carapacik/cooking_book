@@ -29,7 +29,7 @@ namespace RecipeBook.Api
                 conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie( options =>
             {
-                options.LoginPath = new PathString( "/Account/Login" );
+                options.LoginPath = new PathString( "/api/user/login" );
             } );
             services.AddSingleton( Configuration.GetSection( "FileStorageSettings" ).Get<FileStorageSettings>() );
             services.AddSwaggerGen( c => { c.SwaggerDoc( "v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" } ); } );

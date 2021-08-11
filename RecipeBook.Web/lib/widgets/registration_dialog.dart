@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class UserData {
-  UserData();
+  UserData({
+    this.password,
+    this.login,
+    this.name,
+  });
 
-  late String login;
-  late String name;
-  late String password;
+  late String? login;
+  late String? name;
+  late String? password;
 }
 
 void registrationDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserData user = UserData();
   String? currentPassword;
+  final apiService = ApiService();
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -54,7 +60,7 @@ void registrationDialog(BuildContext context) {
                 return null;
               },
               onSaved: (value) {
-                user.name = value!;
+                user.name = value;
               },
             ),
             const SizedBox(height: 20),
@@ -65,7 +71,7 @@ void registrationDialog(BuildContext context) {
                 return null;
               },
               onSaved: (value) {
-                user.login = value!;
+                user.login = value;
               },
             ),
             const SizedBox(height: 20),
@@ -99,7 +105,7 @@ void registrationDialog(BuildContext context) {
                         return null;
                       },
                       onSaved: (value) {
-                        user.password = value!;
+                        user.password = value;
                       },
                     ),
                   ),
@@ -113,11 +119,23 @@ void registrationDialog(BuildContext context) {
                   text: "Зарегестрироваться",
                   width: 278,
                   height: 60,
-                  onPressed: () {
+                  onPressed: () async {
                     final form = _formKey.currentState!;
                     if (form.validate()) {
                       form.save();
-                      // final UserData currUser = user;
+
+                      final userData = UserData(
+                        name: user.name,
+                        password: user.password,
+                        login: user.login,
+                      );
+                      try {
+                        late String next;
+                        await apiService.patchRequest("/user/registration", userData).then((value) => next = value.toString());
+                        print(next);
+                      } catch (e) {
+                        print(e);
+                      }
                     }
                   },
                 ),

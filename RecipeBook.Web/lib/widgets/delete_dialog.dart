@@ -4,7 +4,7 @@ import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-void deleteDialog(BuildContext context, VoidCallback? onPress) {
+void deleteDialog(BuildContext context, VoidCallback? onPressed) {
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24),
@@ -37,7 +37,7 @@ void deleteDialog(BuildContext context, VoidCallback? onPress) {
                 text: "Удалить",
                 width: 278,
                 height: 60,
-                onPressed: onPress,
+                onPressed: onPressed,
               ),
               const SizedBox(width: 24),
               ButtonOutlinedWidget(

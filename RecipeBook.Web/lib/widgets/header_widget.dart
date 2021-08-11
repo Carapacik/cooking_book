@@ -5,6 +5,7 @@ import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:recipebook/widgets/login_dialog.dart';
 
 class HeaderWidget extends StatefulWidget {
   const HeaderWidget({Key? key, this.currentSelectedPage}) : super(key: key);
@@ -27,17 +28,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextButton(
-              onPressed: () {
-                context.beamToNamed('/');
-              },
-              style: TextButton.styleFrom(
-                primary: Palette.orange,
-              ),
-              child: Text(
-                "Recipes",
-                style: Theme.of(context).textTheme.b24.copyWith(color: Palette.orange),
-              ),
+            Text(
+              "Recipes",
+              style: Theme.of(context).textTheme.b24.copyWith(color: Palette.orange),
             ),
             const SizedBox(width: 80),
             ...List.generate(
@@ -60,7 +53,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
             const Expanded(child: SizedBox()),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                loginDialog(context);
+              },
               style: TextButton.styleFrom(primary: Palette.orange),
               child: Row(
                 children: [

@@ -7,6 +7,7 @@ using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
 using RecipeBook.Application.Services;
+using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -31,11 +32,9 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            AddRecipeCommandDto recipeData = JsonConvert.DeserializeObject<AddRecipeCommandDto>( Request.Form[ "recipe" ] );
-            IFormFile formFile = null;
-            if ( Request.Form.Files.Count > 0 ) formFile = Request.Form.Files[ 0 ];
-            Recipe newRecipe = _recipeService.AddRecipe( recipeData.ConvertToAddRecipeCommand( FormFileAdapter.Create( formFile ) ) );
+            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser(Request.Form) );
             _unitOfWork.Commit();
+            
             return newRecipe.RecipeId;
         }
 
@@ -50,11 +49,9 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int EditRecipe( int id )
         {
-            EditRecipeCommandDto recipeData = JsonConvert.DeserializeObject<EditRecipeCommandDto>( Request.Form[ "recipe" ] );
-            IFormFile formFile = null;
-            if ( Request.Form.Files.Count > 0 ) formFile = Request.Form.Files[ 0 ];
-            Recipe newRecipe = _recipeService.EditRecipe( recipeData.ConvertToEditRecipeCommand( FormFileAdapter.Create( formFile ) ) );
+            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser(Request.Form) );
             _unitOfWork.Commit();
+            
             return newRecipe.RecipeId;
         }
 
@@ -69,6 +66,7 @@ namespace RecipeBook.Api.Controllers
         public RecipeOfDayDto GetRecipeOfDay()
         {
             Recipe recipe = _recipeRepository.GetRecipeOfDay();
+            
             return recipe.ConvertToRecipeOfDayDto();
         }
 
@@ -79,7 +77,20 @@ namespace RecipeBook.Api.Controllers
             [FromQuery] string searchQuery )
         {
             IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
+            
             return searchResult.Select( x => x.ConvertToRecipeDto() ).ToList();
+        }
+
+        private static RecipeCommand RecipeCommandParser( IFormCollection formCollection )
+        {
+            var recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "recipe" ] );
+            IFormFile formFile = null;
+            if ( formCollection.Files.Count > 0 )
+            {
+                formFile = formCollection.Files[ 0 ];
+            }
+
+            return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ) );
         }
     }
 }
