@@ -5,7 +5,8 @@ namespace RecipeBook.Application.Services.Entities
 {
     public class RecipeCommand
     {
-        public RecipeCommand( string title,
+        public RecipeCommand( int id,
+            string title,
             string description,
             int cookingTimeInMinutes,
             int portionsCount,
@@ -14,6 +15,7 @@ namespace RecipeBook.Application.Services.Entities
             List<Ingredient> ingredients,
             StorageFile storageFile )
         {
+            RecipeId = id;
             Title = title;
             Description = description;
             CookingTimeInMinutes = cookingTimeInMinutes;
@@ -24,6 +26,7 @@ namespace RecipeBook.Application.Services.Entities
             StorageFile = storageFile;
         }
 
+        public int RecipeId { get; init; }
         public string Title { get; init; }
         public string Description { get; init; }
         public int CookingTimeInMinutes { get; init; }

@@ -24,31 +24,31 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost( "login" )]
-        public string Login( UserLoginDto userDto )
+        public AuthenticationResultDto Login( UserDto userDto )
         {
             User user = _userRepository.GetByLogin( userDto.Login );
             if ( user != null )
             {
-                Authenticate( user.Login );
-                return "success";
+                Authenticate( userDto.Login );
+                return new AuthenticationResultDto( true );
             }
 
-            return "fail";
+            return new AuthenticationResultDto( false );
         }
 
         [HttpPost( "register" )]
-        //[ValidateAntiForgeryToken] // с этим не работает
-        public string Register( UserRegisterDto userDto )
+        public AuthenticationResultDto Register( UserDto userDto )
         {
-            User user = _userRepository.GetById( 1 );
+            User user = _userRepository.GetByLogin( userDto.Login );
             if ( user == null )
             {
                 _userRepository.Add( new User { Login = userDto.Login, Name = userDto.Name, Password = userDto.Password } );
                 _unitOfWork.Commit();
-                return "success";
+                Authenticate( userDto.Login );
+                return new AuthenticationResultDto( true );
             }
 
-            return "fail";
+            return new AuthenticationResultDto( false );
         }
 
         private void Authenticate( string userName )

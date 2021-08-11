@@ -15,6 +15,7 @@ class FormTextFieldWidget extends StatefulWidget {
     this.validator,
     this.keyboardType,
     this.onChanged,
+    this.obscureText,
     Key? key,
   }) : super(key: key);
 
@@ -25,10 +26,11 @@ class FormTextFieldWidget extends StatefulWidget {
   final int? maxLength;
   final int? minLines;
   final bool? textarea;
+  final bool? obscureText;
+  final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final FormFieldValidator<String>? validator;
   final FormFieldSetter<String>? onSaved;
-  final ValueChanged<String>? onChanged;
 
   @override
   _FormTextFieldWidgetState createState() => _FormTextFieldWidgetState();
@@ -41,6 +43,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       height: widget.height,
       width: widget.width ?? double.infinity,
       child: TextFormField(
+        obscureText: widget.obscureText != null,
         onChanged: widget.onChanged,
         controller: widget.controller,
         keyboardType: widget.keyboardType,

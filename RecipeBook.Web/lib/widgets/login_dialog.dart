@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:recipebook/model/user.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
@@ -8,7 +13,9 @@ import 'package:recipebook/widgets/registration_dialog.dart';
 
 void loginDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserData user = UserData();
+  final apiService = ApiService();
+  final user = User();
+  bool isLoginExist = true;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -42,10 +49,11 @@ void loginDialog(BuildContext context) {
               hintText: "Логин",
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
+                if (!isLoginExist) return "Такого логина не существует";
                 return null;
               },
               onSaved: (value) {
-                user.name = value!;
+                user.name = value;
               },
             ),
             const SizedBox(height: 20),
@@ -64,10 +72,31 @@ void loginDialog(BuildContext context) {
                   text: "Войти",
                   width: 278,
                   height: 60,
-                  onPressed: () {
+                  onPressed: () async {
                     final form = _formKey.currentState!;
                     if (form.validate()) {
                       form.save();
+
+                      final userData = User(
+                        password: user.password,
+                        login: user.login,
+                      );
+                      try {
+                        late dynamic next;
+                        await apiService.postRequest("user/login", userData.toJson()).then((value) => next = value);
+                        final result = jsonEncode(next['result']);
+                        if (result == 'true') {
+                          Navigator.of(context).pop();
+                          context.beamToNamed("/");
+                        } else {
+                          form.setState(() {
+                            isLoginExist = false;
+                          });
+                          form.validate();
+                        }
+                      } catch (e) {
+                        context.beamToNamed("/error?e=$e");
+                      }
                       // final UserData currUser = user;
                     }
                   },

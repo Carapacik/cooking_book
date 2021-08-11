@@ -4,6 +4,7 @@ namespace RecipeBook.Api.Dtos
 {
     public class RecipeCommandDto
     {
+        public int RecipeId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int CookingTimeInMinutes { get; set; }

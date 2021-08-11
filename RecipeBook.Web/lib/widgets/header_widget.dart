@@ -44,10 +44,12 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  child: Text(HeaderButtons.getById(index).name,
-                      style: widget.currentSelectedPage?.index == index
-                          ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
-                          : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey)),
+                  child: Text(
+                    HeaderButtons.getById(index).name,
+                    style: widget.currentSelectedPage?.index == index
+                        ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
+                        : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
+                  ),
                 ),
               ),
             ),

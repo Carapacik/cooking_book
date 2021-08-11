@@ -32,9 +32,8 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser(Request.Form) );
+            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form ) );
             _unitOfWork.Commit();
-            
             return newRecipe.RecipeId;
         }
 
@@ -49,9 +48,9 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int EditRecipe( int id )
         {
-            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser(Request.Form) );
+            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form ) );
             _unitOfWork.Commit();
-            
+
             return newRecipe.RecipeId;
         }
 
@@ -66,7 +65,6 @@ namespace RecipeBook.Api.Controllers
         public RecipeOfDayDto GetRecipeOfDay()
         {
             Recipe recipe = _recipeRepository.GetRecipeOfDay();
-            
             return recipe.ConvertToRecipeOfDayDto();
         }
 
@@ -77,13 +75,12 @@ namespace RecipeBook.Api.Controllers
             [FromQuery] string searchQuery )
         {
             IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
-            
             return searchResult.Select( x => x.ConvertToRecipeDto() ).ToList();
         }
 
         private static RecipeCommand RecipeCommandParser( IFormCollection formCollection )
         {
-            var recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "recipe" ] );
+            RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "recipe" ] );
             IFormFile formFile = null;
             if ( formCollection.Files.Count > 0 )
             {

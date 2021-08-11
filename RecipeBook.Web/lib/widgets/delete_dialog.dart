@@ -27,7 +27,7 @@ void deleteDialog(BuildContext context, VoidCallback? onPressed) {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Удалить?",
+            "Удалить рецепт?",
             style: Theme.of(context).textTheme.b24,
           ),
           const SizedBox(height: 40),

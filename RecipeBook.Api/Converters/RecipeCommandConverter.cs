@@ -9,7 +9,8 @@ namespace RecipeBook.Api.Converters
     {
         public static RecipeCommand ConvertToRecipeCommand( this RecipeCommandDto recipe, FormFileAdapter fileAdapter )
         {
-            return new RecipeCommand( recipe.Title,
+            return new RecipeCommand( recipe.RecipeId,
+                recipe.Title,
                 recipe.Description,
                 recipe.CookingTimeInMinutes,
                 recipe.PortionsCount,

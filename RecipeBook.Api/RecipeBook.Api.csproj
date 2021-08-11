@@ -3,13 +3,13 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RecipeBook.Application\RecipeBook.Application.csproj" />
-    <ProjectReference Include="..\RecipeBook.Domain\RecipeBook.Domain.csproj" />
-    <ProjectReference Include="..\RecipeBook.Infrastructure\RecipeBook.Infrastructure.csproj" />
+    <ProjectReference Include="..\RecipeBook.Application\RecipeBook.Application.csproj"/>
+    <ProjectReference Include="..\RecipeBook.Domain\RecipeBook.Domain.csproj"/>
+    <ProjectReference Include="..\RecipeBook.Infrastructure\RecipeBook.Infrastructure.csproj"/>
   </ItemGroup>
 </Project>

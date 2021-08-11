@@ -2,11 +2,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'ingredient.dart';
 
-part 'add_recipe.g.dart';
+part 'recipe_command.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class AddRecipe {
-  AddRecipe({
+class RecipeCommand {
+  RecipeCommand({
+    this.recipeId,
     required this.title,
     required this.description,
     required this.cookingTimeInMinutes,
@@ -16,6 +17,7 @@ class AddRecipe {
     required this.ingredients,
   });
 
+  final int? recipeId;
   final String title;
   final String description;
   final int cookingTimeInMinutes;
@@ -24,7 +26,7 @@ class AddRecipe {
   final List<String> steps;
   final List<Ingredient> ingredients;
 
-  factory AddRecipe.fromJson(Map<String, dynamic> json) => _$AddRecipeFromJson(json);
+  factory RecipeCommand.fromJson(Map<String, dynamic> json) => _$RecipeCommandFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AddRecipeToJson(this);
+  Map<String, dynamic> toJson() => _$RecipeCommandToJson(this);
 }

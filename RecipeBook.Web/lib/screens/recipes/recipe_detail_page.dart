@@ -129,7 +129,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                             height: 60,
                             icon: Icons.edit,
                             padding: 18,
-                            onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit"),
+                            onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit", popBeamLocationOnPop: true),
                           ),
                         ],
                       ),

@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'add_recipe.dart';
+part of 'recipe_command.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AddRecipe _$AddRecipeFromJson(Map<String, dynamic> json) {
-  return AddRecipe(
+RecipeCommand _$RecipeCommandFromJson(Map<String, dynamic> json) {
+  return RecipeCommand(
+    recipeId: json['recipeId'] as int?,
     title: json['title'] as String,
     description: json['description'] as String,
     cookingTimeInMinutes: json['cookingTimeInMinutes'] as int,
@@ -18,7 +19,8 @@ AddRecipe _$AddRecipeFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AddRecipeToJson(AddRecipe instance) => <String, dynamic>{
+Map<String, dynamic> _$RecipeCommandToJson(RecipeCommand instance) => <String, dynamic>{
+      'recipeId': instance.recipeId,
       'title': instance.title,
       'description': instance.description,
       'cookingTimeInMinutes': instance.cookingTimeInMinutes,

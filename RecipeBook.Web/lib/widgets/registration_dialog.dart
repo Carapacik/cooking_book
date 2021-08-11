@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:recipebook/model/user.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/service/api_service.dart';
@@ -7,23 +11,12 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-class UserData {
-  UserData({
-    this.password,
-    this.login,
-    this.name,
-  });
-
-  late String? login;
-  late String? name;
-  late String? password;
-}
-
 void registrationDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserData user = UserData();
-  String? currentPassword;
   final apiService = ApiService();
+  final user = User();
+  String? currentPassword;
+  bool isLoginExist = false;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -54,6 +47,7 @@ void registrationDialog(BuildContext context) {
             ),
             const SizedBox(height: 45),
             FormTextFieldWidget(
+              keyboardType: TextInputType.name,
               hintText: "Имя",
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
@@ -65,9 +59,15 @@ void registrationDialog(BuildContext context) {
             ),
             const SizedBox(height: 20),
             FormTextFieldWidget(
+              keyboardType: TextInputType.text,
               hintText: "Логин",
+              onChanged: (value) {
+                isLoginExist = false;
+              },
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
+                if (value.length > 20) return "Логин меньше 20 символов";
+                if (isLoginExist) return "Такой логин уже существует";
                 return null;
               },
               onSaved: (value) {
@@ -81,6 +81,7 @@ void registrationDialog(BuildContext context) {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 278),
                     child: FormTextFieldWidget(
+                      obscureText: true,
                       hintText: "Пароль",
                       onChanged: (value) {
                         currentPassword = value;
@@ -98,6 +99,7 @@ void registrationDialog(BuildContext context) {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 278),
                     child: FormTextFieldWidget(
+                      obscureText: true,
                       hintText: "Повторите пароль",
                       validator: (value) {
                         if (value!.isEmpty) return "Не может быть пустым";
@@ -124,17 +126,26 @@ void registrationDialog(BuildContext context) {
                     if (form.validate()) {
                       form.save();
 
-                      final userData = UserData(
+                      final userData = User(
                         name: user.name,
                         password: user.password,
                         login: user.login,
                       );
                       try {
-                        late String next;
-                        await apiService.patchRequest("/user/registration", userData).then((value) => next = value.toString());
-                        print(next);
+                        late dynamic next;
+                        await apiService.postRequest("user/register", userData.toJson()).then((value) => next = value);
+                        final result = jsonEncode(next['result']);
+                        if (result == 'true') {
+                          Navigator.of(context).pop();
+                          context.beamToNamed("/");
+                        } else {
+                          form.setState(() {
+                            isLoginExist = true;
+                          });
+                          form.validate();
+                        }
                       } catch (e) {
-                        print(e);
+                        context.beamToNamed("/error?e=$e");
                       }
                     }
                   },

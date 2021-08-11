@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/add_recipe.dart';
+import 'package:recipebook/model/recipe_command.dart';
 import 'package:recipebook/model/recipe_detail.dart';
 import 'package:recipebook/notifier/ingredient_notifier.dart';
 import 'package:recipebook/notifier/step_notifier.dart';
@@ -228,6 +228,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                   ),
                                   const SizedBox(height: 20),
                                   FormTextFieldWidget(
+                                    keyboardType: TextInputType.multiline,
                                     controller: descriptionController,
                                     textarea: true,
                                     height: 120,
@@ -499,7 +500,8 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
       if (form.validate()) {
         form.save();
 
-        final AddRecipe recipe = AddRecipe(
+        final recipe = RecipeCommand(
+          recipeId: recipeDetail != null ? recipeDetail!.recipeId : 0,
           title: recipeTitle!,
           description: recipeDescription!,
           cookingTimeInMinutes: int.parse(cookingTime!),
@@ -537,6 +539,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           try {
             late String nextPageIndex;
             await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
+
             context.beamToNamed("/recipes/$nextPageIndex");
           } catch (e) {
             context.beamToNamed("/error?e=$e");

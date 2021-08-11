@@ -32,8 +32,16 @@ namespace RecipeBook.Application.Services
             {
                 filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
             }
+
             Recipe recipe = ConvertToRecipe( command, filePath );
-            _recipeRepository.Edit( recipe );
+            Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
+            if ( filePath != null )
+            {
+                _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
+            }
+
+            Edit( existingRecipe, recipe );
+
             return recipe;
         }
 
@@ -44,18 +52,36 @@ namespace RecipeBook.Application.Services
             _recipeRepository.Delete( id );
         }
 
+
+        private void Edit( Recipe existingRecipe, Recipe editedRecipe )
+        {
+            if ( editedRecipe.ImageUrl != "" )
+            {
+                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
+            }
+
+            existingRecipe.Title = editedRecipe.Title;
+            existingRecipe.Description = editedRecipe.Description;
+            existingRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
+            existingRecipe.PortionsCount = editedRecipe.PortionsCount;
+            existingRecipe.Tags = editedRecipe.Tags;
+            existingRecipe.Steps = editedRecipe.Steps;
+            existingRecipe.Ingredients = editedRecipe.Ingredients;
+        }
+
         private static Recipe ConvertToRecipe( RecipeCommand recipeCommandDto, SaveFileResult saveFileResult )
         {
             return new Recipe
             {
-                ImageUrl = saveFileResult.RelativeUri,
+                ImageUrl = saveFileResult != null ? saveFileResult.RelativeUri : "",
+                RecipeId = recipeCommandDto.RecipeId,
                 Title = recipeCommandDto.Title,
                 Description = recipeCommandDto.Description,
                 CookingTimeInMinutes = recipeCommandDto.CookingTimeInMinutes,
                 PortionsCount = recipeCommandDto.PortionsCount,
                 Tags = recipeCommandDto.Tags.Select( x => new Tag { Name = x } ).ToList(),
                 Steps = recipeCommandDto.Steps.Select( x => new Step { Description = x } ).ToList(),
-                Ingredients = recipeCommandDto.Ingredients.ToList()
+                Ingredients = recipeCommandDto.Ingredients
             };
         }
     }

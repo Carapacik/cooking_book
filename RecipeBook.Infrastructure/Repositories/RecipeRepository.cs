@@ -29,10 +29,11 @@ namespace RecipeBook.Infrastructure.Repositories
         public void Edit( Recipe editedRecipe )
         {
             Recipe oldRecipe = GetById( editedRecipe.RecipeId );
-            if ( editedRecipe.ImageUrl != null )
+            if ( editedRecipe.ImageUrl != "" )
             {
                 oldRecipe.ImageUrl = editedRecipe.ImageUrl;
             }
+
             oldRecipe.Title = editedRecipe.Title;
             oldRecipe.Description = editedRecipe.Description;
             oldRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
