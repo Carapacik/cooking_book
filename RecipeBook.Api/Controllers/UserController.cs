@@ -51,12 +51,26 @@ namespace RecipeBook.Api.Controllers
             return new AuthenticationResultDto( false );
         }
 
+        [HttpGet( "get-user" )]
+        public string GetUser()
+        {
+            // как тут возращать userId, его логин и имя?
+            if ( User.Identity != null ) return User.ToString();
+            return null;
+        }
+
         private void Authenticate( string userName )
         {
             List<Claim> claims = new() { new Claim( ClaimsIdentity.DefaultNameClaimType, userName ) };
-            ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
+            ClaimsIdentity id = new(claims, "RecipeBookCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) ).Wait();
+        }
+
+        
+        [HttpGet( "logout" )]
+        public void Logout()
+        {
+            HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme ).Wait();
         }
     }
 }
