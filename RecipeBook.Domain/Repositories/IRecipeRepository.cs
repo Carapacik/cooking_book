@@ -5,10 +5,11 @@ namespace RecipeBook.Domain.Repositories
 {
     public interface IRecipeRepository
     {
-        void Add(Recipe recipe);
-        void Edit(Recipe recipe);
-        Recipe GetById(int id);
+        void Add( Recipe recipe );
+        void Delete( int id );
+        void Edit( Recipe editedRecipe );
+        Recipe GetById( int id );
         Recipe GetRecipeOfDay();
-        IEnumerable<Recipe> Search(int skip, int take, string searchQuery);
+        IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery );
     }
 }

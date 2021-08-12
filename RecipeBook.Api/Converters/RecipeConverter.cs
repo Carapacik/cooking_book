@@ -6,7 +6,7 @@ namespace RecipeBook.Api.Converters
 {
     public static class RecipeConverter
     {
-        public static RecipeOfDayDto ConvertToRecipeOfDayDto(this Recipe recipe)
+        public static RecipeOfDayDto ConvertToRecipeOfDayDto( this Recipe recipe )
         {
             return new RecipeOfDayDto
             {
@@ -20,7 +20,7 @@ namespace RecipeBook.Api.Converters
             };
         }
 
-        public static RecipeDto ConvertToRecipeDto(this Recipe recipe)
+        public static RecipeDto ConvertToRecipeDto( this Recipe recipe )
         {
             return new RecipeDto
             {
@@ -33,11 +33,11 @@ namespace RecipeBook.Api.Converters
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
                 Username = recipe.UserId + " name",
-                Tags = recipe.Tags.Select(x => x.Name).ToList()
+                Tags = recipe.Tags.Select( x => x.Name ).ToList()
             };
         }
 
-        public static RecipeDetailDto ConvertToRecipeDetailDto(this Recipe recipe)
+        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe )
         {
             return new RecipeDetailDto
             {
@@ -50,13 +50,12 @@ namespace RecipeBook.Api.Converters
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
                 Username = recipe.UserId + " name",
-                Tags = recipe.Tags.Select(x => x.Name).ToList(),
-                Steps = recipe.Steps.Select(x => x.Description).ToList(),
-                Ingredients = recipe.Ingredients.Select(x => new IngredientDto
+                Tags = recipe.Tags.Select( x => x.Name ).ToList(),
+                Steps = recipe.Steps.Select( x => x.Description ).ToList(),
+                Ingredients = recipe.Ingredients.Select( x => new IngredientDto
                 {
-                    Title = x.Title,
-                    IngredientNames = x.IngredientItems.Select(y => y.Name).ToList()
-                }).ToList()
+                    Title = x.Title, IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()
+                } ).ToList()
             };
         }
     }

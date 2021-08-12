@@ -9,17 +9,19 @@ namespace RecipeBook.Infrastructure
 {
     public static class ServiceCollectionDependencies
     {
-        public static void AddDependencies(this IServiceCollection services)
+        public static void AddDependencies( this IServiceCollection services )
         {
             services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
-        public static void ConfigureDatabase(this DbContextOptionsBuilder dbOptions, string connectionString)
+        public static void ConfigureDatabase( this DbContextOptionsBuilder dbOptions, string connectionString )
         {
-            dbOptions.UseNpgsql(connectionString, b => b.MigrationsAssembly("RecipeBook.Migrations"));
+            dbOptions.UseNpgsql( connectionString, b => b.MigrationsAssembly( "RecipeBook.Migrations" ) );
         }
     }
 }

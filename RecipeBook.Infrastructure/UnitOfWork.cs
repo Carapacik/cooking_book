@@ -6,7 +6,7 @@ namespace RecipeBook.Infrastructure
     {
         private readonly RecipeBookDbContext _context;
 
-        public UnitOfWork(RecipeBookDbContext context)
+        public UnitOfWork( RecipeBookDbContext context )
         {
             _context = context;
         }

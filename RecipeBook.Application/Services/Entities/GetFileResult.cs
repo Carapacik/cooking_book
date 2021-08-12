@@ -2,7 +2,7 @@
 {
     public class GetFileResult
     {
-        public GetFileResult(byte[] content, string extension)
+        public GetFileResult( byte[] content, string extension )
         {
             Content = content;
             Extension = extension;
