@@ -4,7 +4,6 @@
     {
         public int TagId { get; set; }
         public string Name { get; set; }
-
         public int RecipeId { get; set; }
     }
 }

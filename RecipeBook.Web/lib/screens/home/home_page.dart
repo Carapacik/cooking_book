@@ -14,6 +14,7 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
+import 'package:recipebook/widgets/not_auth_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -78,12 +79,16 @@ class HomePage extends StatelessWidget {
                         text: "Добавить рецепт",
                         width: 278,
                         height: 60,
-                        onPressed: () {
-                          context.beamToNamed("/recipes/add");
-                        },
+                        onPressed: authNotifier.isAuth
+                            ? () {
+                                context.beamToNamed("/recipes/add");
+                              }
+                            : () {
+                                notAuthDialog(context, "Добавлять рецепты могут только зарегистрированные пользователи.");
+                              },
                       ),
                       const SizedBox(width: 24),
-                      if (authNotifier.userDetail == null)
+                      if (!authNotifier.isAuth)
                         ButtonOutlinedWidget(
                           text: "Войти",
                           width: 216,

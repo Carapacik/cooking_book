@@ -5,8 +5,8 @@ namespace RecipeBook.Application.Services
 {
     public interface IRecipeService
     {
-        Recipe AddRecipe( RecipeCommand command );
+        Recipe AddRecipe( RecipeCommand command, string identityName );
         void DeleteRecipe( int id );
-        Recipe EditRecipe( RecipeCommand command );
+        Recipe EditRecipe( RecipeCommand command, string identityName );
     }
 }

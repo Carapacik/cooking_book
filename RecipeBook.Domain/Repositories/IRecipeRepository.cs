@@ -7,7 +7,7 @@ namespace RecipeBook.Domain.Repositories
     {
         void Add( Recipe recipe );
         void Delete( int id );
-        void Edit( Recipe editedRecipe );
+        void Edit( Recipe existingRecipe, Recipe editedRecipe );
         Recipe GetById( int id );
         Recipe GetRecipeOfDay();
         IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery );

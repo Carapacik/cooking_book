@@ -4,8 +4,10 @@ import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:recipebook/model/recipe_detail.dart';
 import 'package:recipebook/model/recipe_item.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
@@ -111,28 +113,33 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           recipeDetail.title,
                           style: Theme.of(context).textTheme.b42,
                         ),
-                      Row(
-                        children: [
-                          ButtonOutlinedWidget(
-                            text: "",
-                            width: 60,
-                            height: 60,
-                            icon: Icons.delete_outline,
-                            onPressed: () {
-                              deleteDialog(context, _deleteRecipe(context, recipeDetail.recipeId));
-                            },
-                          ),
-                          const SizedBox(width: 18),
-                          ButtonContainedWidget(
-                            text: "Редактировать",
-                            width: 278,
-                            height: 60,
-                            icon: Icons.edit,
-                            padding: 18,
-                            onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit", popBeamLocationOnPop: true),
-                          ),
-                        ],
-                      ),
+                      if (!isLoading)
+                        Consumer<AuthNotifier>(
+                          builder: (context, auth, child) => auth.userDetail?.login == recipeDetail.username
+                              ? Row(
+                                  children: [
+                                    ButtonOutlinedWidget(
+                                      text: "",
+                                      width: 60,
+                                      height: 60,
+                                      icon: Icons.delete_outline,
+                                      onPressed: () {
+                                        deleteDialog(context, _deleteRecipe(context, recipeDetail.recipeId));
+                                      },
+                                    ),
+                                    const SizedBox(width: 18),
+                                    ButtonContainedWidget(
+                                      text: "Редактировать",
+                                      width: 278,
+                                      height: 60,
+                                      icon: Icons.edit,
+                                      padding: 18,
+                                      onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit", popBeamLocationOnPop: true),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                        ),
                     ],
                   ),
                   const SizedBox(height: 50),

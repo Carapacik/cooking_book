@@ -36,7 +36,7 @@ namespace RecipeBook.Api.Controllers
                 }
             }
 
-            return new AuthenticationResultDto( false ); // что-нибудь вместо этого придумаю (ещё один параметр)
+            return new AuthenticationResultDto( false ); // что-нибудь вместо этого придумать надо (ещё один параметр)
         }
 
         [HttpPost( "register" )]
@@ -57,7 +57,7 @@ namespace RecipeBook.Api.Controllers
         [HttpGet( "get-user" )]
         public DetailUserDto GetUser()
         {
-            if ( User.Identity.Name == null ) return null;
+            if ( User.Identity is { Name: null } ) return null;
 
             User user = _userRepository.GetByLogin( User.Identity.Name );
             return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
@@ -69,7 +69,6 @@ namespace RecipeBook.Api.Controllers
             ClaimsIdentity id = new(claims, "RecipeBookCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) ).Wait();
         }
-
 
         [HttpGet( "logout" )]
         public void Logout()

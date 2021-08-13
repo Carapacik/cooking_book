@@ -7,6 +7,6 @@
             Result = result;
         }
 
-        public bool Result { get; set; }
+        public bool Result { get; }
     }
 }

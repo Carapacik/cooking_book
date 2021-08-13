@@ -6,7 +6,7 @@ import 'package:recipebook/widgets/login_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/registration_dialog.dart';
 
-void notAuthDialog(BuildContext context) {
+void notAuthDialog(BuildContext context, String text) {
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24),
@@ -34,7 +34,7 @@ void notAuthDialog(BuildContext context) {
           ),
           const SizedBox(height: 30),
           Text(
-            "Добавлять рецепты могут только зарегистрированные пользователи.",
+            text,
             style: Theme.of(context).textTheme.r18,
           ),
           const SizedBox(height: 40),

@@ -9,23 +9,24 @@ namespace RecipeBook.Application.Services
     {
         private readonly IFileStorageService _fileStorageService;
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IUserRepository _userRepository;
 
-        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService )
+        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService, IUserRepository userRepository )
         {
             _recipeRepository = recipeRepository;
             _fileStorageService = fileStorageService;
+            _userRepository = userRepository;
         }
 
-
-        public Recipe AddRecipe( RecipeCommand command )
+        public Recipe AddRecipe( RecipeCommand command, string identityName )
         {
             SaveFileResult filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            Recipe recipe = ConvertToRecipe( command, filePath );
+            Recipe recipe = ConvertToRecipe( command, filePath, identityName );
             _recipeRepository.Add( recipe );
             return recipe;
         }
 
-        public Recipe EditRecipe( RecipeCommand command )
+        public Recipe EditRecipe( RecipeCommand command, string identityName )
         {
             SaveFileResult filePath = null;
             if ( command.StorageFile != null )
@@ -33,14 +34,14 @@ namespace RecipeBook.Application.Services
                 filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
             }
 
-            Recipe recipe = ConvertToRecipe( command, filePath );
+            Recipe recipe = ConvertToRecipe( command, filePath, identityName );
             Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
             if ( filePath != null )
             {
                 _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
             }
 
-            Edit( existingRecipe, recipe );
+            _recipeRepository.Edit( existingRecipe, recipe );
 
             return recipe;
         }
@@ -52,24 +53,7 @@ namespace RecipeBook.Application.Services
             _recipeRepository.Delete( id );
         }
 
-
-        private void Edit( Recipe existingRecipe, Recipe editedRecipe )
-        {
-            if ( editedRecipe.ImageUrl != "" )
-            {
-                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
-            }
-
-            existingRecipe.Title = editedRecipe.Title;
-            existingRecipe.Description = editedRecipe.Description;
-            existingRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
-            existingRecipe.PortionsCount = editedRecipe.PortionsCount;
-            existingRecipe.Tags = editedRecipe.Tags;
-            existingRecipe.Steps = editedRecipe.Steps;
-            existingRecipe.Ingredients = editedRecipe.Ingredients;
-        }
-
-        private static Recipe ConvertToRecipe( RecipeCommand recipeCommandDto, SaveFileResult saveFileResult )
+        private static Recipe ConvertToRecipe( RecipeCommand recipeCommandDto, SaveFileResult saveFileResult, string identityName )
         {
             return new Recipe
             {

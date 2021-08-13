@@ -68,7 +68,6 @@ void loginDialog(BuildContext context) {
               obscureText: true,
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
-                if (value.length < 8) return "Минимум 8 символов";
                 // добавить проверку на пароль с бэка
                 return null;
               },
