@@ -24,27 +24,30 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost( "login" )]
-        public AuthenticationResultDto Login( UserDto userDto )
+        public AuthenticationResultDto Login( UserCommandDto userDto )
         {
             User user = _userRepository.GetByLogin( userDto.Login );
             if ( user != null )
             {
-                Authenticate( userDto.Login );
-                return new AuthenticationResultDto( true );
+                if ( userDto.Password == user.Password )
+                {
+                    Authenticate( userDto.Login );
+                    return new AuthenticationResultDto( true );
+                }
             }
 
-            return new AuthenticationResultDto( false );
+            return new AuthenticationResultDto( false ); // что-нибудь вместо этого придумаю (ещё один параметр)
         }
 
         [HttpPost( "register" )]
-        public AuthenticationResultDto Register( UserDto userDto )
+        public AuthenticationResultDto Register( UserCommandDto userCommandDto )
         {
-            User user = _userRepository.GetByLogin( userDto.Login );
+            User user = _userRepository.GetByLogin( userCommandDto.Login );
             if ( user == null )
             {
-                _userRepository.Add( new User { Login = userDto.Login, Name = userDto.Name, Password = userDto.Password } );
+                _userRepository.Add( new User { Login = userCommandDto.Login, Name = userCommandDto.Name, Password = userCommandDto.Password } );
                 _unitOfWork.Commit();
-                Authenticate( userDto.Login );
+                Authenticate( userCommandDto.Login );
                 return new AuthenticationResultDto( true );
             }
 
@@ -52,11 +55,12 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet( "get-user" )]
-        public string GetUser()
+        public DetailUserDto GetUser()
         {
-            // как тут возращать userId, его логин и имя?
-            if ( User.Identity != null ) return User.ToString();
-            return null;
+            if ( User.Identity.Name == null ) return null;
+
+            User user = _userRepository.GetByLogin( User.Identity.Name );
+            return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
         }
 
         private void Authenticate( string userName )
@@ -66,7 +70,7 @@ namespace RecipeBook.Api.Controllers
             HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) ).Wait();
         }
 
-        
+
         [HttpGet( "logout" )]
         public void Logout()
         {

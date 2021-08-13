@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/location_builders.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/notifier/ingredient_notifier.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/notifier/step_notifier.dart';
@@ -14,6 +15,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthNotifier()),
         ChangeNotifierProvider(create: (_) => RecipeNotifier()),
         ChangeNotifierProvider(create: (_) => IngredientNotifier()),
         ChangeNotifierProvider(create: (_) => StepNotifier()),

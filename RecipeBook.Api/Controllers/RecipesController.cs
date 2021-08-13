@@ -80,7 +80,7 @@ namespace RecipeBook.Api.Controllers
 
         private static RecipeCommand RecipeCommandParser( IFormCollection formCollection )
         {
-            RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "recipe" ] );
+            RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
             IFormFile formFile = null;
             if ( formCollection.Files.Count > 0 )
             {

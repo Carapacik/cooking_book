@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/model/user.dart';
+import 'package:recipebook/model/user_command.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/service/api_service.dart';
@@ -14,7 +14,7 @@ import 'package:recipebook/widgets/outlined_button.dart';
 void registrationDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final apiService = ApiService();
-  final user = User();
+  final user = UserCommand();
   String? currentPassword;
   bool isLoginExist = false;
 
@@ -126,7 +126,7 @@ void registrationDialog(BuildContext context) {
                     if (form.validate()) {
                       form.save();
 
-                      final userData = User(
+                      final userData = UserCommand(
                         name: user.name,
                         password: user.password,
                         login: user.login,

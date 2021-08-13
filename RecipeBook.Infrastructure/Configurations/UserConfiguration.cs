@@ -12,7 +12,7 @@ namespace RecipeBook.Infrastructure.Configurations
             builder.Property( x => x.Name ).IsRequired();
             builder.Property( x => x.Description ).HasMaxLength( 150 );
             builder.Property( x => x.Login ).IsRequired().HasMaxLength( 20 );
-            builder.Property( x => x.Password ).IsRequired(); // Максимальная длина нужна для hash?
+            builder.Property( x => x.Password ).IsRequired();
         }
     }
 }

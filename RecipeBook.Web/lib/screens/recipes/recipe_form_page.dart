@@ -500,7 +500,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
       if (form.validate()) {
         form.save();
 
-        final recipe = RecipeCommand(
+        final recipeCommand = RecipeCommand(
           recipeId: recipeDetail != null ? recipeDetail!.recipeId : 0,
           title: recipeTitle!,
           description: recipeDescription!,
@@ -515,12 +515,12 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
         if (recipeDetail != null) {
           if (result != null) {
             formData = FormData.fromMap({
-              'recipe': jsonEncode(recipe),
+              'data': jsonEncode(recipeCommand),
               'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
             });
           } else {
             formData = FormData.fromMap({
-              'recipe': jsonEncode(recipe),
+              'data': jsonEncode(recipeCommand),
             });
           }
           try {
@@ -532,7 +532,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           }
         } else {
           formData = FormData.fromMap({
-            'recipe': jsonEncode(recipe),
+            'data': jsonEncode(recipeCommand),
             'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
           });
 

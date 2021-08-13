@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,10 +26,7 @@ namespace RecipeBook.Api
             services.AddDependencies();
             services.AddDbContext<RecipeBookDbContext>( conf =>
                 conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
-            services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie( options =>
-            {
-                options.LoginPath = new PathString( "/api/user/login" ); // это нужно указывать?
-            } );
+            services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie();
             services.AddSingleton( Configuration.GetSection( "FileStorageSettings" ).Get<FileStorageSettings>() );
             services.AddSwaggerGen( c => { c.SwaggerDoc( "v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" } ); } );
         }
