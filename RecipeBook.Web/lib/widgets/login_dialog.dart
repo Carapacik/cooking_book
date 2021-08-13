@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipebook/model/user_command.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/service/api_service.dart';
@@ -15,6 +17,7 @@ void loginDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final apiService = ApiService();
   final user = UserCommand();
+  final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
   bool isLoginExist = true;
 
   final alert = AlertDialog(
@@ -52,6 +55,9 @@ void loginDialog(BuildContext context) {
                 if (!isLoginExist) return "Такого логина не существует";
                 return null;
               },
+              onChanged: (value) {
+                isLoginExist = true;
+              },
               onSaved: (value) {
                 user.login = value;
               },
@@ -88,6 +94,7 @@ void loginDialog(BuildContext context) {
                         final result = jsonEncode(next['result']);
                         if (result == 'true') {
                           Navigator.of(context).pop();
+                          authNotifier.getUser();
                           context.beamToNamed("/");
                         } else {
                           form.setState(() {

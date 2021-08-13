@@ -2,6 +2,8 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -21,6 +23,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authNotifier = Provider.of<AuthNotifier>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -80,14 +83,15 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(width: 24),
-                      ButtonOutlinedWidget(
-                        text: "Войти",
-                        width: 216,
-                        height: 60,
-                        onPressed: () {
-                          loginDialog(context);
-                        },
-                      ),
+                      if (authNotifier.userDetail == null)
+                        ButtonOutlinedWidget(
+                          text: "Войти",
+                          width: 216,
+                          height: 60,
+                          onPressed: () {
+                            loginDialog(context);
+                          },
+                        ),
                     ],
                   ),
                   const SizedBox(height: 352),

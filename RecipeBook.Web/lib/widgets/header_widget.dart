@@ -28,12 +28,29 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   late AuthNotifier authNotifier;
   late UserDetail? userDetail;
 
+  Future logout() async {
+    Response response;
+
+    try {
+      response = await apiService.getRequest("/user/logout");
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        authNotifier.setUser(null);
+        setState(() {});
+      } else {
+        setState(() {});
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
   Future getUser() async {
     Response response;
 
     try {
       response = await apiService.getRequest("/user/get-user");
-      print(response);
       if (response.statusCode == 200) {
         userDetail = UserDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         authNotifier.setUser(userDetail);
@@ -53,14 +70,15 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   @override
   void initState() {
     apiService = ApiService();
-    getUser();
+    authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    if (authNotifier.userDetail == null) {
+      getUser();
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    authNotifier = Provider.of<AuthNotifier>(context);
-
     return SizedBox(
       height: 80,
       child: Padding(
@@ -122,7 +140,11 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 ),
                 if (authNotifier.userDetail != null)
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      logout();
+                      context.beamToNamed("/");
+                    },
+                    splashRadius: 16,
                     icon: const Icon(
                       Icons.exit_to_app,
                       color: Palette.grey,
