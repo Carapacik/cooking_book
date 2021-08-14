@@ -21,7 +21,7 @@ class RecipeOfDayWidget extends StatefulWidget {
 class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   late ApiService apiService;
   bool isLoading = true;
-  late RecipeOfDay recipeOfDay;
+  late RecipeOfDay? recipeOfDay;
 
   @override
   void initState() {
@@ -41,10 +41,13 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
           recipeOfDay = RecipeOfDay.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         });
       } else {
-        // затычка, код не 200
+        //
       }
     } on Exception catch (e) {
       // возможно перенаправление на отдельную страницу
+      setState(() {
+        recipeOfDay = null;
+      });
       isLoading = false;
       print(e);
     }
@@ -53,14 +56,28 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator(color: Palette.orange));
+      return const SizedBox(
+        height: 550,
+        child: Center(child: CircularProgressIndicator(color: Palette.orange)),
+      );
+    }
+    if (recipeOfDay == null) {
+      return SizedBox(
+        height: 550,
+        child: Center(
+          child: Text(
+            "В базе нет рецептов",
+            style: Theme.of(context).textTheme.m24.copyWith(color: Palette.red),
+          ),
+        ),
+      );
     }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextButton(
           onPressed: () {
-            context.beamToNamed("/recipes/${recipeOfDay.recipeId}");
+            context.beamToNamed("/recipes/${recipeOfDay!.recipeId}");
           },
           style: TextButton.styleFrom(
             primary: Palette.orange,
@@ -73,8 +90,8 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
           ),
           clipBehavior: Clip.antiAlias,
           child: RecipeImageWithAuthor(
-            imageUrl: recipeOfDay.imageUrl,
-            username: recipeOfDay.username,
+            imageUrl: recipeOfDay!.imageUrl,
+            username: recipeOfDay!.username,
             size: 543,
           ),
         ),
@@ -94,7 +111,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    recipeOfDay.likesCount.toString(),
+                    recipeOfDay!.likesCount.toString(),
                     style: Theme.of(context).textTheme.r16,
                   ),
                   const SizedBox(width: 27),
@@ -105,7 +122,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    "${recipeOfDay.cookingTimeInMinutes} минут",
+                    "${recipeOfDay!.cookingTimeInMinutes} минут",
                     style: Theme.of(context).textTheme.r16,
                   ),
                 ],
@@ -116,13 +133,13 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
               ),
               const SizedBox(height: 32),
               Text(
-                recipeOfDay.title,
+                recipeOfDay!.title,
                 style: Theme.of(context).textTheme.b42,
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
               Text(
-                recipeOfDay.description,
+                recipeOfDay!.description,
                 style: Theme.of(context).textTheme.r18,
               ),
             ],

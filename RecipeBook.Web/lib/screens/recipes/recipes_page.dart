@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
@@ -16,6 +17,7 @@ import 'package:recipebook/widgets/category_card.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipebook/widgets/not_auth_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class RecipesPage extends StatefulWidget {
@@ -54,7 +56,11 @@ class _RecipesPageState extends State<RecipesPage> {
             isEndOfList = true;
           });
         }
-        recipeNotifier.resultString = "'${widget.searchQuery}' не найдено";
+        if (widget.searchQuery!.isEmpty) {
+          recipeNotifier.resultString = "Ничего не найдено";
+        } else {
+          recipeNotifier.resultString = """По запросу "${widget.searchQuery}" ничего не найдено""";
+        }
         if (skipCounter == 0) {
           recipeNotifier.addClearRecipes(listOfRecipes);
         } else {
@@ -154,15 +160,21 @@ class _RecipesPageState extends State<RecipesPage> {
                         "Рецепты",
                         style: Theme.of(context).textTheme.b42,
                       ),
-                      ButtonContainedWidget(
-                        icon: Icons.add,
-                        padding: 18,
-                        text: "Добавить рецепт",
-                        width: 278,
-                        height: 60,
-                        onPressed: () {
-                          context.beamToNamed("/recipes/add");
-                        },
+                      Consumer<AuthNotifier>(
+                        builder: (context, auth, child) => ButtonContainedWidget(
+                          icon: Icons.add,
+                          padding: 18,
+                          text: "Добавить рецепт",
+                          width: 278,
+                          height: 60,
+                          onPressed: auth.isAuth
+                              ? () {
+                                  context.beamToNamed("/recipes/add");
+                                }
+                              : () {
+                                  notAuthDialog(context, "Добавлять рецепты могут только зарегистрированные пользователи.");
+                                },
+                        ),
                       ),
                     ],
                   ),
