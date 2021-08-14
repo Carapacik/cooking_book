@@ -10,6 +10,7 @@ namespace RecipeBook.Application.Services.Entities
             string description,
             int cookingTimeInMinutes,
             int portionsCount,
+            string userName,
             List<string> tags,
             List<string> steps,
             List<Ingredient> ingredients,
@@ -20,20 +21,22 @@ namespace RecipeBook.Application.Services.Entities
             Description = description;
             CookingTimeInMinutes = cookingTimeInMinutes;
             PortionsCount = portionsCount;
+            UserName = userName;
             Tags = tags;
             Steps = steps;
             Ingredients = ingredients;
             StorageFile = storageFile;
         }
 
-        public int RecipeId { get; init; }
-        public string Title { get; init; }
-        public string Description { get; init; }
-        public int CookingTimeInMinutes { get; init; }
-        public int PortionsCount { get; init; }
-        public List<string> Tags { get; init; }
-        public List<string> Steps { get; init; }
-        public List<Ingredient> Ingredients { get; init; }
-        public StorageFile StorageFile { get; init; }
+        public int RecipeId { get; }
+        public string Title { get; }
+        public string Description { get; }
+        public int CookingTimeInMinutes { get; }
+        public int PortionsCount { get; }
+        public string UserName { get; }
+        public List<string> Tags { get; }
+        public List<string> Steps { get; }
+        public List<Ingredient> Ingredients { get; }
+        public StorageFile StorageFile { get; }
     }
 }

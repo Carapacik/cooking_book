@@ -16,7 +16,7 @@ namespace RecipeBook.Api.Converters
                 ImageUrl = recipe.ImageUrl,
                 CookingTimeInMinutes = recipe.CookingTimeInMinutes,
                 LikesCount = recipe.LikesCount,
-                Username = recipe.UserId + " name"
+                Username = recipe.UserId.ToString() // как передать сюда username
             };
         }
 
@@ -32,7 +32,7 @@ namespace RecipeBook.Api.Converters
                 PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
-                Username = recipe.UserId + " name",
+                Username = recipe.UserId.ToString(), // как передать сюда username
                 Tags = recipe.Tags.Select( x => x.Name ).ToList()
             };
         }
@@ -49,7 +49,7 @@ namespace RecipeBook.Api.Converters
                 PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
-                Username = recipe.UserId + " name",
+                Username = recipe.UserId.ToString(), // как передать сюда username
                 Tags = recipe.Tags.Select( x => x.Name ).ToList(),
                 Steps = recipe.Steps.Select( x => x.Description ).ToList(),
                 Ingredients = recipe.Ingredients.Select( x => new IngredientDto

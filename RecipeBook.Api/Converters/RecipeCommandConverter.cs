@@ -7,13 +7,17 @@ namespace RecipeBook.Api.Converters
 {
     public static class RecipeCommandConverter
     {
-        public static RecipeCommand ConvertToRecipeCommand( this RecipeCommandDto recipe, FormFileAdapter fileAdapter )
+        public static RecipeCommand ConvertToRecipeCommand(
+            this RecipeCommandDto recipe,
+            FormFileAdapter fileAdapter,
+            string userName )
         {
             return new RecipeCommand( recipe.RecipeId,
                 recipe.Title,
                 recipe.Description,
                 recipe.CookingTimeInMinutes,
                 recipe.PortionsCount,
+                userName,
                 recipe.Tags,
                 recipe.Steps,
                 recipe.Ingredients.Select( x => new Ingredient

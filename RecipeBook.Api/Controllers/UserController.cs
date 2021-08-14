@@ -27,16 +27,18 @@ namespace RecipeBook.Api.Controllers
         public AuthenticationResultDto Login( UserCommandDto userDto )
         {
             User user = _userRepository.GetByLogin( userDto.Login );
-            if ( user != null )
+            if ( user == null )
             {
-                if ( userDto.Password == user.Password )
-                {
-                    Authenticate( userDto.Login );
-                    return new AuthenticationResultDto( true );
-                }
+                return new AuthenticationResultDto( false );
             }
 
-            return new AuthenticationResultDto( false ); // что-нибудь вместо этого придумать надо (ещё один параметр)
+            if ( userDto.Password != user.Password )
+            {
+                return new AuthenticationResultDto( false );
+            }
+
+            Authenticate( userDto.Login );
+            return new AuthenticationResultDto( true );
         }
 
         [HttpPost( "register" )]
@@ -57,9 +59,12 @@ namespace RecipeBook.Api.Controllers
         [HttpGet( "get-user" )]
         public DetailUserDto GetUser()
         {
-            if ( User.Identity is { Name: null } ) return null;
+            if ( User.Identity is { Name: null } )
+            {
+                return null;
+            }
 
-            User user = _userRepository.GetByLogin( User.Identity.Name );
+            User user = _userRepository.GetByLogin( User.Identity?.Name );
             return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
         }
 
