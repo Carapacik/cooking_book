@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -21,7 +22,10 @@ namespace RecipeBook.Api.Controllers
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RecipesController( IRecipeRepository recipeRepository, IUnitOfWork unitOfWork, IRecipeService recipeService )
+        public RecipesController(
+            IRecipeRepository recipeRepository,
+            IUnitOfWork unitOfWork,
+            IRecipeService recipeService )
         {
             _recipeRepository = recipeRepository;
             _unitOfWork = unitOfWork;
@@ -29,26 +33,35 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form ) );
+            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form, User.Identity?.Name ) );
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
 
         [HttpDelete( "{id:int}/delete" )]
+        [Authorize]
         public void DeleteRecipe( int id )
         {
-            _recipeService.DeleteRecipe( id );
+            _recipeService.DeleteRecipe( id, User.Identity?.Name );
             _unitOfWork.Commit();
         }
 
+
         [HttpPatch( "{id:int}/edit" )]
+        [Authorize]
         [DisableRequestSizeLimit]
         public int EditRecipe( int id )
         {
-            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form ) );
+            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form, User.Identity?.Name, id ) );
+            if ( newRecipe == null )
+            {
+                return 0;
+            }
+
             _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
@@ -75,19 +88,21 @@ namespace RecipeBook.Api.Controllers
             [FromQuery] string searchQuery )
         {
             IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
+
             return searchResult.Select( x => x.ConvertToRecipeDto() ).ToList();
         }
 
-        private static RecipeCommand RecipeCommandParser( IFormCollection formCollection )
+        private static RecipeCommand RecipeCommandParser( IFormCollection formCollection, string username, int id = 0 )
         {
-            RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "recipe" ] );
+            RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
+            recipeData.RecipeId = id;
             IFormFile formFile = null;
             if ( formCollection.Files.Count > 0 )
             {
                 formFile = formCollection.Files[ 0 ];
             }
 
-            return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ) );
+            return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ), username );
         }
     }
 }

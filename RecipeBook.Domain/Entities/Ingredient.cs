@@ -8,7 +8,6 @@ namespace RecipeBook.Domain.Entities
         public string Title { get; set; }
 
         public int RecipeId { get; set; }
-
         public List<IngredientItem> IngredientItems { get; set; }
     }
 }

@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'user_detail.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    name: json['name'] as String?,
+UserDetail _$UserDetailFromJson(Map<String, dynamic> json) {
+  return UserDetail(
+    id: json['id'] as int,
+    name: json['name'] as String,
     description: json['description'] as String?,
-    login: json['login'] as String?,
-    password: json['password'] as String?,
+    login: json['login'] as String,
   );
 }
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$UserDetailToJson(UserDetail instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,
-      'password': instance.password,
     };

@@ -24,39 +24,61 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost( "login" )]
-        public AuthenticationResultDto Login( UserDto userDto )
+        public AuthenticationResultDto Login( UserCommandDto userDto )
         {
             User user = _userRepository.GetByLogin( userDto.Login );
-            if ( user != null )
+            if ( user == null )
             {
-                Authenticate( userDto.Login );
+                return new AuthenticationResultDto( false );
+            }
+
+            if ( userDto.Password != user.Password )
+            {
+                return new AuthenticationResultDto( false );
+            }
+
+            Authenticate( userDto.Login );
+            return new AuthenticationResultDto( true );
+        }
+
+        [HttpPost( "register" )]
+        public AuthenticationResultDto Register( UserCommandDto userCommandDto )
+        {
+            User user = _userRepository.GetByLogin( userCommandDto.Login );
+            if ( user == null )
+            {
+                _userRepository.Add( new User { Login = userCommandDto.Login, Name = userCommandDto.Name, Password = userCommandDto.Password } );
+                _unitOfWork.Commit();
+                Authenticate( userCommandDto.Login );
                 return new AuthenticationResultDto( true );
             }
 
             return new AuthenticationResultDto( false );
         }
 
-        [HttpPost( "register" )]
-        public AuthenticationResultDto Register( UserDto userDto )
+        [HttpGet( "get-user" )]
+        public DetailUserDto GetUser()
         {
-            User user = _userRepository.GetByLogin( userDto.Login );
-            if ( user == null )
+            if ( User.Identity is { Name: null } )
             {
-                _userRepository.Add( new User { Login = userDto.Login, Name = userDto.Name, Password = userDto.Password } );
-                _unitOfWork.Commit();
-                Authenticate( userDto.Login );
-                return new AuthenticationResultDto( true );
+                return null;
             }
 
-            return new AuthenticationResultDto( false );
+            User user = _userRepository.GetByLogin( User.Identity?.Name );
+            return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
         }
 
         private void Authenticate( string userName )
         {
             List<Claim> claims = new() { new Claim( ClaimsIdentity.DefaultNameClaimType, userName ) };
-            ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
+            ClaimsIdentity id = new(claims, "RecipeBookCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) ).Wait();
+        }
+
+        [HttpGet( "logout" )]
+        public void Logout()
+        {
+            HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme ).Wait();
         }
     }
 }

@@ -9,79 +9,73 @@ namespace RecipeBook.Application.Services
     {
         private readonly IFileStorageService _fileStorageService;
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IUserRepository _userRepository;
 
-        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService )
+        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService, IUserRepository userRepository )
         {
             _recipeRepository = recipeRepository;
             _fileStorageService = fileStorageService;
+            _userRepository = userRepository;
         }
-
 
         public Recipe AddRecipe( RecipeCommand command )
         {
             SaveFileResult filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            Recipe recipe = ConvertToRecipe( command, filePath );
+            Recipe recipe = ConvertToRecipe( command, filePath, _userRepository.GetByLogin( command.UserName ).UserId );
             _recipeRepository.Add( recipe );
             return recipe;
         }
 
+        public void DeleteRecipe( int id, string username )
+        {
+            User user = _userRepository.GetByLogin( username );
+            Recipe recipe = _recipeRepository.GetById( id );
+            if ( user.UserId == recipe.UserId )
+            {
+                _fileStorageService.RemoveFile( "images", recipe.ImageUrl );
+                _recipeRepository.Delete( id );
+            }
+        }
+
         public Recipe EditRecipe( RecipeCommand command )
         {
+            User user = _userRepository.GetByLogin( command.UserName );
+            Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
+            if ( user.UserId != existingRecipe.UserId )
+            {
+                return null;
+            }
+
             SaveFileResult filePath = null;
             if ( command.StorageFile != null )
             {
                 filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
             }
 
-            Recipe recipe = ConvertToRecipe( command, filePath );
-            Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
+            Recipe recipe = ConvertToRecipe( command, filePath, _userRepository.GetByLogin( command.UserName ).UserId );
             if ( filePath != null )
             {
                 _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
             }
 
-            Edit( existingRecipe, recipe );
-
+            _recipeRepository.Edit( existingRecipe, recipe );
             return recipe;
         }
 
-        public void DeleteRecipe( int id )
-        {
-            string imagePath = _recipeRepository.GetById( id ).ImageUrl;
-            _fileStorageService.RemoveFile( "images", imagePath );
-            _recipeRepository.Delete( id );
-        }
-
-
-        private void Edit( Recipe existingRecipe, Recipe editedRecipe )
-        {
-            if ( editedRecipe.ImageUrl != "" )
-            {
-                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
-            }
-
-            existingRecipe.Title = editedRecipe.Title;
-            existingRecipe.Description = editedRecipe.Description;
-            existingRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
-            existingRecipe.PortionsCount = editedRecipe.PortionsCount;
-            existingRecipe.Tags = editedRecipe.Tags;
-            existingRecipe.Steps = editedRecipe.Steps;
-            existingRecipe.Ingredients = editedRecipe.Ingredients;
-        }
-
-        private static Recipe ConvertToRecipe( RecipeCommand recipeCommandDto, SaveFileResult saveFileResult )
+        private static Recipe ConvertToRecipe( RecipeCommand recipeCommand, SaveFileResult saveFileResult, int userId )
         {
             return new Recipe
             {
                 ImageUrl = saveFileResult != null ? saveFileResult.RelativeUri : "",
-                RecipeId = recipeCommandDto.RecipeId,
-                Title = recipeCommandDto.Title,
-                Description = recipeCommandDto.Description,
-                CookingTimeInMinutes = recipeCommandDto.CookingTimeInMinutes,
-                PortionsCount = recipeCommandDto.PortionsCount,
-                Tags = recipeCommandDto.Tags.Select( x => new Tag { Name = x } ).ToList(),
-                Steps = recipeCommandDto.Steps.Select( x => new Step { Description = x } ).ToList(),
-                Ingredients = recipeCommandDto.Ingredients
+                RecipeId = recipeCommand.RecipeId,
+                Title = recipeCommand.Title,
+                Description = recipeCommand.Description,
+                CookingTimeInMinutes = recipeCommand.CookingTimeInMinutes,
+                PortionsCount = recipeCommand.PortionsCount,
+                UserId = userId,
+                Tags = recipeCommand.Tags.Select( x => new Tag { Name = x } ).ToList(),
+                Steps = recipeCommand.Steps.Select( x => new Step { Description = x } ).ToList(),
+                Ingredients = recipeCommand.Ingredients
             };
         }
     }

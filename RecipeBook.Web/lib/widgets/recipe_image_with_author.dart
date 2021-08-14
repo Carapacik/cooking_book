@@ -47,7 +47,7 @@ class RecipeImageWithAuthor extends StatelessWidget {
             borderRadius: BorderRadius.horizontal(right: Radius.circular(5)),
           ),
           child: Text(
-            username,
+            "@${username.toLowerCase()}",
             style: Theme.of(context).textTheme.r16.copyWith(color: Palette.orange, fontWeight: FontWeight.w600),
           ),
         )

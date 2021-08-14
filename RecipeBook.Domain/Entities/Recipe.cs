@@ -12,9 +12,7 @@ namespace RecipeBook.Domain.Entities
         public int PortionsCount { get; set; }
         public int LikesCount { get; set; }
         public int FavoritesCount { get; set; }
-
         public int UserId { get; set; }
-
         public List<Tag> Tags { get; set; }
         public List<Step> Steps { get; set; }
         public List<Ingredient> Ingredients { get; set; }

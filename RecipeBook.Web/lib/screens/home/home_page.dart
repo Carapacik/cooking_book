@@ -2,6 +2,8 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -12,6 +14,7 @@ import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
+import 'package:recipebook/widgets/not_auth_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,6 +24,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authNotifier = Provider.of<AuthNotifier>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -75,19 +79,24 @@ class HomePage extends StatelessWidget {
                         text: "Добавить рецепт",
                         width: 278,
                         height: 60,
-                        onPressed: () {
-                          context.beamToNamed("/recipes/add");
-                        },
+                        onPressed: authNotifier.isAuth
+                            ? () {
+                                context.beamToNamed("/recipes/add");
+                              }
+                            : () {
+                                notAuthDialog(context, "Добавлять рецепты могут только зарегистрированные пользователи.");
+                              },
                       ),
                       const SizedBox(width: 24),
-                      ButtonOutlinedWidget(
-                        text: "Войти",
-                        width: 216,
-                        height: 60,
-                        onPressed: () {
-                          loginDialog(context);
-                        },
-                      ),
+                      if (!authNotifier.isAuth)
+                        ButtonOutlinedWidget(
+                          text: "Войти",
+                          width: 216,
+                          height: 60,
+                          onPressed: () {
+                            loginDialog(context);
+                          },
+                        ),
                     ],
                   ),
                   const SizedBox(height: 352),

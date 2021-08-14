@@ -26,21 +26,20 @@ namespace RecipeBook.Infrastructure.Repositories
             _context.Set<Recipe>().Remove( recipe );
         }
 
-        public void Edit( Recipe editedRecipe )
+        public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            Recipe oldRecipe = GetById( editedRecipe.RecipeId );
             if ( editedRecipe.ImageUrl != "" )
             {
-                oldRecipe.ImageUrl = editedRecipe.ImageUrl;
+                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
             }
 
-            oldRecipe.Title = editedRecipe.Title;
-            oldRecipe.Description = editedRecipe.Description;
-            oldRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
-            oldRecipe.PortionsCount = editedRecipe.PortionsCount;
-            oldRecipe.Tags = editedRecipe.Tags;
-            oldRecipe.Steps = editedRecipe.Steps;
-            oldRecipe.Ingredients = editedRecipe.Ingredients;
+            existingRecipe.Title = editedRecipe.Title;
+            existingRecipe.Description = editedRecipe.Description;
+            existingRecipe.CookingTimeInMinutes = editedRecipe.CookingTimeInMinutes;
+            existingRecipe.PortionsCount = editedRecipe.PortionsCount;
+            existingRecipe.Tags = editedRecipe.Tags;
+            existingRecipe.Steps = editedRecipe.Steps;
+            existingRecipe.Ingredients = editedRecipe.Ingredients;
         }
 
         public Recipe GetById( int id )

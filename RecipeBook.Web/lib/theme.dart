@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -18,6 +19,7 @@ extension TextThemeExt on TextTheme {
         color: Palette.main,
         fontSize: 72,
         fontWeight: FontWeight.w700,
+        height: 87 / 72,
       );
 
   TextStyle get b42 => headline2!.copyWith(

@@ -1,4 +1,4 @@
-﻿namespace RecipeBook.Application.Services.Entities
+﻿namespace RecipeBook.Application.Services.Configs
 {
     public class FileStorageSettings
     {
