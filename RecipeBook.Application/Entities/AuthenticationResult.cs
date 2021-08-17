@@ -1,8 +1,8 @@
-﻿namespace RecipeBook.Api.Dtos
+﻿namespace RecipeBook.Application.Entities
 {
-    public class AuthenticationResultDto
+    public class AuthenticationResult
     {
-        public AuthenticationResultDto( bool result, string error )
+        public AuthenticationResult( bool result, string error )
         {
             Result = result;
             Error = error;

@@ -1,4 +1,4 @@
-﻿using RecipeBook.Application.Services.Entities;
+﻿using RecipeBook.Application.Entities;
 
 namespace RecipeBook.Application.Services
 {

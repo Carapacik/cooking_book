@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
-using RecipeBook.Application.Services.Entities;
 
 namespace RecipeBook.Api.Controllers
 {
@@ -15,10 +15,10 @@ namespace RecipeBook.Api.Controllers
             _fileStorageService = fileStorageService;
         }
 
-        [HttpGet( "{path}/{fileName}" )]
-        public IActionResult GetImage( string path, string fileName )
+        [HttpGet( "images/{fileName}" )]
+        public IActionResult GetImage( string fileName )
         {
-            GetFileResult result = _fileStorageService.GetFile( $"{path}\\{fileName}" );
+            GetFileResult result = _fileStorageService.GetFile( $"images\\{fileName}" );
             return new FileContentResult( result.Content, $"image/{result.Extension}" );
         }
     }

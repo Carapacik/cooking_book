@@ -93,7 +93,7 @@ void loginDialog(BuildContext context) {
                         final result = jsonEncode(next['result']);
                         if (result == 'true') {
                           Navigator.of(context).pop();
-                          authNotifier.getUser();
+                          authNotifier.getCurrentUser();
                           context.beamToNamed("/");
                         } else {
                           form.setState(() {

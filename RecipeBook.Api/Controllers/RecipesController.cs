@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,8 +8,8 @@ using Newtonsoft.Json;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
+using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
-using RecipeBook.Application.Services.Entities;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -37,7 +38,8 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int AddRecipe()
         {
-            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form, User.Identity?.Name ) );
+            string username = User.Identity?.Name;
+            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form, username ) );
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
@@ -46,7 +48,8 @@ namespace RecipeBook.Api.Controllers
         [Authorize]
         public void DeleteRecipe( int id )
         {
-            _recipeService.DeleteRecipe( id, User.Identity?.Name );
+            string username = User.Identity?.Name;
+            _recipeService.DeleteRecipe( id, username );
             _unitOfWork.Commit();
         }
 
@@ -56,12 +59,8 @@ namespace RecipeBook.Api.Controllers
         [DisableRequestSizeLimit]
         public int EditRecipe( int id )
         {
-            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form, User.Identity?.Name, id ) );
-            if ( newRecipe == null )
-            {
-                return 0;
-            }
-
+            string username = User.Identity?.Name;
+            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form, username, id ) );
             _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
@@ -78,6 +77,7 @@ namespace RecipeBook.Api.Controllers
         public RecipeOfDayDto GetRecipeOfDay()
         {
             Recipe recipe = _recipeRepository.GetRecipeOfDay();
+            if ( recipe == null ) throw new ValidationException( "s" );
             return recipe.ConvertToRecipeOfDayDto();
         }
 
@@ -97,10 +97,7 @@ namespace RecipeBook.Api.Controllers
             RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
             recipeData.RecipeId = id;
             IFormFile formFile = null;
-            if ( formCollection.Files.Count > 0 )
-            {
-                formFile = formCollection.Files[ 0 ];
-            }
+            if ( formCollection.Files.Count > 0 ) formFile = formCollection.Files[ 0 ];
 
             return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ), username );
         }

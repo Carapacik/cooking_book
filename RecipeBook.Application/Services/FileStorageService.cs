@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using RecipeBook.Application.Services.Configs;
-using RecipeBook.Application.Services.Entities;
+using RecipeBook.Application.Configs;
+using RecipeBook.Application.Entities;
 
 namespace RecipeBook.Application.Services
 {
@@ -30,7 +30,7 @@ namespace RecipeBook.Application.Services
         {
             string fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
             string newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
-            File.WriteAllBytes( newFilePath, file.Data ); // Exception
+            File.WriteAllBytes( newFilePath, file.Data );
             return new SaveFileResult( $"{fileName}" );
         }
     }

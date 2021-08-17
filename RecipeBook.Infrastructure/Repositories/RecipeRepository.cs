@@ -28,10 +28,7 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            if ( editedRecipe.ImageUrl != "" )
-            {
-                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
-            }
+            if ( editedRecipe.ImageUrl != "" ) existingRecipe.ImageUrl = editedRecipe.ImageUrl;
 
             existingRecipe.Title = editedRecipe.Title;
             existingRecipe.Description = editedRecipe.Description;

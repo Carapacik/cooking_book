@@ -62,7 +62,7 @@ void registrationDialog(BuildContext context) {
             ),
             const SizedBox(height: 20),
             FormTextFieldWidget(
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.name,
               hintText: "Логин",
               onChanged: (value) {
                 isLoginExist = false;
@@ -140,7 +140,7 @@ void registrationDialog(BuildContext context) {
                         final result = jsonEncode(next['result']);
                         if (result == 'true') {
                           Navigator.of(context).pop();
-                          authNotifier.getUser();
+                          authNotifier.getCurrentUser();
                           context.beamToNamed("/");
                         } else {
                           form.setState(() {

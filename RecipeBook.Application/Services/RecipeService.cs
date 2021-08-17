@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using RecipeBook.Application.Services.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using RecipeBook.Application.Entities;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -21,43 +22,33 @@ namespace RecipeBook.Application.Services
         public Recipe AddRecipe( RecipeCommand command )
         {
             SaveFileResult filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            Recipe recipe = ConvertToRecipe( command, filePath, _userRepository.GetByLogin( command.UserName ).UserId );
+            int userId = _userRepository.GetByLogin( command.UserName ).UserId;
+            Recipe recipe = ConvertToRecipe( command, filePath, userId );
             _recipeRepository.Add( recipe );
             return recipe;
         }
 
         public void DeleteRecipe( int id, string username )
         {
-            User user = _userRepository.GetByLogin( username );
             Recipe recipe = _recipeRepository.GetById( id );
-            if ( user.UserId == recipe.UserId )
-            {
-                _fileStorageService.RemoveFile( "images", recipe.ImageUrl );
-                _recipeRepository.Delete( id );
-            }
+            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
+            User user = _userRepository.GetByLogin( username );
+            if ( user.UserId != recipe.UserId ) throw new ValidationException( "Incorrect user" );
+            _fileStorageService.RemoveFile( "images", recipe.ImageUrl );
+            _recipeRepository.Delete( id );
         }
 
         public Recipe EditRecipe( RecipeCommand command )
         {
-            User user = _userRepository.GetByLogin( command.UserName );
             Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
-            if ( user.UserId != existingRecipe.UserId )
-            {
-                return null;
-            }
-
+            if ( existingRecipe == null ) throw new ValidationException( "Recipe does not exist" );
+            User user = _userRepository.GetByLogin( command.UserName );
+            if ( user.UserId != existingRecipe.UserId ) throw new ValidationException( "Incorrect user" );
             SaveFileResult filePath = null;
-            if ( command.StorageFile != null )
-            {
-                filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            }
-
-            Recipe recipe = ConvertToRecipe( command, filePath, _userRepository.GetByLogin( command.UserName ).UserId );
-            if ( filePath != null )
-            {
-                _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
-            }
-
+            if ( command.StorageFile != null ) filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
+            int userId = _userRepository.GetByLogin( command.UserName ).UserId;
+            Recipe recipe = ConvertToRecipe( command, filePath, userId );
+            if ( filePath != null ) _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
             _recipeRepository.Edit( existingRecipe, recipe );
             return recipe;
         }
@@ -66,7 +57,7 @@ namespace RecipeBook.Application.Services
         {
             return new Recipe
             {
-                ImageUrl = saveFileResult != null ? saveFileResult.RelativeUri : "",
+                ImageUrl = saveFileResult?.RelativeUri ?? "",
                 RecipeId = recipeCommand.RecipeId,
                 Title = recipeCommand.Title,
                 Description = recipeCommand.Description,

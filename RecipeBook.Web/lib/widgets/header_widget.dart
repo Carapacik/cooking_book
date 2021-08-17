@@ -28,7 +28,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     apiService = ApiService();
     authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     if (!authNotifier.isAuth) {
-      authNotifier.getUser();
+      authNotifier.getCurrentUser();
     }
     super.initState();
   }
