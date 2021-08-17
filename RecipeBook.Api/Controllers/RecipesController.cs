@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +22,18 @@ namespace RecipeBook.Api.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserBuilder _userBuilder;
 
         public RecipesController(
             IRecipeRepository recipeRepository,
             IUnitOfWork unitOfWork,
-            IRecipeService recipeService )
+            IRecipeService recipeService,
+            UserBuilder userBuilder )
         {
             _recipeRepository = recipeRepository;
             _unitOfWork = unitOfWork;
             _recipeService = recipeService;
+            _userBuilder = userBuilder;
         }
 
         [HttpPost]
@@ -52,8 +55,7 @@ namespace RecipeBook.Api.Controllers
             _recipeService.DeleteRecipe( id, username );
             _unitOfWork.Commit();
         }
-
-
+        
         [HttpPatch( "{id:int}/edit" )]
         [Authorize]
         [DisableRequestSizeLimit]
@@ -70,15 +72,17 @@ namespace RecipeBook.Api.Controllers
         public RecipeDetailDto GetDetailRecipe( int id )
         {
             Recipe recipe = _recipeRepository.GetById( id );
-            return recipe.ConvertToRecipeDetailDto();
+            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
+            return _userBuilder.AddUserNameToRecipeDetail( recipe );
         }
 
         [HttpGet( "recipe-of-day" )]
         public RecipeOfDayDto GetRecipeOfDay()
         {
             Recipe recipe = _recipeRepository.GetRecipeOfDay();
-            if ( recipe == null ) throw new ValidationException( "s" );
-            return recipe.ConvertToRecipeOfDayDto();
+            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
+
+            return _userBuilder.AddUserNameToRecipeOfDay( recipe );
         }
 
         [HttpGet]
@@ -89,12 +93,13 @@ namespace RecipeBook.Api.Controllers
         {
             IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
 
-            return searchResult.Select( x => x.ConvertToRecipeDto() ).ToList();
+            return _userBuilder.AddUserNameToRecipes( searchResult );
         }
 
         private static RecipeCommand RecipeCommandParser( IFormCollection formCollection, string username, int id = 0 )
         {
             RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
+            if ( recipeData == null ) throw new ArgumentException( "Data is null" );
             recipeData.RecipeId = id;
             IFormFile formFile = null;
             if ( formCollection.Files.Count > 0 ) formFile = formCollection.Files[ 0 ];

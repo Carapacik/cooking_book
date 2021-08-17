@@ -28,7 +28,7 @@ namespace RecipeBook.Application.Services
             if ( userCommand.Password != user.Password ) return new AuthenticationResult( false, "password" );
 
             Authenticate( userCommand.Login, userCommand.HttpContext );
-            return new AuthenticationResult( true, "" );
+            return new AuthenticationResult( true, null );
         }
 
         public AuthenticationResult Register( UserCommand userCommand )
@@ -38,7 +38,7 @@ namespace RecipeBook.Application.Services
             _userRepository.Add( new User { Login = userCommand.Login, Name = userCommand.Name, Password = userCommand.Password } );
             _unitOfWork.Commit();
             Authenticate( userCommand.Login, userCommand.HttpContext );
-            return new AuthenticationResult( true, "" );
+            return new AuthenticationResult( true, null );
         }
 
         private static void Authenticate( string userName, HttpContext httpContext )

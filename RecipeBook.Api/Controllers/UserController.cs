@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
@@ -26,9 +27,8 @@ namespace RecipeBook.Api.Controllers
         public DetailUserDto GetCurrentUser()
         {
             if ( User.Identity is { Name: null } ) return null;
-
             User user = _userRepository.GetByLogin( User.Identity?.Name );
-            return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
+            return user.Convert();
         }
 
         [HttpPost( "login" )]
