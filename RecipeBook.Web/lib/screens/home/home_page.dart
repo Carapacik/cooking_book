@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
               height: 800,
               child: Image.asset(CookingImages.homeBackground),
             ),
-            const HeaderWidget(currentSelectedPage: HeaderButtons.home),
+            HeaderWidget(currentSelectedPage: HeaderButtons.home),
             Padding(
               padding: const EdgeInsets.only(top: 211, left: 120, right: 120),
               child: Column(

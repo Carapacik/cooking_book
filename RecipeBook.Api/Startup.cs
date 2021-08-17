@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RecipeBook.Api.Converters;
 using RecipeBook.Application.Configs;
 using RecipeBook.Infrastructure;
 
@@ -24,6 +25,7 @@ namespace RecipeBook.Api
         {
             services.AddControllers();
             services.AddDependencies();
+            services.AddScoped<UserBuilder>(); // не знаю куда вынести
             services.AddDbContext<RecipeBookDbContext>( conf =>
                 conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie();

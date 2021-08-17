@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipebook/model/auth_result.dart';
 import 'package:recipebook/model/user_command.dart';
 import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -13,13 +12,13 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
-void registrationDialog(BuildContext context) {
+void registerDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
   final apiService = ApiService();
   final user = UserCommand();
   String? currentPassword;
-  bool isLoginExist = false;
+  bool isUserExist = false;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -65,12 +64,12 @@ void registrationDialog(BuildContext context) {
               keyboardType: TextInputType.name,
               hintText: "Логин",
               onChanged: (value) {
-                isLoginExist = false;
+                isUserExist = false;
               },
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
                 if (value.length > 20) return "Логин меньше 20 символов";
-                if (isLoginExist) return "Такой логин уже существует";
+                if (isUserExist) return "Такой логин уже существует";
                 return null;
               },
               onSaved: (value) {
@@ -135,18 +134,19 @@ void registrationDialog(BuildContext context) {
                         login: user.login,
                       );
                       try {
-                        late dynamic next;
-                        await apiService.postRequest("user/register", userData.toJson()).then((value) => next = value);
-                        final result = jsonEncode(next['result']);
-                        if (result == 'true') {
+                        final result = await apiService.postRequest("user/register", user.toJson());
+                        final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
+                        if (authResult.result == true) {
                           Navigator.of(context).pop();
                           authNotifier.getCurrentUser();
                           context.beamToNamed("/");
-                        } else {
+                        } else if (authResult.error == "user") {
                           form.setState(() {
-                            isLoginExist = true;
+                            isUserExist = true;
                           });
                           form.validate();
+                        } else {
+                          context.beamToNamed("/error?e=Not found");
                         }
                       } catch (e) {
                         context.beamToNamed("/error?e=$e");

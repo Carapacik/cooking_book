@@ -36,7 +36,7 @@ class _RecipesPageState extends State<RecipesPage> {
   late ApiService apiService;
   late RecipeNotifier recipeNotifier;
   TextEditingController? textController = TextEditingController();
-  bool isEndOfList = false;
+  bool isEndOfList = true;
   int skipCounter = 0;
 
   Future searchRecipes() async {
@@ -51,9 +51,9 @@ class _RecipesPageState extends State<RecipesPage> {
       );
       if (response.statusCode == 200) {
         final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
-        if (listOfRecipes.length != 4) {
+        if (listOfRecipes.length == 4) {
           setState(() {
-            isEndOfList = true;
+            isEndOfList = false;
           });
         }
         if (widget.searchQuery!.isEmpty) {
@@ -84,9 +84,9 @@ class _RecipesPageState extends State<RecipesPage> {
       response = await apiService.getRequestWithParam(endPoint: "recipes", take: 4, skip: skipCounter);
       if (response.statusCode == 200) {
         final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
-        if (listOfRecipes.length != 4) {
+        if (listOfRecipes.length == 4) {
           setState(() {
-            isEndOfList = true;
+            isEndOfList = false;
           });
         }
         recipeNotifier.addRecipes(listOfRecipes);
@@ -148,7 +148,7 @@ class _RecipesPageState extends State<RecipesPage> {
                 width: MediaQuery.of(context).size.width,
               ),
             ),
-            const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
+            HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Padding(
               padding: const EdgeInsets.only(top: 160, left: 120, right: 120),
               child: Column(

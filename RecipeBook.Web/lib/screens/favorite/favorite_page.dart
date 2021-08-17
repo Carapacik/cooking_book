@@ -20,7 +20,7 @@ class FavoritePage extends StatelessWidget {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            const HeaderWidget(currentSelectedPage: HeaderButtons.favorite),
+            HeaderWidget(currentSelectedPage: HeaderButtons.favorite),
             Padding(
               padding: const EdgeInsets.only(top: 160, left: 120, right: 120),
               child: Column(

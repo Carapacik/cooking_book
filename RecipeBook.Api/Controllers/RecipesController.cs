@@ -55,7 +55,7 @@ namespace RecipeBook.Api.Controllers
             _recipeService.DeleteRecipe( id, username );
             _unitOfWork.Commit();
         }
-        
+
         [HttpPatch( "{id:int}/edit" )]
         [Authorize]
         [DisableRequestSizeLimit]

@@ -48,7 +48,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
             const SizedBox(width: 80),
             ...List.generate(
-              3,
+              authNotifier.isAuth ? 3 : 2,
               (index) => TextButton(
                 onPressed: () {
                   context.beamToNamed(HeaderButtons.getById(index).route);

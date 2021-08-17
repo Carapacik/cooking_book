@@ -4,7 +4,7 @@ import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/registration_dialog.dart';
+import 'package:recipebook/widgets/register_dialog.dart';
 
 void notAuthDialog(BuildContext context, String text) {
   final alert = AlertDialog(
@@ -56,7 +56,7 @@ void notAuthDialog(BuildContext context, String text) {
                 height: 60,
                 onPressed: () {
                   Navigator.of(context).pop();
-                  registrationDialog(context);
+                  registerDialog(context);
                 },
               ),
             ],

@@ -24,7 +24,7 @@ namespace RecipeBook.Application.Services
         public AuthenticationResult Login( UserCommand userCommand )
         {
             User user = _userRepository.GetByLogin( userCommand.Login );
-            if ( user == null ) return new AuthenticationResult( false, "login" );
+            if ( user == null ) return new AuthenticationResult( false, "user" );
             if ( userCommand.Password != user.Password ) return new AuthenticationResult( false, "password" );
 
             Authenticate( userCommand.Login, userCommand.HttpContext );
