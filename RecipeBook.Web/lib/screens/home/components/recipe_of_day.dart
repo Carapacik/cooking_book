@@ -57,16 +57,16 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const SizedBox(
-        height: 550,
+        height: 500,
         child: Center(child: CircularProgressIndicator(color: Palette.orange)),
       );
     }
     if (recipeOfDay == null) {
       return SizedBox(
-        height: 550,
+        height: 500,
         child: Center(
           child: Text(
-            "В базе нет рецептов",
+            "Не удалось найти рецепт",
             style: Theme.of(context).textTheme.m24.copyWith(color: Palette.red),
           ),
         ),

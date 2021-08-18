@@ -8,6 +8,20 @@ namespace RecipeBook.Migrations.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Rating",
+                columns: table => new
+                {
+                    RecipeId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    InFavorite = table.Column<bool>(type: "boolean", nullable: false),
+                    IsLiked = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rating", x => new { x.RecipeId, x.UserId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Recipe",
                 columns: table => new
                 {
@@ -34,27 +48,13 @@ namespace RecipeBook.Migrations.Migrations
                     UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    Login = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
+                    Login = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRating",
-                columns: table => new
-                {
-                    RecipeId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    InFavorite = table.Column<bool>(type: "boolean", nullable: false),
-                    IsLiked = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRating", x => new { x.RecipeId, x.UserId });
                 });
 
             migrationBuilder.CreateTable(
@@ -164,6 +164,9 @@ namespace RecipeBook.Migrations.Migrations
                 name: "IngredientItem");
 
             migrationBuilder.DropTable(
+                name: "Rating");
+
+            migrationBuilder.DropTable(
                 name: "Step");
 
             migrationBuilder.DropTable(
@@ -171,9 +174,6 @@ namespace RecipeBook.Migrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "UserRating");
 
             migrationBuilder.DropTable(
                 name: "Ingredient");

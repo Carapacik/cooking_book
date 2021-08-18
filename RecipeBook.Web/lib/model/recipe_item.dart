@@ -23,8 +23,8 @@ class RecipeItem {
   final String imageUrl;
   final String username;
   final List<String> tags;
-  final int favoritesCount;
-  final int likesCount;
+  int favoritesCount;
+  int likesCount;
   final int cookingTimeInMinutes;
   final int portionsCount;
 

@@ -25,9 +25,15 @@ namespace RecipeBook.Api
         {
             services.AddControllers();
             services.AddDependencies();
-            services.AddScoped<UserBuilder>(); // не знаю куда вынести
             services.AddDbContext<RecipeBookDbContext>( conf =>
                 conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
+            services.AddScoped<UserBuilder>(); // не знаю куда вынести
+            // CORS вроде работает
+            services.AddCors( options => options.AddDefaultPolicy( builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod() )
+            );
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie();
             services.AddSingleton( Configuration.GetSection( "FileStorageSettings" ).Get<FileStorageSettings>() );
             services.AddSwaggerGen( c => { c.SwaggerDoc( "v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" } ); } );
@@ -43,6 +49,8 @@ namespace RecipeBook.Api
             }
 
             app.UseRouting();
+            app.UseCors();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -11,6 +11,7 @@ namespace RecipeBook.Infrastructure
     {
         public static void AddDependencies( this IServiceCollection services )
         {
+            services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

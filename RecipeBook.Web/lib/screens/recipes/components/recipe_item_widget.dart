@@ -1,13 +1,15 @@
 import 'package:beamer/beamer.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:recipebook/model/recipe_item.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/recipe_tag_list_widget.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
-class RecipeItemWidget extends StatelessWidget {
+class RecipeItemWidget extends StatefulWidget {
   const RecipeItemWidget({
     this.isDetail,
     required this.recipeItem,
@@ -16,6 +18,38 @@ class RecipeItemWidget extends StatelessWidget {
 
   final RecipeItem recipeItem;
   final bool? isDetail;
+
+  @override
+  _RecipeItemWidgetState createState() => _RecipeItemWidgetState();
+}
+
+class _RecipeItemWidgetState extends State<RecipeItemWidget> {
+  late ApiService apiService;
+
+  @override
+  void initState() {
+    apiService = ApiService();
+    super.initState();
+  }
+
+  Future incrementFavorite() async {
+    Response response;
+
+    try {
+      widget.recipeItem.favoritesCount++;
+      response = await apiService.getRequest("rating/${widget.recipeItem.recipeId}/favorite");
+      if (response.statusCode == 200) {
+        setState(() {});
+      } else {
+        setState(() {
+          widget.recipeItem.favoritesCount--;
+        });
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +73,10 @@ class RecipeItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          if (isDetail == null)
+          if (widget.isDetail == null)
             TextButton(
               onPressed: () {
-                context.beamToNamed("/recipes/${recipeItem.recipeId}");
+                context.beamToNamed("/recipes/${widget.recipeItem.recipeId}");
               },
               style: TextButton.styleFrom(
                 primary: Palette.orange,
@@ -55,15 +89,15 @@ class RecipeItemWidget extends StatelessWidget {
               ),
               clipBehavior: Clip.antiAlias,
               child: RecipeImageWithAuthor(
-                imageUrl: recipeItem.imageUrl,
-                username: recipeItem.username,
+                imageUrl: widget.recipeItem.imageUrl,
+                username: widget.recipeItem.username,
                 size: 430,
               ),
             )
           else
             RecipeImageWithAuthor(
-              imageUrl: recipeItem.imageUrl,
-              username: recipeItem.username,
+              imageUrl: widget.recipeItem.imageUrl,
+              username: widget.recipeItem.username,
               size: 430,
             ),
           Padding(
@@ -78,22 +112,22 @@ class RecipeItemWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RecipeTagsList(tags: recipeItem.tags),
+                      RecipeTagsList(tags: widget.recipeItem.tags),
                       Row(
                         children: [
                           ButtonOutlinedWidget(
                             icon: Icons.star,
                             padding: 12,
-                            text: recipeItem.favoritesCount.toString(),
+                            text: widget.recipeItem.favoritesCount.toString(),
                             width: 107,
                             height: 50,
-                            onPressed: () {},
+                            onPressed: incrementFavorite,
                           ),
                           const SizedBox(width: 15),
                           ButtonOutlinedWidget(
                             icon: Icons.favorite_outline,
                             padding: 12,
-                            text: recipeItem.likesCount.toString(),
+                            text: widget.recipeItem.likesCount.toString(),
                             width: 107,
                             height: 50,
                             onPressed: () {},
@@ -108,7 +142,7 @@ class RecipeItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      recipeItem.title,
+                      widget.recipeItem.title,
                       style: Theme.of(context).textTheme.b24,
                     ),
                     const SizedBox(height: 16),
@@ -116,7 +150,7 @@ class RecipeItemWidget extends StatelessWidget {
                       width: 580,
                       height: 95,
                       child: Text(
-                        recipeItem.description,
+                        widget.recipeItem.description,
                         style: Theme.of(context).textTheme.r18,
                       ),
                     ),
@@ -144,7 +178,7 @@ class RecipeItemWidget extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                "${recipeItem.cookingTimeInMinutes} мин",
+                                "${widget.recipeItem.cookingTimeInMinutes} мин",
                                 style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
                               ),
                             ],
@@ -167,7 +201,7 @@ class RecipeItemWidget extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                "${recipeItem.portionsCount} персон",
+                                "${widget.recipeItem.portionsCount} персон",
                                 style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
                               ),
                             ],

@@ -60,6 +60,25 @@ namespace RecipeBook.Migrations.Migrations
                     b.ToTable("IngredientItem");
                 });
 
+            modelBuilder.Entity("RecipeBook.Domain.Entities.Rating", b =>
+                {
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("InFavorite")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("RecipeId", "UserId");
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("RecipeBook.Domain.Entities.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
@@ -169,25 +188,6 @@ namespace RecipeBook.Migrations.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("RecipeBook.Domain.Entities.UserRating", b =>
-                {
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("InFavorite")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("RecipeId", "UserId");
-
-                    b.ToTable("UserRating");
                 });
 
             modelBuilder.Entity("RecipeBook.Domain.Entities.Ingredient", b =>
