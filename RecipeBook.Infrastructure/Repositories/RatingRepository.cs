@@ -21,7 +21,13 @@ namespace RecipeBook.Infrastructure.Repositories
             Rating rating = _context.Set<Rating>().FirstOrDefault( x => x.RecipeId == recipeId && x.UserId == userId );
             if ( rating == null )
             {
-                _context.Set<Rating>().Add( new Rating { InFavorite = true, IsLiked = true } );
+                _context.Set<Rating>().Add( new Rating
+                {
+                    UserId = userId, 
+                    RecipeId = recipeId, 
+                    InFavorite = true, 
+                    IsLiked = true
+                } );
             }
             else
             {

@@ -122,7 +122,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
+            const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
               child: Form(

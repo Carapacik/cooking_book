@@ -79,7 +79,7 @@ class ProfileLocation extends BeamLocation<BeamState> {
         BeamPage(
           key: const ValueKey('profile'),
           title: 'Мой профиль',
-          child: const ProfilePage(),
+          child: ProfilePage(),
         ),
       ];
 }
