@@ -88,7 +88,10 @@ class HomePage extends StatelessWidget {
                                   context.beamToNamed("/recipes/add");
                                 }
                               : () {
-                                  notAuthDialog(context, "Добавлять рецепты могут только зарегистрированные пользователи.");
+                                  notAuthDialog(
+                                    context,
+                                    "Добавлять рецепты могут только авторизированные пользователи.",
+                                  );
                                 },
                         ),
                         const SizedBox(width: 24),

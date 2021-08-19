@@ -18,9 +18,7 @@ class RecipeListWidget extends StatelessWidget {
             shrinkWrap: true,
             itemCount: recipeNotifier.recipeList.length,
             itemBuilder: (context, index) {
-              return RecipeItemWidget(
-                recipeItem: recipeNotifier.recipeList[index],
-              );
+              return RecipeItemWidget(recipeItem: recipeNotifier.recipeList[index]);
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 40);

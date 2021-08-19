@@ -85,8 +85,20 @@ namespace RecipeBook.Api.Controllers
             return _userBuilder.AddUserNameToRecipeOfDay( recipe );
         }
 
+        [HttpGet( "favorite" )]
+        [Authorize]
+        public List<RecipeDto> GetFavoriteRecipes(
+            [FromQuery] int skip,
+            [FromQuery] int take )
+        {
+            string username = User.Identity?.Name;
+            IReadOnlyList<Recipe> searchResult = _recipeRepository.GetFavoriteRecipes( skip, take, username );
+
+            return _userBuilder.AddUserNameToRecipes( searchResult );
+        }
+
         [HttpGet]
-        public List<RecipeDto> GetRecipes(
+        public List<RecipeDto> GetAllRecipes(
             [FromQuery] int skip,
             [FromQuery] int take,
             [FromQuery] string searchQuery )

@@ -9,10 +9,12 @@ namespace RecipeBook.Infrastructure.Repositories
     public class RecipeRepository : IRecipeRepository
     {
         private readonly RecipeBookDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public RecipeRepository( RecipeBookDbContext context )
+        public RecipeRepository( RecipeBookDbContext context, IUserRepository userRepository )
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         public void Add( Recipe newRecipe )
@@ -42,6 +44,17 @@ namespace RecipeBook.Infrastructure.Repositories
         public Recipe GetById( int id )
         {
             return GetQuery().FirstOrDefault( x => x.RecipeId == id );
+        }
+
+        public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
+        {
+            User user = _userRepository.GetByLogin( username );
+            IQueryable<int> allUserFavorites = _context.Set<Rating>().Where( x => x.UserId == user.UserId && x.InFavorite ).Select( x => x.RecipeId );
+            IQueryable<Recipe> query = GetQuery().Where( x => allUserFavorites.Contains( x.RecipeId ) );
+            return query.OrderByDescending( x => x.FavoritesCount )
+                .Skip( skip )
+                .Take( take )
+                .ToList();
         }
 
         public Recipe GetRecipeOfDay()

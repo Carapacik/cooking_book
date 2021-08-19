@@ -1,11 +1,14 @@
 import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipebook/model/recipe_item.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/recipe_tag_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/not_auth_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_image_with_author.dart';
 
@@ -53,6 +56,7 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final authNotifier = Provider.of<AuthNotifier>(context);
     return Container(
       height: 430,
       decoration: const BoxDecoration(
@@ -121,7 +125,16 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
                             text: widget.recipeItem.favoritesCount.toString(),
                             width: 107,
                             height: 50,
-                            onPressed: incrementFavorite,
+                            onPressed: () {
+                              if (authNotifier.isAuth) {
+                                incrementFavorite();
+                              } else {
+                                notAuthDialog(
+                                  context,
+                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                );
+                              }
+                            },
                           ),
                           const SizedBox(width: 15),
                           ButtonOutlinedWidget(
@@ -130,7 +143,16 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
                             text: widget.recipeItem.likesCount.toString(),
                             width: 107,
                             height: 50,
-                            onPressed: () {},
+                            onPressed: () {
+                              if (authNotifier.isAuth) {
+                                //updateLikes();
+                              } else {
+                                notAuthDialog(
+                                  context,
+                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),
