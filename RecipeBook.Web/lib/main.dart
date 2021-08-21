@@ -26,14 +26,20 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final routerDelegate =
-      BeamerDelegate(notFoundPage: BeamPage(title: "Ошибка", child: const ErrorPage()), locationBuilder: recipeLocationBuilder, guards: [
-    BeamGuard(
-      check: (context, location) => context.read<AuthNotifier>().isAuth,
-      beamToNamed: "/error?e=You don't have access",
-      pathBlueprints: ['/recipes/add', '/favorite', '/profile'],
+  final routerDelegate = BeamerDelegate(
+    notFoundPage: BeamPage(
+      title: "Ошибка",
+      child: const ErrorPage(),
     ),
-  ]);
+    locationBuilder: recipeLocationBuilder,
+    guards: [
+      BeamGuard(
+        check: (context, location) => context.read<AuthNotifier>().isAuth,
+        beamToNamed: "/error?e=You don't have access",
+        pathBlueprints: ['/recipes/add', '/favorite', '/profile'],
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {

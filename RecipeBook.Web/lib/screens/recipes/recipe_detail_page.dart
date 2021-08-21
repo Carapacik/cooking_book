@@ -73,7 +73,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
               color: Palette.wave,
               width: MediaQuery.of(context).size.width,
             ),
-            HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
+            const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Padding(
               padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
               child: Column(
@@ -134,7 +134,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                       height: 60,
                                       icon: Icons.edit,
                                       padding: 18,
-                                      onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit", popBeamLocationOnPop: true),
+                                      onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit"),
                                     ),
                                   ],
                                 )

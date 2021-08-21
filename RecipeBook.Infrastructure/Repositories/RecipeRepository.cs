@@ -49,7 +49,9 @@ namespace RecipeBook.Infrastructure.Repositories
         public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
         {
             User user = _userRepository.GetByLogin( username );
-            IQueryable<int> allUserFavorites = _context.Set<Rating>().Where( x => x.UserId == user.UserId && x.InFavorite ).Select( x => x.RecipeId );
+            IQueryable<int> allUserFavorites = _context.Set<Rating>()
+                .Where( x => x.UserId == user.UserId && x.InFavorite )
+                .Select( x => x.RecipeId );
             IQueryable<Recipe> query = GetQuery().Where( x => allUserFavorites.Contains( x.RecipeId ) );
             return query.OrderByDescending( x => x.FavoritesCount )
                 .Skip( skip )

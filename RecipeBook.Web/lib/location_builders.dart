@@ -79,7 +79,7 @@ class ProfileLocation extends BeamLocation<BeamState> {
         BeamPage(
           key: const ValueKey('profile'),
           title: 'Мой профиль',
-          child: ProfilePage(),
+          child: const ProfilePage(),
         ),
       ];
 }
@@ -112,8 +112,6 @@ class RecipesLocation extends BeamLocation<BeamState> {
     if (state.pathParameters.containsKey('recipeId')) {
       final recipeId = state.pathParameters['recipeId'];
       const pageTitle = 'Детальный рецепт';
-      // final result = int.tryParse(recipeId!) ?? "";
-      // if (result == "") {}
 
       beamPages.add(
         BeamPage(
@@ -140,6 +138,7 @@ class RecipesLocation extends BeamLocation<BeamState> {
       final recipeId = state.pathParameters['recipeId'];
       const pageTitle = 'Редактировать рецепта';
 
+      beamPages.clear();
       beamPages.add(
         BeamPage(
           key: ValueKey('recipes-$recipeId-edit'),
