@@ -15,6 +15,8 @@ class RecipeDetail {
     required this.likesCount,
     required this.favoritesCount,
     required this.username,
+    required this.isLiked,
+    required this.isFavorite,
     required this.tags,
     required this.steps,
     required this.ingredients,
@@ -28,6 +30,8 @@ class RecipeDetail {
   final int portionsCount;
   final int likesCount;
   final int favoritesCount;
+  final bool isLiked;
+  final bool isFavorite;
   final String username;
   final List<String> tags;
   final List<String> steps;

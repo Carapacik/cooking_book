@@ -7,7 +7,7 @@ namespace RecipeBook.Api.Converters
     {
         public static DetailUserDto Convert( this User user )
         {
-            return new DetailUserDto { Id = user.UserId, Name = user.Name, Description = user.Description, Login = user.Login };
+            return new DetailUserDto { Id = user.UserId, Name = user.Name, Login = user.Login };
         }
     }
 }

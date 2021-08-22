@@ -7,6 +7,6 @@ namespace RecipeBook.Application.Services
     {
         Recipe AddRecipe( RecipeCommand command );
         void DeleteRecipe( int id, string username );
-        Recipe EditRecipe( RecipeCommand command );
+        Recipe EditRecipe( RecipeCommand editCommand );
     }
 }

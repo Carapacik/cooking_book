@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RecipeBook.Api.Builder;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
@@ -19,21 +20,21 @@ namespace RecipeBook.Api.Controllers
     [Route( "api/[controller]" )]
     public class RecipesController : ControllerBase
     {
+        private readonly RecipeBuilder _recipeBuilder;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IRecipeService _recipeService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserBuilder _userBuilder;
 
         public RecipesController(
             IRecipeRepository recipeRepository,
             IUnitOfWork unitOfWork,
             IRecipeService recipeService,
-            UserBuilder userBuilder )
+            RecipeBuilder recipeBuilder )
         {
             _recipeRepository = recipeRepository;
             _unitOfWork = unitOfWork;
             _recipeService = recipeService;
-            _userBuilder = userBuilder;
+            _recipeBuilder = recipeBuilder;
         }
 
         [HttpPost]
@@ -72,29 +73,34 @@ namespace RecipeBook.Api.Controllers
         public RecipeDetailDto GetDetailRecipe( int id )
         {
             Recipe recipe = _recipeRepository.GetById( id );
-            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
-            return _userBuilder.AddUserNameToRecipeDetail( recipe );
+            if ( recipe == null )
+            {
+                throw new ValidationException( "Recipe does not exist" );
+            }
+
+            string username = User.Identity?.Name;
+            return _recipeBuilder.BuildRecipeDetail( recipe, username );
         }
 
         [HttpGet( "recipe-of-day" )]
         public RecipeOfDayDto GetRecipeOfDay()
         {
             Recipe recipe = _recipeRepository.GetRecipeOfDay();
-            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
+            if ( recipe == null )
+            {
+                throw new ValidationException( "Recipe does not exist" );
+            }
 
-            return _userBuilder.AddUserNameToRecipeOfDay( recipe );
+            return _recipeBuilder.BuildRecipeOfDay( recipe );
         }
 
         [HttpGet( "favorite" )]
         [Authorize]
-        public List<RecipeDto> GetFavoriteRecipes(
-            [FromQuery] int skip,
-            [FromQuery] int take )
+        public List<RecipeDto> GetFavoriteRecipes( [FromQuery] int skip, [FromQuery] int take )
         {
             string username = User.Identity?.Name;
             IReadOnlyList<Recipe> searchResult = _recipeRepository.GetFavoriteRecipes( skip, take, username );
-
-            return _userBuilder.AddUserNameToRecipes( searchResult );
+            return _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
         [HttpGet]
@@ -105,16 +111,24 @@ namespace RecipeBook.Api.Controllers
         {
             IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
 
-            return _userBuilder.AddUserNameToRecipes( searchResult );
+            string username = User.Identity?.Name;
+            return _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
         private static RecipeCommand RecipeCommandParser( IFormCollection formCollection, string username, int id = 0 )
         {
             RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
-            if ( recipeData == null ) throw new ArgumentException( "Data is null" );
+            if ( recipeData == null )
+            {
+                throw new ArgumentException( "Data is null" );
+            }
+
             recipeData.RecipeId = id;
             IFormFile formFile = null;
-            if ( formCollection.Files.Count > 0 ) formFile = formCollection.Files[ 0 ];
+            if ( formCollection.Files.Count > 0 )
+            {
+                formFile = formCollection.Files[ 0 ];
+            }
 
             return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ), username );
         }

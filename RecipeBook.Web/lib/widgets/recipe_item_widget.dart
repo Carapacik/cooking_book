@@ -35,17 +35,82 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
     super.initState();
   }
 
-  Future incrementFavorite() async {
+  Future addFavorite() async {
     Response response;
 
     try {
       widget.recipeItem.favoritesCount++;
-      response = await apiService.getRequest("rating/${widget.recipeItem.recipeId}/favorite");
+      widget.recipeItem.likesCount++;
+      widget.recipeItem.isFavorite = true;
+      widget.recipeItem.isLiked = true;
+      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/add-favorite");
       if (response.statusCode == 200) {
         setState(() {});
       } else {
         setState(() {
           widget.recipeItem.favoritesCount--;
+          widget.recipeItem.likesCount--;
+        });
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  Future removeFavorite() async {
+    Response response;
+
+    try {
+      widget.recipeItem.favoritesCount--;
+      widget.recipeItem.isFavorite = false;
+      widget.recipeItem.likesCount--;
+      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/remove-favorite");
+      if (response.statusCode == 200) {
+        setState(() {});
+      } else {
+        setState(() {
+          widget.recipeItem.favoritesCount++;
+        });
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  Future addLike() async {
+    Response response;
+
+    try {
+      widget.recipeItem.likesCount++;
+      widget.recipeItem.isLiked = true;
+      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/add-like");
+      if (response.statusCode == 200) {
+        setState(() {});
+      } else {
+        setState(() {
+          widget.recipeItem.likesCount--;
+        });
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  Future removeLike() async {
+    Response response;
+
+    try {
+      widget.recipeItem.likesCount--;
+      widget.recipeItem.isLiked = false;
+      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/remove-like");
+      if (response.statusCode == 200) {
+        setState(() {});
+      } else {
+        setState(() {
+          widget.recipeItem.likesCount++;
         });
       }
     } on Exception catch (e) {
@@ -111,50 +176,62 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
               children: [
                 Container(
                   constraints: const BoxConstraints(
-                    maxWidth: 770,
-                  ),
+                      maxWidth: 690),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       RecipeTagsList(tags: widget.recipeItem.tags),
-                      Row(
-                        children: [
-                          ButtonOutlinedWidget(
-                            icon: Icons.star,
-                            padding: 12,
-                            text: widget.recipeItem.favoritesCount.toString(),
-                            width: 107,
-                            height: 50,
-                            onPressed: () {
-                              if (authNotifier.isAuth) {
-                                incrementFavorite();
-                              } else {
-                                notAuthDialog(
-                                  context,
-                                  "Оценивать рецепты могут только авторизированные пользователи.",
-                                );
-                              }
-                            },
-                          ),
-                          const SizedBox(width: 15),
-                          ButtonOutlinedWidget(
-                            icon: Icons.favorite_outline,
-                            padding: 12,
-                            text: widget.recipeItem.likesCount.toString(),
-                            width: 107,
-                            height: 50,
-                            onPressed: () {
-                              if (authNotifier.isAuth) {
-                                //updateLikes();
-                              } else {
-                                notAuthDialog(
-                                  context,
-                                  "Оценивать рецепты могут только авторизированные пользователи.",
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                      SizedBox(
+                        width: 230,
+                        child: Row(
+                          children: [
+                            ButtonOutlinedWidget(
+                              icon: widget.recipeItem.isFavorite ? Icons.star : Icons.star_border,
+                              color: widget.recipeItem.isFavorite ? Palette.red : Palette.orange,
+                              padding: 12,
+                              text: widget.recipeItem.favoritesCount.toString(),
+                              width: 107,
+                              height: 50,
+                              onPressed: () {
+                                if (authNotifier.isAuth) {
+                                  if (widget.recipeItem.isFavorite) {
+                                    removeFavorite();
+                                  } else {
+                                    addFavorite();
+                                  }
+                                } else {
+                                  notAuthDialog(
+                                    context,
+                                    "Оценивать рецепты могут только авторизированные пользователи.",
+                                  );
+                                }
+                              },
+                            ),
+                            const SizedBox(width: 15),
+                            ButtonOutlinedWidget(
+                              icon: widget.recipeItem.isLiked ? Icons.favorite : Icons.favorite_outline,
+                              color: widget.recipeItem.isLiked ? Palette.red : Palette.orange,
+                              padding: 12,
+                              text: widget.recipeItem.likesCount.toString(),
+                              width: 107,
+                              height: 50,
+                              onPressed: () {
+                                if (authNotifier.isAuth) {
+                                  if (widget.recipeItem.isLiked) {
+                                    removeLike();
+                                  } else {
+                                    addLike();
+                                  }
+                                } else {
+                                  notAuthDialog(
+                                    context,
+                                    "Оценивать рецепты могут только авторизированные пользователи.",
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

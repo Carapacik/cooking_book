@@ -5,7 +5,7 @@ class Palette {
   Palette._();
 
   static const Color orange = Color(0xFFFDB100);
-  static const Color red = Color(0xFFBF3C3C);
+  static const Color red = Color(0xFFE40000);
   static const Color main = Color(0xFF25292D);
   static const Color mainLighten1 = Color(0xFF4A525A);
   static const Color mainLighten2 = Color(0xFF3A3C41);

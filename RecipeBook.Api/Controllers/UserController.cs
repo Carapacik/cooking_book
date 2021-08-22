@@ -26,7 +26,11 @@ namespace RecipeBook.Api.Controllers
         [HttpGet( "current-user" )]
         public DetailUserDto GetCurrentUser()
         {
-            if ( User.Identity is { Name: null } ) return null;
+            if ( User.Identity is { Name: null } )
+            {
+                return null;
+            }
+
             User user = _userRepository.GetByLogin( User.Identity?.Name );
             return user.Convert();
         }
@@ -49,10 +53,16 @@ namespace RecipeBook.Api.Controllers
             return new AuthenticationResultDto( result.Result, result.Error );
         }
 
-        [HttpGet( "logout" )]
+        [HttpPost( "logout" )]
         public void Logout()
         {
             HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme ).Wait();
+        }
+
+        [HttpGet( "profile" )]
+        public ProfileDto GetProfile()
+        {
+            return new ProfileDto();
         }
 
         private UserCommand AuthenticationResultParser( UserCommandDto userCommandDto )

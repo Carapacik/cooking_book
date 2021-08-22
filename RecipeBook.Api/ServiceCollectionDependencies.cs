@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RecipeBook.Api.Builder;
 using RecipeBook.Application;
 using RecipeBook.Application.Services;
 using RecipeBook.Domain.Repositories;
+using RecipeBook.Infrastructure;
 using RecipeBook.Infrastructure.Repositories;
 
-namespace RecipeBook.Infrastructure
+namespace RecipeBook.Api
 {
     public static class ServiceCollectionDependencies
     {
@@ -15,14 +16,11 @@ namespace RecipeBook.Infrastructure
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
-        }
-
-        public static void ConfigureDatabase( this DbContextOptionsBuilder dbOptions, string connectionString )
-        {
-            dbOptions.UseNpgsql( connectionString, b => b.MigrationsAssembly( "RecipeBook.Migrations" ) );
+            services.AddScoped<RecipeBuilder>();
         }
     }
 }

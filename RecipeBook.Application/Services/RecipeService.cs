@@ -31,24 +31,48 @@ namespace RecipeBook.Application.Services
         public void DeleteRecipe( int id, string username )
         {
             Recipe recipe = _recipeRepository.GetById( id );
-            if ( recipe == null ) throw new ValidationException( "Recipe does not exist" );
+            if ( recipe == null )
+            {
+                throw new ValidationException( "Recipe does not exist" );
+            }
+
             User user = _userRepository.GetByLogin( username );
-            if ( user.UserId != recipe.UserId ) throw new ValidationException( "Incorrect user" );
+            if ( user.UserId != recipe.UserId )
+            {
+                throw new ValidationException( "Incorrect user" );
+            }
+
             _fileStorageService.RemoveFile( "images", recipe.ImageUrl );
             _recipeRepository.Delete( id );
         }
 
-        public Recipe EditRecipe( RecipeCommand command )
+        public Recipe EditRecipe( RecipeCommand editCommand )
         {
-            Recipe existingRecipe = _recipeRepository.GetById( command.RecipeId );
-            if ( existingRecipe == null ) throw new ValidationException( "Recipe does not exist" );
-            User user = _userRepository.GetByLogin( command.UserName );
-            if ( user.UserId != existingRecipe.UserId ) throw new ValidationException( "Incorrect user" );
+            Recipe existingRecipe = _recipeRepository.GetById( editCommand.RecipeId );
+            if ( existingRecipe == null )
+            {
+                throw new ValidationException( "Recipe does not exist" );
+            }
+
+            User user = _userRepository.GetByLogin( editCommand.UserName );
+            if ( user.UserId != existingRecipe.UserId )
+            {
+                throw new ValidationException( "Incorrect user" );
+            }
+
             SaveFileResult filePath = null;
-            if ( command.StorageFile != null ) filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            int userId = _userRepository.GetByLogin( command.UserName ).UserId;
-            Recipe recipe = ConvertToRecipe( command, filePath, userId );
-            if ( filePath != null ) _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
+            if ( editCommand.StorageFile != null )
+            {
+                filePath = _fileStorageService.SaveFile( editCommand.StorageFile, "images" );
+            }
+
+            int userId = _userRepository.GetByLogin( editCommand.UserName ).UserId;
+            Recipe recipe = ConvertToRecipe( editCommand, filePath, userId );
+            if ( filePath != null )
+            {
+                _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
+            }
+
             _recipeRepository.Edit( existingRecipe, recipe );
             return recipe;
         }

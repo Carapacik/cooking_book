@@ -11,7 +11,7 @@ namespace RecipeBook.Api.Converters
 
         public static FormFileAdapter Create( IFormFile formFile )
         {
-            if ( formFile == null ) return null;
+            if ( formFile == null ) { return null; }
 
             byte[] bytes;
             using ( MemoryStream ms = new() )

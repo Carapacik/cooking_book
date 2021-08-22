@@ -10,6 +10,7 @@ import 'package:recipebook/screens/recipes/components/form_text_field_widget.dar
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipebook/widgets/recipe_list_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -62,6 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Center(
               child: Container(
+                alignment: Alignment.topLeft,
                 constraints: const BoxConstraints(maxWidth: 1200),
                 margin: const EdgeInsets.only(top: 127),
                 child: Column(
@@ -93,69 +95,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.b42,
                     ),
                     const SizedBox(height: 50),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Palette.shadowColor,
-                            offset: Offset(0, 16),
-                            blurRadius: 72,
-                          )
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 60, right: 73, left: 73),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 542,
-                                  child: Column(
-                                    children: [
-                                      FormTextFieldWidget(
-                                        hintText: "Имя",
-                                        keyboardType: TextInputType.name,
-                                        controller: nameController,
-                                        readOnly: readOnlyTextField,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      FormTextFieldWidget(
-                                        hintText: "Логин",
-                                        controller: loginController,
-                                        readOnly: readOnlyTextField,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      FormTextFieldWidget(
-                                        obscureText: true,
-                                        keyboardType: TextInputType.visiblePassword,
-                                        hintText: "Пароль",
-                                        controller: passwordController,
-                                        readOnly: readOnlyTextField,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 472,
-                                  child: FormTextFieldWidget(
-                                    keyboardType: TextInputType.multiline,
-                                    hintText: "Напишите немного о себе",
-                                    height: 180,
-                                    textarea: true,
-                                    controller: descriptionController,
-                                    readOnly: readOnlyTextField,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                    UserProfileForm(
+                      nameController: nameController,
+                      readOnlyTextField: readOnlyTextField,
+                      loginController: loginController,
+                      passwordController: passwordController,
+                      descriptionController: descriptionController,
                     ),
                     const SizedBox(height: 40),
                     Row(
@@ -172,12 +117,98 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.b24,
                     ),
                     const SizedBox(height: 40),
+                    const RecipeListWidget(),
                   ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class UserProfileForm extends StatelessWidget {
+  const UserProfileForm({
+    Key? key,
+    required this.nameController,
+    required this.readOnlyTextField,
+    required this.loginController,
+    required this.passwordController,
+    required this.descriptionController,
+  }) : super(key: key);
+
+  final TextEditingController? nameController;
+  final bool readOnlyTextField;
+  final TextEditingController? loginController;
+  final TextEditingController? passwordController;
+  final TextEditingController? descriptionController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Palette.shadowColor,
+            offset: Offset(0, 16),
+            blurRadius: 72,
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 60, right: 73, left: 73),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 542,
+                  child: Column(
+                    children: [
+                      FormTextFieldWidget(
+                        hintText: "Имя",
+                        keyboardType: TextInputType.name,
+                        controller: nameController,
+                        readOnly: readOnlyTextField,
+                      ),
+                      const SizedBox(height: 20),
+                      FormTextFieldWidget(
+                        hintText: "Логин",
+                        controller: loginController,
+                        readOnly: readOnlyTextField,
+                      ),
+                      const SizedBox(height: 20),
+                      FormTextFieldWidget(
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        hintText: "Пароль",
+                        controller: passwordController,
+                        readOnly: readOnlyTextField,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 472,
+                  child: FormTextFieldWidget(
+                    keyboardType: TextInputType.multiline,
+                    hintText: "Напишите немного о себе",
+                    height: 180,
+                    textarea: true,
+                    controller: descriptionController,
+                    readOnly: readOnlyTextField,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

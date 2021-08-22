@@ -1,42 +1,57 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Application;
-using RecipeBook.Domain.Entities;
-using RecipeBook.Domain.Repositories;
+using RecipeBook.Application.Services;
 
 namespace RecipeBook.Api.Controllers
 {
     [ApiController]
-    [Route( "api/[controller]" )]
+    [Route( "api/[controller]/{recipeId:int}" )]
     public class RatingController : Controller
     {
-        private readonly IRatingRepository _ratingRepository;
+        private readonly IRatingService _ratingService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserRepository _userRepository;
 
-        public RatingController( IUserRepository userRepository, IRatingRepository ratingRepository, IUnitOfWork unitOfWork )
+        public RatingController( IUnitOfWork unitOfWork, IRatingService ratingService )
         {
-            _userRepository = userRepository;
-            _ratingRepository = ratingRepository;
             _unitOfWork = unitOfWork;
+            _ratingService = ratingService;
         }
 
-        [HttpGet( "{id:int}/favorite" )]
+        [HttpPost( "add-favorite" )]
         [Authorize]
-        public int Favorite( int id )
+        public void AddFavorite( int recipeId )
         {
             string username = User.Identity?.Name;
-            User user = _userRepository.GetByLogin( username );
-            int favoriteCount = _ratingRepository.UpdateFavorite( user.UserId, id );
+            _ratingService.AddToFavorites( username, recipeId );
             _unitOfWork.Commit();
-            return favoriteCount;
         }
 
-        [HttpGet( "{id:int}/like" )]
+        [HttpPost( "remove-favorite" )]
         [Authorize]
-        public int Like( int id )
+        public void RemoveFavorite( int recipeId )
         {
-            return 1;
+            string username = User.Identity?.Name;
+            _ratingService.RemoveFromFavorites( username, recipeId );
+            _unitOfWork.Commit();
+        }
+
+        [HttpPost( "add-like" )]
+        [Authorize]
+        public void AddLike( int recipeId )
+        {
+            string username = User.Identity?.Name;
+            _ratingService.AddToLiked( username, recipeId );
+            _unitOfWork.Commit();
+        }
+
+        [HttpPost( "remove-like" )]
+        [Authorize]
+        public void RemoveLike( int recipeId )
+        {
+            string username = User.Identity?.Name;
+            _ratingService.RemoveFromLiked( username, recipeId );
+            _unitOfWork.Commit();
         }
     }
 }

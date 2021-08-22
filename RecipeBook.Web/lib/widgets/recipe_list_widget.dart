@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
-import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
 import 'package:recipebook/theme.dart';
+import 'package:recipebook/widgets/recipe_item_widget.dart';
 
 class RecipeListWidget extends StatelessWidget {
   const RecipeListWidget({Key? key}) : super(key: key);

@@ -36,7 +36,7 @@ class AuthNotifier extends ChangeNotifier {
 
   Future logout() async {
     try {
-      final response = await _apiService.getRequest("/user/logout");
+      final response = await _apiService.postRequestWithoutData("/user/logout");
       if (response.statusCode == 200) {
         userDetail = null;
       } else {

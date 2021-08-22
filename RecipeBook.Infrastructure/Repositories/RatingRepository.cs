@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
@@ -8,34 +8,25 @@ namespace RecipeBook.Infrastructure.Repositories
     public class RatingRepository : IRatingRepository
     {
         private readonly RecipeBookDbContext _context;
-        private readonly IRecipeRepository _recipeRepository;
 
-        public RatingRepository( RecipeBookDbContext context, IRecipeRepository recipeRepository )
+        public RatingRepository( RecipeBookDbContext context )
         {
             _context = context;
-            _recipeRepository = recipeRepository;
         }
 
-        public int UpdateFavorite( int userId, int recipeId )
+        public void Add( Rating rating )
         {
-            Rating rating = _context.Set<Rating>().FirstOrDefault( x => x.RecipeId == recipeId && x.UserId == userId );
-            if ( rating == null )
-            {
-                _context.Set<Rating>().Add( new Rating { UserId = userId, RecipeId = recipeId, InFavorite = true, IsLiked = true } );
-            }
-            else
-            {
-                rating.InFavorite = true;
-                rating.IsLiked = true;
-            }
+            _context.Set<Rating>().Add( rating );
+        }
 
-            Recipe recipe = _recipeRepository.GetById( recipeId );
-            if ( recipe == null ) throw new ArgumentException( "Recipe does not exist" );
+        public Rating Get( int userId, int recipeId )
+        {
+            return _context.Set<Rating>().FirstOrDefault( x => x.UserId == userId && x.RecipeId == recipeId );
+        }
 
-            recipe.FavoritesCount += 1;
-            recipe.LikesCount += 1;
-
-            return recipe.FavoritesCount;
+        public List<Rating> Get( int userId, List<int> recipeIds )
+        {
+            return _context.Set<Rating>().Where( x => x.UserId == userId && recipeIds.Contains( x.RecipeId ) ).ToList();
         }
     }
 }

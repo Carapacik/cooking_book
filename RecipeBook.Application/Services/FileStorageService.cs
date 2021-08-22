@@ -17,8 +17,7 @@ namespace RecipeBook.Application.Services
 
         public GetFileResult GetFile( string path )
         {
-            return new GetFileResult( File.ReadAllBytes( $"{_fileStorageSettings.BasePath}\\{path}" ),
-                path.Split( '.' ).LastOrDefault() );
+            return new GetFileResult( File.ReadAllBytes( $"{_fileStorageSettings.BasePath}\\{path}" ), path.Split( '.' ).LastOrDefault() );
         }
 
         public void RemoveFile( string path, string fileName )

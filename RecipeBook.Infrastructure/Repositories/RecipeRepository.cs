@@ -30,7 +30,7 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            if ( editedRecipe.ImageUrl != "" ) existingRecipe.ImageUrl = editedRecipe.ImageUrl;
+            if ( editedRecipe.ImageUrl != "" ) { existingRecipe.ImageUrl = editedRecipe.ImageUrl; }
 
             existingRecipe.Title = editedRecipe.Title;
             existingRecipe.Description = editedRecipe.Description;
@@ -48,6 +48,7 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
         {
+            // ага
             User user = _userRepository.GetByLogin( username );
             IQueryable<int> allUserFavorites = _context.Set<Rating>()
                 .Where( x => x.UserId == user.UserId && x.InFavorite )

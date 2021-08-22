@@ -30,6 +30,16 @@ class ApiService {
     return response.data;
   }
 
+  Future<Response> postRequestWithoutData(String endPoint) async {
+    Response response;
+    try {
+      response = await _dio.post(endPoint);
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+    return response;
+  }
+
   Future postRequest(String endPoint, dynamic data) async {
     Response response;
     try {
@@ -56,16 +66,7 @@ class ApiService {
   Future<Response> getRequest(String endPoint) async {
     Response response;
     try {
-      response = await _dio.get<String>(
-        endPoint,
-        // Для работы Dio нужен включённый CORS на сервере с API
-        // options: Options(headers: {
-        //   'Access-Control-Allow-Origin': '*',
-        //   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-        //   'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-        //   'Access-Control-Allow-Credentials': true
-        // }),
-      );
+      response = await _dio.get<String>(endPoint);
     } on DioError catch (e) {
       throw Exception(e.message);
     }

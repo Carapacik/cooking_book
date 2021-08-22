@@ -20,7 +20,7 @@ namespace RecipeBook.Api.Converters
             };
         }
 
-        public static RecipeDto ConvertToRecipeDto( this Recipe recipe, string username )
+        public static RecipeDto ConvertToRecipeDto( this Recipe recipe, string username, Rating rating )
         {
             return new RecipeDto
             {
@@ -33,11 +33,13 @@ namespace RecipeBook.Api.Converters
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
                 Username = username,
+                IsLiked = rating?.IsLiked ?? false,
+                IsFavorite = rating?.InFavorite ?? false,
                 Tags = recipe.Tags.Select( x => x.Name ).ToList()
             };
         }
 
-        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe, string username )
+        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe, string username, Rating rating )
         {
             return new RecipeDetailDto
             {
@@ -50,6 +52,8 @@ namespace RecipeBook.Api.Converters
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
                 Username = username,
+                IsLiked = rating?.IsLiked ?? false,
+                IsFavorite = rating?.InFavorite ?? false,
                 Tags = recipe.Tags.Select( x => x.Name ).ToList(),
                 Steps = recipe.Steps.Select( x => x.Description ).ToList(),
                 Ingredients = recipe.Ingredients.Select( x => new IngredientDto
