@@ -34,20 +34,30 @@ namespace RecipeBook.Api.Builder
 
         public List<RecipeDto> BuildRecipes( IReadOnlyList<Recipe> recipes, string username )
         {
-            if ( username == null ) { throw new ValidationException( "User is null" ); }
+
 
             List<int> recipeIds = recipes.Select( x => x.RecipeId ).Distinct().ToList();
-            User user = _userRepository.GetByLogin( username );
-            Dictionary<int, Rating> ratingByRecipeId = _ratingRepository.Get( user.UserId, recipeIds ).ToDictionary( x => x.RecipeId );
             List<int> authorIds = recipes.Select( x => x.UserId ).Distinct().ToList();
             Dictionary<int, User> authorByUserId = _userRepository.GetByIds( authorIds ).ToDictionary( x => x.UserId );
-
+            
+            if ( username != null )
+            {
+                User user = _userRepository.GetByLogin( username );
+                Dictionary<int, Rating> ratingByRecipeId = _ratingRepository.Get( user.UserId, recipeIds ).ToDictionary( x => x.RecipeId );
+                return recipes.Select( x =>
+                {
+                    Rating rating = ratingByRecipeId.GetValueOrDefault( x.RecipeId );
+                    User author = authorByUserId.GetValueOrDefault( x.UserId );
+                    return x.ConvertToRecipeDto( author?.Login, rating );
+                } ).ToList();
+            }   
             return recipes.Select( x =>
             {
-                Rating rating = ratingByRecipeId.GetValueOrDefault( x.RecipeId );
+                Rating rating = null;
                 User author = authorByUserId.GetValueOrDefault( x.UserId );
                 return x.ConvertToRecipeDto( author?.Login, rating );
             } ).ToList();
+           
         }
 
         private Rating GetRating( string username, int recipeId )

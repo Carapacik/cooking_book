@@ -30,7 +30,10 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            if ( editedRecipe.ImageUrl != "" ) { existingRecipe.ImageUrl = editedRecipe.ImageUrl; }
+            if ( editedRecipe.ImageUrl != "" )
+            {
+                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
+            }
 
             existingRecipe.Title = editedRecipe.Title;
             existingRecipe.Description = editedRecipe.Description;
@@ -48,9 +51,9 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
         {
-            // ага
+            // ага, как вынести
             User user = _userRepository.GetByLogin( username );
-            IQueryable<int> allUserFavorites = _context.Set<Rating>()
+            var allUserFavorites = _context.Set<Rating>()
                 .Where( x => x.UserId == user.UserId && x.InFavorite )
                 .Select( x => x.RecipeId );
             IQueryable<Recipe> query = GetQuery().Where( x => allUserFavorites.Contains( x.RecipeId ) );
@@ -59,10 +62,24 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Take( take )
                 .ToList();
         }
+        
+        public IReadOnlyList<Recipe> GetUserOwnedRecipes( int skip, int take, string username )
+        {
+            // это будет в профиле
+            User user = _userRepository.GetByLogin( username );
+            var allUserOwnedRecipes = _context.Set<Rating>()
+                .Where( x => x.UserId == user.UserId)
+                .Select( x => x.RecipeId );
+            IQueryable<Recipe> query = GetQuery().Where( x => allUserOwnedRecipes.Contains( x.RecipeId ) );
+            return query.OrderByDescending( x => x.FavoritesCount )
+                .Skip( skip )
+                .Take( take )
+                .ToList();
+        }
 
         public Recipe GetRecipeOfDay()
         {
-            return GetQuery().OrderByDescending( x => x.LikesCount ).FirstOrDefault();
+            return GetQuery().TakeLast(10).OrderByDescending( x => x.LikesCount ).FirstOrDefault();
         }
 
         public IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery )
