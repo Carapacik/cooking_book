@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_command.g.dart';
+part 'auth_user_command.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class UserCommand {
-  UserCommand({
+class AuthUserCommand {
+  AuthUserCommand({
     this.name,
     this.description,
     this.login,
@@ -16,7 +16,7 @@ class UserCommand {
   String? login;
   String? password;
 
-  factory UserCommand.fromJson(Map<String, dynamic> json) => _$UserCommandFromJson(json);
+  factory AuthUserCommand.fromJson(Map<String, dynamic> json) => _$AuthUserCommandFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserCommandToJson(this);
+  Map<String, dynamic> toJson() => _$AuthUserCommandToJson(this);
 }

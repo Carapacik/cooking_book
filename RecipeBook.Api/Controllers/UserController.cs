@@ -36,19 +36,19 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpPost( "login" )]
-        public AuthenticationResultDto Login( UserCommandDto userDto )
+        public AuthenticationResultDto Login( AuthenticateUserCommandDto authenticateUserDto )
         {
-            UserCommand userCommand = ParseUserCommand( userDto );
-            AuthenticationResult result = _userService.Login( userCommand );
+            AuthenticateUserCommand authenticateUserCommand = ParseAuthenticateUserCommand( authenticateUserDto );
+            AuthenticationResult result = _userService.Login( authenticateUserCommand );
 
             return new AuthenticationResultDto( result.Result, result.Error );
         }
 
         [HttpPost( "register" )]
-        public AuthenticationResultDto Register( UserCommandDto userDto )
+        public AuthenticationResultDto Register( AuthenticateUserCommandDto authenticateUserDto )
         {
-            UserCommand userCommand = ParseUserCommand( userDto );
-            AuthenticationResult result = _userService.Register( userCommand );
+            AuthenticateUserCommand authenticateUserCommand = ParseAuthenticateUserCommand( authenticateUserDto );
+            AuthenticationResult result = _userService.Register( authenticateUserCommand );
 
             return new AuthenticationResultDto( result.Result, result.Error );
         }
@@ -65,9 +65,10 @@ namespace RecipeBook.Api.Controllers
             return new ProfileDto();
         }
 
-        private UserCommand ParseUserCommand( UserCommandDto userCommandDto )
+        private AuthenticateUserCommand ParseAuthenticateUserCommand( AuthenticateUserCommandDto authenticateUserCommandDto )
         {
-            return new UserCommand( userCommandDto.Name, userCommandDto.Login, userCommandDto.Password, HttpContext );
+            return new AuthenticateUserCommand( authenticateUserCommandDto.Name, authenticateUserCommandDto.Login,
+                authenticateUserCommandDto.Password, HttpContext );
         }
     }
 }

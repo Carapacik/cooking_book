@@ -4,7 +4,7 @@ namespace RecipeBook.Application.Services
 {
     public interface IUserService
     {
-        AuthenticationResult Login( UserCommand userCommand );
-        AuthenticationResult Register( UserCommand authenticationResult );
+        AuthenticationResult Login( AuthenticateUserCommand authenticateUserCommand );
+        AuthenticationResult Register( AuthenticateUserCommand result );
     }
 }

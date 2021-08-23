@@ -2,9 +2,9 @@
 
 namespace RecipeBook.Application.Entities
 {
-    public class UserCommand
+    public class AuthenticateUserCommand
     {
-        public UserCommand( string name, string login, string password, HttpContext httpContext )
+        public AuthenticateUserCommand( string name, string login, string password, HttpContext httpContext )
         {
             Name = name;
             Login = login;

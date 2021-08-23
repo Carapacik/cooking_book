@@ -9,9 +9,8 @@ namespace RecipeBook.Domain.Repositories
         void Delete( int id );
         void Edit( Recipe existingRecipe, Recipe editedRecipe );
         Recipe GetById( int id );
-        IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, IEnumerable<Rating> ratings );
-        IReadOnlyList<Recipe> GetUserOwnedRecipes( int skip, int take, IEnumerable<Rating> ratings );
         Recipe GetRecipeOfDay();
+        IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds );
         IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery );
     }
 }

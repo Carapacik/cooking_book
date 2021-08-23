@@ -14,9 +14,9 @@ namespace RecipeBook.Application.Services
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserRepository _userRepository;
 
-        public RecipeService( 
-            IRecipeRepository recipeRepository, 
-            IFileStorageService fileStorageService, 
+        public RecipeService(
+            IRecipeRepository recipeRepository,
+            IFileStorageService fileStorageService,
             IUserRepository userRepository,
             IRatingRepository ratingRepository )
         {
@@ -88,14 +88,16 @@ namespace RecipeBook.Application.Services
         {
             User user = _userRepository.GetByLogin( username );
             IEnumerable<Rating> ratings = _ratingRepository.GetInFavoriteByUserId( user.UserId );
-            return _recipeRepository.GetFavoriteRecipes( skip, take, ratings );
+            List<int> recipeIds = ratings.Select( x => x.RecipeId ).ToList();
+            return _recipeRepository.Search( skip, take, recipeIds );
         }
 
         public IReadOnlyList<Recipe> GetUserOwnedRecipes( int skip, int take, string username )
         {
             User user = _userRepository.GetByLogin( username );
-            IEnumerable<Rating> ratings = _ratingRepository.GetInFavoriteByUserId( user.UserId );
-            return _recipeRepository.GetFavoriteRecipes( skip, take, ratings );
+            IEnumerable<Rating> ratings = _ratingRepository.GetInUserOwnedByUserId( user.UserId );
+            List<int> recipeIds = ratings.Select( x => x.RecipeId ).ToList();
+            return _recipeRepository.Search( skip, take, recipeIds );
         }
 
         private static Recipe ConvertToRecipe( RecipeCommand recipeCommand, SaveFileResult saveFileResult, int userId )

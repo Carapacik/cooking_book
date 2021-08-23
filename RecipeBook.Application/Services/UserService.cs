@@ -21,34 +21,37 @@ namespace RecipeBook.Application.Services
         }
 
 
-        public AuthenticationResult Login( UserCommand userCommand )
+        public AuthenticationResult Login( AuthenticateUserCommand authenticateUserCommand )
         {
-            User user = _userRepository.GetByLogin( userCommand.Login );
+            User user = _userRepository.GetByLogin( authenticateUserCommand.Login );
             if ( user == null )
             {
                 return new AuthenticationResult( false, "user" );
             }
 
-            if ( userCommand.Password != user.Password )
+            if ( authenticateUserCommand.Password != user.Password )
             {
                 return new AuthenticationResult( false, "password" );
             }
 
-            Authenticate( userCommand.Login, userCommand.HttpContext );
+            Authenticate( authenticateUserCommand.Login, authenticateUserCommand.HttpContext );
             return new AuthenticationResult( true, null );
         }
 
-        public AuthenticationResult Register( UserCommand userCommand )
+        public AuthenticationResult Register( AuthenticateUserCommand authenticateUserCommand )
         {
-            User user = _userRepository.GetByLogin( userCommand.Login );
+            User user = _userRepository.GetByLogin( authenticateUserCommand.Login );
             if ( user != null )
             {
                 return new AuthenticationResult( false, "user" );
             }
 
-            _userRepository.Add( new User { Login = userCommand.Login, Name = userCommand.Name, Password = userCommand.Password } );
+            _userRepository.Add( new User
+            {
+                Login = authenticateUserCommand.Login, Name = authenticateUserCommand.Name, Password = authenticateUserCommand.Password
+            } );
             _unitOfWork.Commit();
-            Authenticate( userCommand.Login, userCommand.HttpContext );
+            Authenticate( authenticateUserCommand.Login, authenticateUserCommand.HttpContext );
             return new AuthenticationResult( true, null );
         }
 

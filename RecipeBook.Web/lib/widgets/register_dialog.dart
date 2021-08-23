@@ -2,7 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/auth_result.dart';
-import 'package:recipebook/model/user_command.dart';
+import 'package:recipebook/model/auth_user_command.dart';
 import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
@@ -16,7 +16,7 @@ void registerDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
   final apiService = ApiService();
-  final user = UserCommand();
+  final user = AuthUserCommand();
   String? currentPassword;
   bool isUserExist = false;
 

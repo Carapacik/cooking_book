@@ -1,6 +1,6 @@
 ﻿namespace RecipeBook.Api.Dtos
 {
-    public class UserCommandDto
+    public class AuthenticateUserCommandDto
     {
         public string Name { get; set; }
         public string Login { get; set; }
