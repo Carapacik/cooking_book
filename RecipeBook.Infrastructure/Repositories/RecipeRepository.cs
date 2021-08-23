@@ -46,12 +46,12 @@ namespace RecipeBook.Infrastructure.Repositories
         {
             return GetQuery().FirstOrDefault( x => x.RecipeId == id );
         }
-        
+
         public Recipe GetRecipeOfDay()
         {
             return GetQuery().OrderByDescending( x => x.LikesCount ).FirstOrDefault();
         }
-        
+
         public IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds )
         {
             IEnumerable<int> uniqueRecipeIds = recipeIds.Distinct();
@@ -61,7 +61,7 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Take( take )
                 .ToList();
         }
-        
+
         public IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery )
         {
             IQueryable<Recipe> query = GetQuery();
@@ -77,6 +77,11 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Skip( skip )
                 .Take( take )
                 .ToList();
+        }
+
+        public int GetUserRecipesCountByUserId( int userId )
+        {
+            return _context.Set<Recipe>().Count( x => x.UserId == userId );
         }
 
         private IQueryable<Recipe> GetQuery()

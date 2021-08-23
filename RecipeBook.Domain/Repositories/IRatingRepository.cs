@@ -10,5 +10,7 @@ namespace RecipeBook.Domain.Repositories
         IEnumerable<Rating> Get( int userId, List<int> recipeIds );
         IEnumerable<Rating> GetInFavoriteByUserId( int userId );
         List<Rating> GetInUserOwnedByUserId( int userId );
+        int GetUserLikesCountByUserId( int userId );
+        int GetUserFavoritesCountByUserId( int userId );
     }
 }

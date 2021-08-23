@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
@@ -60,15 +61,34 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet( "profile" )]
+        [Authorize]
         public ProfileDto GetProfile()
         {
-            return new ProfileDto();
+            if ( User.Identity is { Name: null } )
+            {
+                return null;
+            }
+
+            ProfileResult result = _userService.GetProfileData( User.Identity?.Name );
+            return new ProfileDto
+            {
+                RecipesCount = result.RecipesCount,
+                FavoritesCount = result.FavoritesCount,
+                LikesCount = result.LikesCount,
+                UserForm = new UserFormDto
+                {
+                    Description = result.Description, Name = result.Name, Login = result.Login, Password = result.Password
+                }
+            };
         }
 
         private AuthenticateUserCommand ParseAuthenticateUserCommand( AuthenticateUserCommandDto authenticateUserCommandDto )
         {
-            return new AuthenticateUserCommand( authenticateUserCommandDto.Name, authenticateUserCommandDto.Login,
-                authenticateUserCommandDto.Password, HttpContext );
+            return new AuthenticateUserCommand(
+                authenticateUserCommandDto.Name,
+                authenticateUserCommandDto.Login,
+                authenticateUserCommandDto.Password,
+                HttpContext );
         }
     }
 }

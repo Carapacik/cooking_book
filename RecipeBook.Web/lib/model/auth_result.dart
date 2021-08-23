@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_result.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class AuthResult {
   AuthResult({
     required this.isSuccess,

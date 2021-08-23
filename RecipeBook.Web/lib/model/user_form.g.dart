@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_user_command.dart';
+part of 'user_form.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthUserCommand _$AuthUserCommandFromJson(Map<String, dynamic> json) {
-  return AuthUserCommand(
-    name: json['name'] as String?,
+UserForm _$UserFormFromJson(Map<String, dynamic> json) {
+  return UserForm(
+    name: json['name'] as String,
     description: json['description'] as String?,
-    login: json['login'] as String?,
-    password: json['password'] as String?,
+    login: json['login'] as String,
+    password: json['password'] as String,
   );
 }
 
-Map<String, dynamic> _$AuthUserCommandToJson(AuthUserCommand instance) => <String, dynamic>{
+Map<String, dynamic> _$UserFormToJson(UserForm instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,

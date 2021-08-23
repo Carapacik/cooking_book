@@ -3,7 +3,7 @@ import 'package:recipebook/model/ingredient.dart';
 
 part 'recipe_detail.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class RecipeDetail {
   RecipeDetail({
     required this.recipeId,

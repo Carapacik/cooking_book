@@ -11,13 +11,21 @@ namespace RecipeBook.Application.Services
 {
     public class UserService : IUserService
     {
+        private readonly IRatingRepository _ratingRepository;
+        private readonly IRecipeRepository _recipeRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
 
-        public UserService( IUserRepository userRepository, IUnitOfWork unitOfWork )
+        public UserService(
+            IUserRepository userRepository,
+            IUnitOfWork unitOfWork,
+            IRatingRepository ratingRepository,
+            IRecipeRepository recipeRepository )
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _ratingRepository = ratingRepository;
+            _recipeRepository = recipeRepository;
         }
 
 
@@ -53,6 +61,24 @@ namespace RecipeBook.Application.Services
             _unitOfWork.Commit();
             Authenticate( authenticateUserCommand.Login, authenticateUserCommand.HttpContext );
             return new AuthenticationResult( true, null );
+        }
+
+        public ProfileResult GetProfileData( string username )
+        {
+            User user = _userRepository.GetByLogin( username );
+            int favoritesCount = _ratingRepository.GetUserFavoritesCountByUserId( user.UserId );
+            int likesCount = _ratingRepository.GetUserLikesCountByUserId( user.UserId );
+            int recipesCount = _recipeRepository.GetUserRecipesCountByUserId( user.UserId );
+            return new ProfileResult
+            {
+                RecipesCount = recipesCount,
+                FavoritesCount = favoritesCount,
+                LikesCount = likesCount,
+                Name = user.Name,
+                Description = user.Description,
+                Login = user.Login,
+                Password = user.Password
+            };
         }
 
         private static void Authenticate( string userName, HttpContext httpContext )

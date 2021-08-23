@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:beamer/beamer.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
+import 'package:recipebook/model/profile_detail.dart';
+import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/profile/components/profile_card.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
@@ -20,23 +25,89 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late AuthNotifier _authNotifier;
+  late ApiService _apiService;
+  late ProfileDetail profileDetail;
+  late RecipeNotifier _recipeNotifier;
   TextEditingController? nameController = TextEditingController();
   TextEditingController? loginController = TextEditingController();
   TextEditingController? passwordController = TextEditingController();
   TextEditingController? descriptionController = TextEditingController();
   bool readOnlyTextField = true;
+  bool isLoading = true;
+  bool isEndOfList = true;
+  int skipCounter = 0;
+
+  Future getDetailProfile() async {
+    Response response;
+
+    try {
+      response = await _apiService.getRequest("/user/profile");
+      isLoading = false;
+      if (response.statusCode == 200) {
+        setState(() {
+          profileDetail = ProfileDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+        });
+        nameController?.text = profileDetail.userForm.name;
+        loginController?.text = profileDetail.userForm.login;
+        passwordController?.text = profileDetail.userForm.password;
+        if (profileDetail.userForm.description != null) {
+          descriptionController?.text = profileDetail.userForm.description!;
+        }
+      } else {
+        // код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  Future getMoreRecipes() async {
+    Response response;
+
+    try {
+      response = await _apiService.getRequestWithParam(endPoint: "recipes/user-owned", take: 4, skip: skipCounter);
+      if (response.statusCode == 200) {
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length == 4) {
+          setState(() {
+            isEndOfList = false;
+          });
+        }
+        _recipeNotifier.addRecipes(listOfRecipes);
+        skipCounter += 4;
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
+
+  Future getInitialRecipes() async {
+    Response response;
+
+    try {
+      response = await _apiService.getInitialWithParam("recipes/user-owned", 2);
+      if (response.statusCode == 200) {
+        _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        skipCounter += 2;
+      } else {
+        // затычка, код не 200
+      }
+    } on Exception catch (e) {
+      // возможно перенаправление на отдельную страницу
+      print(e);
+    }
+  }
 
   @override
   void initState() {
-    _authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    if (_authNotifier.userDetail != null) {
-      nameController?.text = _authNotifier.userDetail!.name;
-      loginController?.text = _authNotifier.userDetail!.login;
-      if (_authNotifier.userDetail!.description != null) {
-        descriptionController?.text = _authNotifier.userDetail!.description!;
-      }
-    }
+    _recipeNotifier = Provider.of<RecipeNotifier>(context, listen: false);
+    _apiService = ApiService();
+    getDetailProfile();
+    getInitialRecipes();
     super.initState();
   }
 
@@ -91,26 +162,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 11),
                     Text(
-                      "Мой профиль",
+                      isLoading ? "Загрузка профиля..." : "Мой профиль",
                       style: Theme.of(context).textTheme.b42,
                     ),
                     const SizedBox(height: 50),
-                    UserProfileForm(
-                      nameController: nameController,
-                      readOnlyTextField: readOnlyTextField,
-                      loginController: loginController,
-                      passwordController: passwordController,
-                      descriptionController: descriptionController,
-                    ),
+                    if (!isLoading)
+                      UserProfileForm(
+                        nameController: nameController,
+                        readOnlyTextField: readOnlyTextField,
+                        loginController: loginController,
+                        passwordController: passwordController,
+                        descriptionController: descriptionController,
+                      ),
                     const SizedBox(height: 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        ProfileCard(value: 15, text: "Всего рецептов"),
-                        ProfileCard(value: 15, text: "Всего лайков"),
-                        ProfileCard(value: 15, text: "В избранных"),
-                      ],
-                    ),
+                    if (!isLoading)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ProfileCard(value: profileDetail.recipesCount, text: "Всего рецептов"),
+                          ProfileCard(value: profileDetail.likesCount, text: "Всего лайков"),
+                          ProfileCard(value: profileDetail.favoritesCount, text: "В избранных"),
+                        ],
+                      ),
                     const SizedBox(height: 40),
                     Text(
                       "Мои рецепты",
@@ -118,6 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 40),
                     const RecipeListWidget(),
+                    const SizedBox(height: 73),
                   ],
                 ),
               ),

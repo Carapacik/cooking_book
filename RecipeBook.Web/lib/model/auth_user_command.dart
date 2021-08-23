@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_user_command.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class AuthUserCommand {
   AuthUserCommand({
     this.name,
