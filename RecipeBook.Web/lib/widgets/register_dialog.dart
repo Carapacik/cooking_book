@@ -127,20 +127,14 @@ void registerDialog(BuildContext context) {
                     final form = _formKey.currentState!;
                     if (form.validate()) {
                       form.save();
-
-                      final userData = UserCommand(
-                        name: user.name,
-                        password: user.password,
-                        login: user.login,
-                      );
                       try {
                         final result = await apiService.postRequest("user/register", user.toJson());
                         final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
-                        if (authResult.result == true) {
+                        if (authResult.isSuccess == true) {
                           Navigator.of(context).pop();
                           authNotifier.getCurrentUser();
                           context.beamToNamed("/");
-                        } else if (authResult.error == "user") {
+                        } else if (authResult.errorMessage == "user") {
                           form.setState(() {
                             isUserExist = true;
                           });

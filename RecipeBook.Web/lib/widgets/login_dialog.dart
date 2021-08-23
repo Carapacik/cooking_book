@@ -93,16 +93,16 @@ void loginDialog(BuildContext context) {
                       try {
                         final result = await apiService.postRequest("user/login", user.toJson());
                         final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
-                        if (authResult.result == true) {
+                        if (authResult.isSuccess == true) {
                           Navigator.of(context).pop();
                           authNotifier.getCurrentUser();
                           context.beamToNamed("/");
-                        } else if (authResult.error == "user") {
+                        } else if (authResult.errorMessage == "user") {
                           form.setState(() {
                             isUserExist = false;
                           });
                           form.validate();
-                        } else if (authResult.error == "password") {
+                        } else if (authResult.errorMessage == "password") {
                           form.setState(() {
                             isPasswordCorrect = false;
                           });

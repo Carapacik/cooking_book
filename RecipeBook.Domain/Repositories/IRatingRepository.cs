@@ -7,6 +7,8 @@ namespace RecipeBook.Domain.Repositories
     {
         void Add( Rating rating );
         Rating Get( int userId, int recipeId );
-        List<Rating> Get( int userId, List<int> recipeIds );
+        IEnumerable<Rating> Get( int userId, List<int> recipeIds );
+        IEnumerable<Rating> GetInFavoriteByUserId( int userId );
+        List<Rating> GetInUserOwnedByUserId( int userId );
     }
 }

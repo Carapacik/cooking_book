@@ -24,9 +24,19 @@ namespace RecipeBook.Infrastructure.Repositories
             return _context.Set<Rating>().FirstOrDefault( x => x.UserId == userId && x.RecipeId == recipeId );
         }
 
-        public List<Rating> Get( int userId, List<int> recipeIds )
+        public IEnumerable<Rating> Get( int userId, List<int> recipeIds )
         {
             return _context.Set<Rating>().Where( x => x.UserId == userId && recipeIds.Contains( x.RecipeId ) ).ToList();
+        }
+
+        public IEnumerable<Rating> GetInFavoriteByUserId( int userId )
+        {
+            return _context.Set<Rating>().Where( x => x.UserId == userId && x.InFavorite ).ToList();
+        }
+
+        public List<Rating> GetInUserOwnedByUserId( int userId )
+        {
+            return _context.Set<Rating>().Where( x => x.UserId == userId ).ToList();
         }
     }
 }

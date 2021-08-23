@@ -8,12 +8,13 @@ part of 'auth_result.dart';
 
 AuthResult _$AuthResultFromJson(Map<String, dynamic> json) {
   return AuthResult(
-    result: json['result'] as bool,
-    error: json['error'] as String?,
+    isSuccess: json['isSuccess'] as bool,
+    errorMessage: json['errorMessage'] as String?,
   );
 }
 
-Map<String, dynamic> _$AuthResultToJson(AuthResult instance) => <String, dynamic>{
-      'result': instance.result,
-      'error': instance.error,
+Map<String, dynamic> _$AuthResultToJson(AuthResult instance) =>
+    <String, dynamic>{
+      'isSuccess': instance.isSuccess,
+      'errorMessage': instance.errorMessage,
     };

@@ -6,7 +6,7 @@ using RecipeBook.Application.Services;
 namespace RecipeBook.Api.Controllers
 {
     [ApiController]
-    [Route( "api/[controller]/{recipeId:int}" )]
+    [Route( "api/recipes/{recipeId:int}/rating" )]
     public class RatingController : Controller
     {
         private readonly IRatingService _ratingService;
@@ -18,39 +18,39 @@ namespace RecipeBook.Api.Controllers
             _ratingService = ratingService;
         }
 
-        [HttpPost( "add-favorite" )]
+        [HttpPost( "add-to-favorites" )]
         [Authorize]
-        public void AddFavorite( int recipeId )
+        public void AddToFavorites( int recipeId )
         {
             string username = User.Identity?.Name;
             _ratingService.AddToFavorites( username, recipeId );
             _unitOfWork.Commit();
         }
 
-        [HttpPost( "remove-favorite" )]
+        [HttpPost( "remove-from-favorites" )]
         [Authorize]
-        public void RemoveFavorite( int recipeId )
+        public void RemoveFromFavorites( int recipeId )
         {
             string username = User.Identity?.Name;
             _ratingService.RemoveFromFavorites( username, recipeId );
             _unitOfWork.Commit();
         }
 
-        [HttpPost( "add-like" )]
+        [HttpPost( "add-to-likes" )]
         [Authorize]
-        public void AddLike( int recipeId )
+        public void AddToLikes( int recipeId )
         {
             string username = User.Identity?.Name;
-            _ratingService.AddToLiked( username, recipeId );
+            _ratingService.AddToLikes( username, recipeId );
             _unitOfWork.Commit();
         }
 
-        [HttpPost( "remove-like" )]
+        [HttpPost( "remove-from-likes" )]
         [Authorize]
-        public void RemoveLike( int recipeId )
+        public void RemoveFromLikes( int recipeId )
         {
             string username = User.Identity?.Name;
-            _ratingService.RemoveFromLiked( username, recipeId );
+            _ratingService.RemoveFromLikes( username, recipeId );
             _unitOfWork.Commit();
         }
     }

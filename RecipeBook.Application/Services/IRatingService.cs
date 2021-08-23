@@ -4,7 +4,7 @@
     {
         void AddToFavorites( string username, int recipeId );
         void RemoveFromFavorites( string username, int recipeId );
-        void AddToLiked( string username, int recipeId );
-        void RemoveFromLiked( string username, int recipeId );
+        void AddToLikes( string username, int recipeId );
+        void RemoveFromLikes( string username, int recipeId );
     }
 }

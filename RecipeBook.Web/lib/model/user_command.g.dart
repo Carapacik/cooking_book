@@ -15,7 +15,8 @@ UserCommand _$UserCommandFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$UserCommandToJson(UserCommand instance) => <String, dynamic>{
+Map<String, dynamic> _$UserCommandToJson(UserCommand instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,

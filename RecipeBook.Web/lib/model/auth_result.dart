@@ -5,12 +5,12 @@ part 'auth_result.g.dart';
 @JsonSerializable(explicitToJson: true)
 class AuthResult {
   AuthResult({
-    required this.result,
-    required this.error,
+    required this.isSuccess,
+    required this.errorMessage,
   });
 
-  final bool result;
-  final String? error;
+  final bool isSuccess;
+  final String? errorMessage;
 
   factory AuthResult.fromJson(Map<String, dynamic> json) => _$AuthResultFromJson(json);
 

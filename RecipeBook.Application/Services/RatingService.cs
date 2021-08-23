@@ -55,7 +55,7 @@ namespace RecipeBook.Application.Services
             Recipe recipe = _recipeRepository.GetById( recipeId );
             if ( recipe == null )
             {
-                throw new ArgumentException( $"Recipe with id [{recipeId}] does not exist" );
+                throw new ArgumentException( $"Recipe with id:{recipeId} does not exist" );
             }
 
             int userId = _userRepository.GetByLogin( username ).UserId;
@@ -74,7 +74,7 @@ namespace RecipeBook.Application.Services
             recipe.FavoritesCount -= 1;
         }
 
-        public void AddToLiked( string username, int recipeId )
+        public void AddToLikes( string username, int recipeId )
         {
             Recipe recipe = _recipeRepository.GetById( recipeId );
             if ( recipe == null )
@@ -99,7 +99,7 @@ namespace RecipeBook.Application.Services
             recipe.LikesCount += 1;
         }
 
-        public void RemoveFromLiked( string username, int recipeId )
+        public void RemoveFromLikes( string username, int recipeId )
         {
             Recipe recipe = _recipeRepository.GetById( recipeId );
             if ( recipe == null )

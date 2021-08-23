@@ -38,7 +38,7 @@ namespace RecipeBook.Api.Controllers
         [HttpPost( "login" )]
         public AuthenticationResultDto Login( UserCommandDto userDto )
         {
-            UserCommand userCommand = AuthenticationResultParser( userDto );
+            UserCommand userCommand = ParseUserCommand( userDto );
             AuthenticationResult result = _userService.Login( userCommand );
 
             return new AuthenticationResultDto( result.Result, result.Error );
@@ -47,7 +47,7 @@ namespace RecipeBook.Api.Controllers
         [HttpPost( "register" )]
         public AuthenticationResultDto Register( UserCommandDto userDto )
         {
-            UserCommand userCommand = AuthenticationResultParser( userDto );
+            UserCommand userCommand = ParseUserCommand( userDto );
             AuthenticationResult result = _userService.Register( userCommand );
 
             return new AuthenticationResultDto( result.Result, result.Error );
@@ -65,7 +65,7 @@ namespace RecipeBook.Api.Controllers
             return new ProfileDto();
         }
 
-        private UserCommand AuthenticationResultParser( UserCommandDto userCommandDto )
+        private UserCommand ParseUserCommand( UserCommandDto userCommandDto )
         {
             return new UserCommand( userCommandDto.Name, userCommandDto.Login, userCommandDto.Password, HttpContext );
         }

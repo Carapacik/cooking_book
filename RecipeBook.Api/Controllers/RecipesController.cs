@@ -43,7 +43,7 @@ namespace RecipeBook.Api.Controllers
         public int AddRecipe()
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = _recipeService.AddRecipe( RecipeCommandParser( Request.Form, username ) );
+            Recipe newRecipe = _recipeService.AddRecipe( ParseRecipeCommand( Request.Form, username ) );
             _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
@@ -63,7 +63,7 @@ namespace RecipeBook.Api.Controllers
         public int EditRecipe( int id )
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = _recipeService.EditRecipe( RecipeCommandParser( Request.Form, username, id ) );
+            Recipe newRecipe = _recipeService.EditRecipe( ParseRecipeCommand( Request.Form, username, id ) );
             _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
@@ -75,7 +75,7 @@ namespace RecipeBook.Api.Controllers
             Recipe recipe = _recipeRepository.GetById( id );
             if ( recipe == null )
             {
-                throw new ValidationException( "Recipe does not exist" );
+                throw new ValidationException( $"Recipe with id:{id} does not exist" );
             }
 
             string username = User.Identity?.Name;
@@ -99,7 +99,16 @@ namespace RecipeBook.Api.Controllers
         public List<RecipeDto> GetFavoriteRecipes( [FromQuery] int skip, [FromQuery] int take )
         {
             string username = User.Identity?.Name;
-            IReadOnlyList<Recipe> searchResult = _recipeRepository.GetFavoriteRecipes( skip, take, username );
+            IReadOnlyList<Recipe> searchResult = _recipeService.GetFavoriteRecipes( skip, take, username );
+            return _recipeBuilder.BuildRecipes( searchResult, username );
+        }
+
+        [HttpGet( "user-owned" )]
+        [Authorize]
+        public List<RecipeDto> GetUserOwnedRecipes( [FromQuery] int skip, [FromQuery] int take )
+        {
+            string username = User.Identity?.Name;
+            IReadOnlyList<Recipe> searchResult = _recipeService.GetUserOwnedRecipes( skip, take, username );
             return _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
@@ -115,7 +124,7 @@ namespace RecipeBook.Api.Controllers
             return _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
-        private static RecipeCommand RecipeCommandParser( IFormCollection formCollection, string username, int id = 0 )
+        private static RecipeCommand ParseRecipeCommand( IFormCollection formCollection, string username, int id = 0 )
         {
             RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
             if ( recipeData == null )

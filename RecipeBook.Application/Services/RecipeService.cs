@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using RecipeBook.Application.Entities;
 using RecipeBook.Domain.Entities;
@@ -9,14 +10,20 @@ namespace RecipeBook.Application.Services
     public class RecipeService : IRecipeService
     {
         private readonly IFileStorageService _fileStorageService;
+        private readonly IRatingRepository _ratingRepository;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserRepository _userRepository;
 
-        public RecipeService( IRecipeRepository recipeRepository, IFileStorageService fileStorageService, IUserRepository userRepository )
+        public RecipeService( 
+            IRecipeRepository recipeRepository, 
+            IFileStorageService fileStorageService, 
+            IUserRepository userRepository,
+            IRatingRepository ratingRepository )
         {
             _recipeRepository = recipeRepository;
             _fileStorageService = fileStorageService;
             _userRepository = userRepository;
+            _ratingRepository = ratingRepository;
         }
 
         public Recipe AddRecipe( RecipeCommand command )
@@ -33,7 +40,7 @@ namespace RecipeBook.Application.Services
             Recipe recipe = _recipeRepository.GetById( id );
             if ( recipe == null )
             {
-                throw new ValidationException( "Recipe does not exist" );
+                throw new ValidationException( $"Recipe with id:{id} does not exist" );
             }
 
             User user = _userRepository.GetByLogin( username );
@@ -51,7 +58,7 @@ namespace RecipeBook.Application.Services
             Recipe existingRecipe = _recipeRepository.GetById( editCommand.RecipeId );
             if ( existingRecipe == null )
             {
-                throw new ValidationException( "Recipe does not exist" );
+                throw new ValidationException( $"Recipe with id:{editCommand.RecipeId} does not exist" );
             }
 
             User user = _userRepository.GetByLogin( editCommand.UserName );
@@ -75,6 +82,20 @@ namespace RecipeBook.Application.Services
 
             _recipeRepository.Edit( existingRecipe, recipe );
             return recipe;
+        }
+
+        public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
+        {
+            User user = _userRepository.GetByLogin( username );
+            IEnumerable<Rating> ratings = _ratingRepository.GetInFavoriteByUserId( user.UserId );
+            return _recipeRepository.GetFavoriteRecipes( skip, take, ratings );
+        }
+
+        public IReadOnlyList<Recipe> GetUserOwnedRecipes( int skip, int take, string username )
+        {
+            User user = _userRepository.GetByLogin( username );
+            IEnumerable<Rating> ratings = _ratingRepository.GetInFavoriteByUserId( user.UserId );
+            return _recipeRepository.GetFavoriteRecipes( skip, take, ratings );
         }
 
         private static Recipe ConvertToRecipe( RecipeCommand recipeCommand, SaveFileResult saveFileResult, int userId )

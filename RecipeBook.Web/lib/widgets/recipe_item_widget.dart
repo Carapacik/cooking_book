@@ -43,7 +43,7 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
       widget.recipeItem.likesCount++;
       widget.recipeItem.isFavorite = true;
       widget.recipeItem.isLiked = true;
-      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/add-favorite");
+      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/add-to-favorites");
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -65,7 +65,7 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
       widget.recipeItem.favoritesCount--;
       widget.recipeItem.isFavorite = false;
       widget.recipeItem.likesCount--;
-      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/remove-favorite");
+      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/remove-from-favorites");
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -85,7 +85,7 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
     try {
       widget.recipeItem.likesCount++;
       widget.recipeItem.isLiked = true;
-      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/add-like");
+      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/add-to-likes");
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -105,7 +105,7 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
     try {
       widget.recipeItem.likesCount--;
       widget.recipeItem.isLiked = false;
-      response = await apiService.postRequestWithoutData("rating/${widget.recipeItem.recipeId}/remove-like");
+      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/remove-from-likes");
       if (response.statusCode == 200) {
         setState(() {});
       } else {
