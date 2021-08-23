@@ -13,6 +13,8 @@ namespace RecipeBook.Api.Dtos
         public int LikesCount { get; set; }
         public int FavoritesCount { get; set; }
         public string Username { get; set; }
+        public bool IsLiked { get; set; }
+        public bool IsFavorite { get; set; }
         public List<string> Tags { get; set; }
         public List<string> Steps { get; set; }
         public List<IngredientDto> Ingredients { get; set; }

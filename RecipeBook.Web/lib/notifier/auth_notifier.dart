@@ -17,9 +17,9 @@ class AuthNotifier extends ChangeNotifier {
 
   bool get isAuth => _userDetail != null;
 
-  Future getUser() async {
+  Future getCurrentUser() async {
     try {
-      final response = await _apiService.getRequest("/user/get-user");
+      final response = await _apiService.getRequest("/user/current-user");
       if (response.statusCode == 200) {
         final user = UserDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         userDetail = user;
@@ -36,7 +36,7 @@ class AuthNotifier extends ChangeNotifier {
 
   Future logout() async {
     try {
-      final response = await _apiService.getRequest("/user/logout");
+      final response = await _apiService.postRequestWithoutData("/user/logout");
       if (response.statusCode == 200) {
         userDetail = null;
       } else {

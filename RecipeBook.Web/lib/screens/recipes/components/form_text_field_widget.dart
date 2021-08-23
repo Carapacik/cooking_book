@@ -16,6 +16,7 @@ class FormTextFieldWidget extends StatefulWidget {
     this.keyboardType,
     this.onChanged,
     this.obscureText,
+    this.readOnly,
     Key? key,
   }) : super(key: key);
 
@@ -31,6 +32,7 @@ class FormTextFieldWidget extends StatefulWidget {
   final TextInputType? keyboardType;
   final FormFieldValidator<String>? validator;
   final FormFieldSetter<String>? onSaved;
+  final bool? readOnly;
 
   @override
   _FormTextFieldWidgetState createState() => _FormTextFieldWidgetState();
@@ -43,6 +45,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       height: widget.height,
       width: widget.width ?? double.infinity,
       child: TextFormField(
+        readOnly: widget.readOnly != null,
         obscureText: widget.obscureText != null,
         onChanged: widget.onChanged,
         controller: widget.controller,

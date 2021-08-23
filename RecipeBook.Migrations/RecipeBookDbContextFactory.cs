@@ -18,7 +18,7 @@ namespace RecipeBook.Migrations
 
             DbContextOptionsBuilder<RecipeBookDbContext> builder = new();
             string connectionString = configuration.GetConnectionString( "ConnectionString" );
-            builder.ConfigureDatabase( connectionString );
+            builder.UseNpgsql( connectionString, b => b.MigrationsAssembly( "RecipeBook.Migrations" ) );
 
             return new RecipeBookDbContext( builder.Options );
         }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using RecipeBook.Application.Services.Configs;
+using RecipeBook.Application.Configs;
 using RecipeBook.Infrastructure;
 
 namespace RecipeBook.Api
@@ -24,8 +24,8 @@ namespace RecipeBook.Api
         {
             services.AddControllers();
             services.AddDependencies();
-            services.AddDbContext<RecipeBookDbContext>( conf =>
-                conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
+            services.AddDbContext<RecipeBookDbContext>( conf => conf.UseNpgsql( Configuration.GetConnectionString( "ConnectionString" ) ) );
+            services.AddCors( options => options.AddDefaultPolicy( builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod() ) );
             services.AddAuthentication( CookieAuthenticationDefaults.AuthenticationScheme ).AddCookie();
             services.AddSingleton( Configuration.GetSection( "FileStorageSettings" ).Get<FileStorageSettings>() );
             services.AddSwaggerGen( c => { c.SwaggerDoc( "v1", new OpenApiInfo { Title = "RecipeBook.Api", Version = "v1" } ); } );
@@ -41,6 +41,8 @@ namespace RecipeBook.Api
             }
 
             app.UseRouting();
+            app.UseCors();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

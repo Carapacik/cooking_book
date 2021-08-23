@@ -15,7 +15,8 @@ UserDetail _$UserDetailFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$UserDetailToJson(UserDetail instance) => <String, dynamic>{
+Map<String, dynamic> _$UserDetailToJson(UserDetail instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,

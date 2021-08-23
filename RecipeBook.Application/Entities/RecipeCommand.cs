@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using RecipeBook.Domain.Entities;
 
-namespace RecipeBook.Application.Services.Entities
+namespace RecipeBook.Application.Entities
 {
     public class RecipeCommand
     {

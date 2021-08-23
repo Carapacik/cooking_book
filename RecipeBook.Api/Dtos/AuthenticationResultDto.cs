@@ -2,11 +2,13 @@
 {
     public class AuthenticationResultDto
     {
-        public AuthenticationResultDto( bool result )
+        public AuthenticationResultDto( bool isSuccess, string errorMessage )
         {
-            Result = result;
+            IsSuccess = isSuccess;
+            ErrorMessage = errorMessage;
         }
 
-        public bool Result { get; }
+        public bool IsSuccess { get; }
+        public string ErrorMessage { get; }
     }
 }

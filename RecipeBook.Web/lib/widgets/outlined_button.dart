@@ -8,6 +8,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
     this.onPressed,
     this.icon,
     this.padding,
+    this.color,
     required this.text,
     required this.width,
     required this.height,
@@ -19,6 +20,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
   final double height;
   final IconData? icon;
   final double? padding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
                       Icon(
                         icon,
                         size: 24,
-                        color: Palette.orange,
+                        color: color ?? Palette.orange,
                       ),
                       SizedBox(width: padding),
                       Text(

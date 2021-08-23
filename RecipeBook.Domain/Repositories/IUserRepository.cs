@@ -1,4 +1,5 @@
-﻿using RecipeBook.Domain.Entities;
+﻿using System.Collections.Generic;
+using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Domain.Repositories
 {
@@ -6,6 +7,7 @@ namespace RecipeBook.Domain.Repositories
     {
         void Add( User user );
         User GetById( int id );
+        List<User> GetByIds( List<int> ids );
         User GetByLogin( string login );
     }
 }

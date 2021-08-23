@@ -17,13 +17,18 @@ RecipeDetail _$RecipeDetailFromJson(Map<String, dynamic> json) {
     likesCount: json['likesCount'] as int,
     favoritesCount: json['favoritesCount'] as int,
     username: json['username'] as String,
+    isLiked: json['isLiked'] as bool,
+    isFavorite: json['isFavorite'] as bool,
     tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     steps: (json['steps'] as List<dynamic>).map((e) => e as String).toList(),
-    ingredients: (json['ingredients'] as List<dynamic>).map((e) => Ingredient.fromJson(e as Map<String, dynamic>)).toList(),
+    ingredients: (json['ingredients'] as List<dynamic>)
+        .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
-Map<String, dynamic> _$RecipeDetailToJson(RecipeDetail instance) => <String, dynamic>{
+Map<String, dynamic> _$RecipeDetailToJson(RecipeDetail instance) =>
+    <String, dynamic>{
       'recipeId': instance.recipeId,
       'title': instance.title,
       'description': instance.description,
@@ -32,6 +37,8 @@ Map<String, dynamic> _$RecipeDetailToJson(RecipeDetail instance) => <String, dyn
       'portionsCount': instance.portionsCount,
       'likesCount': instance.likesCount,
       'favoritesCount': instance.favoritesCount,
+      'isLiked': instance.isLiked,
+      'isFavorite': instance.isFavorite,
       'username': instance.username,
       'tags': instance.tags,
       'steps': instance.steps,

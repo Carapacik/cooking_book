@@ -28,13 +28,14 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     apiService = ApiService();
     authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     if (!authNotifier.isAuth) {
-      authNotifier.getUser();
+      authNotifier.getCurrentUser();
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    authNotifier = Provider.of<AuthNotifier>(context); // чтоюы избранное появлялось после создания экрана
     return SizedBox(
       height: 80,
       child: Padding(
@@ -48,7 +49,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
             const SizedBox(width: 80),
             ...List.generate(
-              3,
+              !authNotifier.isAuth ? 2 : 3,
               (index) => TextButton(
                 onPressed: () {
                   context.beamToNamed(HeaderButtons.getById(index).route);
@@ -60,12 +61,12 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   child: Text(
                     HeaderButtons.getById(index).name,
-                    style: widget.currentSelectedPage?.index == index
-                        ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
-                        : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
+                        style: widget.currentSelectedPage?.index == index
+                            ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
+                            : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
+                      ),
+                    ),
                   ),
-                ),
-              ),
             ),
             const Expanded(child: SizedBox()),
             Consumer<AuthNotifier>(
@@ -74,11 +75,11 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   TextButton(
                     onPressed: auth.isAuth
                         ? () {
-                            context.beamToNamed("/profile");
-                          }
+                      context.beamToNamed("/profile");
+                    }
                         : () {
-                            loginDialog(context);
-                          },
+                      loginDialog(context);
+                    },
                     style: TextButton.styleFrom(primary: Palette.orange),
                     child: Row(
                       children: [

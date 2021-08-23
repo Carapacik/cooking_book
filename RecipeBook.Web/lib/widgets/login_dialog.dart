@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/user_command.dart';
+import 'package:recipebook/model/auth_result.dart';
+import 'package:recipebook/model/auth_user_command.dart';
 import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
@@ -11,14 +10,15 @@ import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/registration_dialog.dart';
+import 'package:recipebook/widgets/register_dialog.dart';
 
 void loginDialog(BuildContext context) {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final apiService = ApiService();
-  final user = UserCommand();
+  final user = AuthUserCommand();
   final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-  bool isLoginExist = true;
+  bool isUserExist = true;
+  bool isPasswordCorrect = true;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -49,14 +49,15 @@ void loginDialog(BuildContext context) {
             ),
             const SizedBox(height: 45),
             FormTextFieldWidget(
+              keyboardType: TextInputType.name,
               hintText: "Логин",
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
-                if (!isLoginExist) return "Такого логина не существует";
+                if (!isUserExist) return "Такого пользователя не существует";
                 return null;
               },
               onChanged: (value) {
-                isLoginExist = true;
+                isUserExist = true;
               },
               onSaved: (value) {
                 user.login = value;
@@ -68,8 +69,11 @@ void loginDialog(BuildContext context) {
               obscureText: true,
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
-                // добавить проверку на пароль с бэка
+                if (!isPasswordCorrect) return "Неправильный пароль";
                 return null;
+              },
+              onChanged: (value) {
+                isPasswordCorrect = true;
               },
               onSaved: (value) {
                 user.password = value;
@@ -86,25 +90,29 @@ void loginDialog(BuildContext context) {
                     final form = _formKey.currentState!;
                     if (form.validate()) {
                       form.save();
-
                       try {
-                        late dynamic next;
-                        await apiService.postRequest("user/login", user.toJson()).then((value) => next = value);
-                        final result = jsonEncode(next['result']);
-                        if (result == 'true') {
+                        final result = await apiService.postRequest("user/login", user.toJson());
+                        final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
+                        if (authResult.isSuccess == true) {
                           Navigator.of(context).pop();
-                          authNotifier.getUser();
+                          authNotifier.getCurrentUser();
                           context.beamToNamed("/");
-                        } else {
+                        } else if (authResult.errorMessage == "user") {
                           form.setState(() {
-                            isLoginExist = false;
+                            isUserExist = false;
                           });
                           form.validate();
+                        } else if (authResult.errorMessage == "password") {
+                          form.setState(() {
+                            isPasswordCorrect = false;
+                          });
+                          form.validate();
+                        } else {
+                          context.beamToNamed("/error?e=Not found");
                         }
                       } catch (e) {
                         context.beamToNamed("/error?e=$e");
                       }
-                      // final UserData currUser = user;
                     }
                   },
                 ),
@@ -124,7 +132,7 @@ void loginDialog(BuildContext context) {
               child: TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  registrationDialog(context);
+                  registerDialog(context);
                 },
                 style: TextButton.styleFrom(onSurface: Colors.transparent, primary: Colors.orange),
                 child: Text(

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -21,6 +22,11 @@ namespace RecipeBook.Infrastructure.Repositories
         public User GetById( int id )
         {
             return GetQuery().FirstOrDefault( x => x.UserId == id );
+        }
+
+        public List<User> GetByIds( List<int> ids )
+        {
+            return GetQuery().Where( x => ids.Contains( x.UserId ) ).ToList();
         }
 
         public User GetByLogin( string login )

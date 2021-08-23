@@ -46,12 +46,22 @@ namespace RecipeBook.Infrastructure.Repositories
         {
             return GetQuery().FirstOrDefault( x => x.RecipeId == id );
         }
-
+        
         public Recipe GetRecipeOfDay()
         {
             return GetQuery().OrderByDescending( x => x.LikesCount ).FirstOrDefault();
         }
-
+        
+        public IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds )
+        {
+            IEnumerable<int> uniqueRecipeIds = recipeIds.Distinct();
+            IQueryable<Recipe> query = GetQuery().Where( x => uniqueRecipeIds.Contains( x.RecipeId ) );
+            return query.OrderByDescending( x => x.FavoritesCount )
+                .Skip( skip )
+                .Take( take )
+                .ToList();
+        }
+        
         public IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery )
         {
             IQueryable<Recipe> query = GetQuery();

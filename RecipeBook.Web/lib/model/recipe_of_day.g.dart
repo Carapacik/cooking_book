@@ -18,7 +18,8 @@ RecipeOfDay _$RecipeOfDayFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RecipeOfDayToJson(RecipeOfDay instance) => <String, dynamic>{
+Map<String, dynamic> _$RecipeOfDayToJson(RecipeOfDay instance) =>
+    <String, dynamic>{
       'recipeId': instance.recipeId,
       'title': instance.title,
       'description': instance.description,

@@ -15,6 +15,12 @@ final themeData = ThemeData.light().copyWith(
 TextTheme get _textTheme => GoogleFonts.montserratTextTheme().copyWith();
 
 extension TextThemeExt on TextTheme {
+  TextStyle get b107 => headline2!.copyWith(
+        color: Palette.orange,
+        fontSize: 107,
+        fontWeight: FontWeight.w600,
+      );
+
   TextStyle get b72 => headline1!.copyWith(
         color: Palette.main,
         fontSize: 72,

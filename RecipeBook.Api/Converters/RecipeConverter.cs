@@ -6,7 +6,7 @@ namespace RecipeBook.Api.Converters
 {
     public static class RecipeConverter
     {
-        public static RecipeOfDayDto ConvertToRecipeOfDayDto( this Recipe recipe )
+        public static RecipeOfDayDto ConvertToRecipeOfDayDto( this Recipe recipe, string username )
         {
             return new RecipeOfDayDto
             {
@@ -16,11 +16,11 @@ namespace RecipeBook.Api.Converters
                 ImageUrl = recipe.ImageUrl,
                 CookingTimeInMinutes = recipe.CookingTimeInMinutes,
                 LikesCount = recipe.LikesCount,
-                Username = recipe.UserId.ToString() // как передать сюда username
+                Username = username
             };
         }
 
-        public static RecipeDto ConvertToRecipeDto( this Recipe recipe )
+        public static RecipeDto ConvertToRecipeDto( this Recipe recipe, string username, Rating rating )
         {
             return new RecipeDto
             {
@@ -32,12 +32,14 @@ namespace RecipeBook.Api.Converters
                 PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
-                Username = recipe.UserId.ToString(), // как передать сюда username
+                Username = username,
+                IsLiked = rating?.IsLiked ?? false,
+                IsFavorite = rating?.InFavorite ?? false,
                 Tags = recipe.Tags.Select( x => x.Name ).ToList()
             };
         }
 
-        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe )
+        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe, string username, Rating rating )
         {
             return new RecipeDetailDto
             {
@@ -49,7 +51,9 @@ namespace RecipeBook.Api.Converters
                 PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
                 FavoritesCount = recipe.FavoritesCount,
-                Username = recipe.UserId.ToString(), // как передать сюда username
+                Username = username,
+                IsLiked = rating?.IsLiked ?? false,
+                IsFavorite = rating?.InFavorite ?? false,
                 Tags = recipe.Tags.Select( x => x.Name ).ToList(),
                 Steps = recipe.Steps.Select( x => x.Description ).ToList(),
                 Ingredients = recipe.Ingredients.Select( x => new IngredientDto

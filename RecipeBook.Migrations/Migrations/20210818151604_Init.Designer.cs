@@ -9,7 +9,7 @@ using RecipeBook.Infrastructure;
 namespace RecipeBook.Migrations.Migrations
 {
     [DbContext(typeof(RecipeBookDbContext))]
-    [Migration("20210809133050_Init")]
+    [Migration("20210818151604_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,7 @@ namespace RecipeBook.Migrations.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("RecipeBook.Domain.Entities.Ingredient", b =>
@@ -60,6 +60,25 @@ namespace RecipeBook.Migrations.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("IngredientItem");
+                });
+
+            modelBuilder.Entity("RecipeBook.Domain.Entities.Rating", b =>
+                {
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("InFavorite")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("RecipeId", "UserId");
+
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("RecipeBook.Domain.Entities.Recipe", b =>
@@ -152,14 +171,13 @@ namespace RecipeBook.Migrations.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -172,25 +190,6 @@ namespace RecipeBook.Migrations.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("RecipeBook.Domain.Entities.UserRating", b =>
-                {
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("InFavorite")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("RecipeId", "UserId");
-
-                    b.ToTable("UserRating");
                 });
 
             modelBuilder.Entity("RecipeBook.Domain.Entities.Ingredient", b =>

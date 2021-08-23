@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
-using RecipeBook.Application;
+using RecipeBook.Application.Entities;
+using RecipeBook.Application.Services;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -14,50 +14,17 @@ namespace RecipeBook.Api.Controllers
     [Route( "api/[controller]" )]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController( IUserRepository userRepository, IUnitOfWork unitOfWork )
+        public UserController( IUserRepository userRepository, IUserService userService )
         {
             _userRepository = userRepository;
-            _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
-        [HttpPost( "login" )]
-        public AuthenticationResultDto Login( UserCommandDto userDto )
-        {
-            User user = _userRepository.GetByLogin( userDto.Login );
-            if ( user == null )
-            {
-                return new AuthenticationResultDto( false );
-            }
-
-            if ( userDto.Password != user.Password )
-            {
-                return new AuthenticationResultDto( false );
-            }
-
-            Authenticate( userDto.Login );
-            return new AuthenticationResultDto( true );
-        }
-
-        [HttpPost( "register" )]
-        public AuthenticationResultDto Register( UserCommandDto userCommandDto )
-        {
-            User user = _userRepository.GetByLogin( userCommandDto.Login );
-            if ( user == null )
-            {
-                _userRepository.Add( new User { Login = userCommandDto.Login, Name = userCommandDto.Name, Password = userCommandDto.Password } );
-                _unitOfWork.Commit();
-                Authenticate( userCommandDto.Login );
-                return new AuthenticationResultDto( true );
-            }
-
-            return new AuthenticationResultDto( false );
-        }
-
-        [HttpGet( "get-user" )]
-        public DetailUserDto GetUser()
+        [HttpGet( "current-user" )]
+        public DetailUserDto GetCurrentUser()
         {
             if ( User.Identity is { Name: null } )
             {
@@ -65,20 +32,43 @@ namespace RecipeBook.Api.Controllers
             }
 
             User user = _userRepository.GetByLogin( User.Identity?.Name );
-            return new DetailUserDto { Name = user.Name, Description = user.Description, Login = user.Login, Id = user.UserId };
+            return user.Convert();
         }
 
-        private void Authenticate( string userName )
+        [HttpPost( "login" )]
+        public AuthenticationResultDto Login( AuthenticateUserCommandDto authenticateUserDto )
         {
-            List<Claim> claims = new() { new Claim( ClaimsIdentity.DefaultNameClaimType, userName ) };
-            ClaimsIdentity id = new(claims, "RecipeBookCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            HttpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) ).Wait();
+            AuthenticateUserCommand authenticateUserCommand = ParseAuthenticateUserCommand( authenticateUserDto );
+            AuthenticationResult result = _userService.Login( authenticateUserCommand );
+
+            return new AuthenticationResultDto( result.Result, result.Error );
         }
 
-        [HttpGet( "logout" )]
+        [HttpPost( "register" )]
+        public AuthenticationResultDto Register( AuthenticateUserCommandDto authenticateUserDto )
+        {
+            AuthenticateUserCommand authenticateUserCommand = ParseAuthenticateUserCommand( authenticateUserDto );
+            AuthenticationResult result = _userService.Register( authenticateUserCommand );
+
+            return new AuthenticationResultDto( result.Result, result.Error );
+        }
+
+        [HttpPost( "logout" )]
         public void Logout()
         {
             HttpContext.SignOutAsync( CookieAuthenticationDefaults.AuthenticationScheme ).Wait();
+        }
+
+        [HttpGet( "profile" )]
+        public ProfileDto GetProfile()
+        {
+            return new ProfileDto();
+        }
+
+        private AuthenticateUserCommand ParseAuthenticateUserCommand( AuthenticateUserCommandDto authenticateUserCommandDto )
+        {
+            return new AuthenticateUserCommand( authenticateUserCommandDto.Name, authenticateUserCommandDto.Login,
+                authenticateUserCommandDto.Password, HttpContext );
         }
     }
 }

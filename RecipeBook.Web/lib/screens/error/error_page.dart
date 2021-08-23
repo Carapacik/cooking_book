@@ -16,7 +16,7 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const HeaderWidget(),
+          HeaderWidget(),
           Padding(
             padding: const EdgeInsets.only(top: 200),
             child: Column(

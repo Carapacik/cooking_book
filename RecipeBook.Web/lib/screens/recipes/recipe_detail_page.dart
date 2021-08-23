@@ -10,7 +10,6 @@ import 'package:recipebook/model/recipe_item.dart';
 import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/recipe_item_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
@@ -18,6 +17,7 @@ import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/delete_dialog.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipebook/widgets/recipe_item_widget.dart';
 
 class RecipeDetailPage extends StatefulWidget {
   const RecipeDetailPage({
@@ -134,7 +134,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                       height: 60,
                                       icon: Icons.edit,
                                       padding: 18,
-                                      onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit", popBeamLocationOnPop: true),
+                                      onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit"),
                                     ),
                                   ],
                                 )
@@ -161,6 +161,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                             likesCount: recipeDetail.likesCount,
                             cookingTimeInMinutes: recipeDetail.cookingTimeInMinutes,
                             portionsCount: recipeDetail.portionsCount,
+                            isFavorite: recipeDetail.isFavorite,
+                            isLiked: recipeDetail.isLiked,
                           ),
                         ),
                         const SizedBox(height: 40),

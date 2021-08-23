@@ -8,7 +8,7 @@ namespace RecipeBook.Infrastructure.Configurations
     {
         public void Configure( EntityTypeBuilder<User> builder )
         {
-            builder.ToTable( "User" ).HasKey( item => item.UserId );
+            builder.ToTable( nameof( User ) ).HasKey( item => item.UserId );
             builder.Property( x => x.Name ).IsRequired();
             builder.Property( x => x.Description ).HasMaxLength( 150 );
             builder.Property( x => x.Login ).IsRequired().HasMaxLength( 20 );
