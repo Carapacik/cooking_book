@@ -12,5 +12,6 @@ namespace RecipeBook.Domain.Repositories
         Recipe GetRecipeOfDay();
         IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds );
         IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery );
+        int GetUserRecipesCountByUserId( int userId );
     }
 }

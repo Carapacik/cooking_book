@@ -38,5 +38,15 @@ namespace RecipeBook.Infrastructure.Repositories
         {
             return _context.Set<Rating>().Where( x => x.UserId == userId ).ToList();
         }
+
+        public int GetUserLikesCountByUserId( int userId )
+        {
+            return _context.Set<Rating>().Count( x => x.UserId == userId && x.IsLiked );
+        }
+
+        public int GetUserFavoritesCountByUserId( int userId )
+        {
+            return _context.Set<Rating>().Count( x => x.UserId == userId && x.InFavorite );
+        }
     }
 }

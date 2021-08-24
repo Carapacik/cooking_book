@@ -53,10 +53,10 @@ class _FavoritePageState extends State<FavoritePage> {
     Response response;
 
     try {
-      response = await _apiService.getInitialWithParam("recipes/favorite", 4);
+      response = await _apiService.getInitialWithParam("recipes/favorite", 2);
       if (response.statusCode == 200) {
         _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
-        skipCounter += 4;
+        skipCounter += 2;
       } else {
         // затычка, код не 200
       }
@@ -99,7 +99,8 @@ class _FavoritePageState extends State<FavoritePage> {
                       style: Theme.of(context).textTheme.b42,
                     ),
                     const SizedBox(height: 50),
-                    const Center(child: RecipeListWidget())
+                    const Center(child: RecipeListWidget()),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),

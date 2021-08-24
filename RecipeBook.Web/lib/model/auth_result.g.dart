@@ -13,8 +13,7 @@ AuthResult _$AuthResultFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AuthResultToJson(AuthResult instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AuthResultToJson(AuthResult instance) => <String, dynamic>{
       'isSuccess': instance.isSuccess,
       'errorMessage': instance.errorMessage,
     };

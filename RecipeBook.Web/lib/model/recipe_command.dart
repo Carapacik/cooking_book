@@ -4,7 +4,7 @@ import 'ingredient.dart';
 
 part 'recipe_command.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class RecipeCommand {
   RecipeCommand({
     this.recipeId,

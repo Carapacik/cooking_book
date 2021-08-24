@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'recipe_of_day.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class RecipeOfDay {
   RecipeOfDay({
     required this.recipeId,

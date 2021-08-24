@@ -23,8 +23,7 @@ RecipeItem _$RecipeItemFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RecipeItemToJson(RecipeItem instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$RecipeItemToJson(RecipeItem instance) => <String, dynamic>{
       'recipeId': instance.recipeId,
       'title': instance.title,
       'description': instance.description,
