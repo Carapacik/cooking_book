@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -19,19 +21,19 @@ namespace RecipeBook.Infrastructure.Repositories
             _context.Set<User>().Add( user );
         }
 
-        public User GetById( int id )
+        public async Task<User> GetById( int id )
         {
-            return GetQuery().FirstOrDefault( x => x.UserId == id );
+            return await GetQuery().FirstOrDefaultAsync( x => x.UserId == id );
         }
 
-        public List<User> GetByIds( List<int> ids )
+        public async Task<IReadOnlyList<User>> GetByIds( List<int> ids )
         {
-            return GetQuery().Where( x => ids.Contains( x.UserId ) ).ToList();
+            return await GetQuery().Where( x => ids.Contains( x.UserId ) ).ToListAsync();
         }
 
-        public User GetByLogin( string login )
+        public async Task<User> GetByLogin( string login )
         {
-            return GetQuery().FirstOrDefault( x => x.Login == login );
+            return await GetQuery().FirstOrDefaultAsync( x => x.Login == login );
         }
 
         private IQueryable<User> GetQuery()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Domain.Repositories
@@ -6,11 +7,11 @@ namespace RecipeBook.Domain.Repositories
     public interface IRatingRepository
     {
         void Add( Rating rating );
-        Rating Get( int userId, int recipeId );
-        IEnumerable<Rating> Get( int userId, List<int> recipeIds );
-        IEnumerable<Rating> GetInFavoriteByUserId( int userId );
-        List<Rating> GetInUserOwnedByUserId( int userId );
-        int GetUserLikesCountByUserId( int userId );
-        int GetUserFavoritesCountByUserId( int userId );
+        Task<Rating> Get( int userId, int recipeId );
+        Task<IReadOnlyList<Rating>> Get( int userId, List<int> recipeIds );
+        Task<IReadOnlyList<Rating>> GetInFavoriteByUserId( int userId );
+        Task<IReadOnlyList<Rating>> GetInUserOwnedByUserId( int userId );
+        Task<int> GetUserLikesCountByUserId( int userId );
+        Task<int> GetUserFavoritesCountByUserId( int userId );
     }
 }

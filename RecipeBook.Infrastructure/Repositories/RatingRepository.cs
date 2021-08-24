@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -19,34 +21,38 @@ namespace RecipeBook.Infrastructure.Repositories
             _context.Set<Rating>().Add( rating );
         }
 
-        public Rating Get( int userId, int recipeId )
+        public async Task<Rating> Get( int userId, int recipeId )
         {
-            return _context.Set<Rating>().FirstOrDefault( x => x.UserId == userId && x.RecipeId == recipeId );
+            return await _context.Set<Rating>().FirstOrDefaultAsync( x => x.UserId == userId && x.RecipeId == recipeId );
         }
 
-        public IEnumerable<Rating> Get( int userId, List<int> recipeIds )
+        public async Task<IReadOnlyList<Rating>> Get( int userId, List<int> recipeIds )
         {
-            return _context.Set<Rating>().Where( x => x.UserId == userId && recipeIds.Contains( x.RecipeId ) ).ToList();
+            return await _context.Set<Rating>().Where( x => x.UserId == userId && recipeIds.Contains( x.RecipeId ) ).ToListAsync();
         }
 
-        public IEnumerable<Rating> GetInFavoriteByUserId( int userId )
+        public async Task<IReadOnlyList<Rating>> GetInFavoriteByUserId( int userId )
         {
-            return _context.Set<Rating>().Where( x => x.UserId == userId && x.InFavorite ).ToList();
+            return await _context.Set<Rating>()
+                .Where( x => x.UserId == userId && x.InFavorite )
+                .OrderByDescending( x => x.ModificationDateTime ).ToListAsync();
         }
 
-        public List<Rating> GetInUserOwnedByUserId( int userId )
+        public async Task<IReadOnlyList<Rating>> GetInUserOwnedByUserId( int userId )
         {
-            return _context.Set<Rating>().Where( x => x.UserId == userId ).ToList();
+            return await _context.Set<Rating>()
+                .Where( x => x.UserId == userId )
+                .OrderByDescending( x => x.ModificationDateTime ).ToListAsync();
         }
 
-        public int GetUserLikesCountByUserId( int userId )
+        public async Task<int> GetUserLikesCountByUserId( int userId )
         {
-            return _context.Set<Rating>().Count( x => x.UserId == userId && x.IsLiked );
+            return await _context.Set<Rating>().CountAsync( x => x.UserId == userId && x.IsLiked );
         }
 
-        public int GetUserFavoritesCountByUserId( int userId )
+        public async Task<int> GetUserFavoritesCountByUserId( int userId )
         {
-            return _context.Set<Rating>().Count( x => x.UserId == userId && x.InFavorite );
+            return await _context.Set<Rating>().CountAsync( x => x.UserId == userId && x.InFavorite );
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,88 +41,88 @@ namespace RecipeBook.Api.Controllers
         [HttpPost]
         [Authorize]
         [DisableRequestSizeLimit]
-        public int AddRecipe()
+        public async Task<int> AddRecipe()
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = _recipeService.AddRecipe( ParseRecipeCommand( Request.Form, username ) );
-            _unitOfWork.Commit();
+            Recipe newRecipe = await _recipeService.AddRecipe( ParseRecipeCommand( Request.Form, username ) );
+            await _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
 
         [HttpDelete( "{id:int}/delete" )]
         [Authorize]
-        public void DeleteRecipe( int id )
+        public async Task DeleteRecipe( int id )
         {
             string username = User.Identity?.Name;
-            _recipeService.DeleteRecipe( id, username );
-            _unitOfWork.Commit();
+            await _recipeService.DeleteRecipe( id, username );
+            await _unitOfWork.Commit();
         }
 
         [HttpPatch( "{id:int}/edit" )]
         [Authorize]
         [DisableRequestSizeLimit]
-        public int EditRecipe( int id )
+        public async Task<int> EditRecipe( int id )
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = _recipeService.EditRecipe( ParseRecipeCommand( Request.Form, username, id ) );
-            _unitOfWork.Commit();
+            Recipe newRecipe = await _recipeService.EditRecipe( ParseRecipeCommand( Request.Form, username, id ) );
+            await _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
         }
 
         [HttpGet( "{id:int}" )]
-        public RecipeDetailDto GetDetailRecipe( int id )
+        public async Task<RecipeDetailDto> GetDetailRecipe( int id )
         {
-            Recipe recipe = _recipeRepository.GetById( id );
+            Recipe recipe = await _recipeRepository.GetById( id );
             if ( recipe == null )
             {
                 throw new ValidationException( $"Recipe with id:{id} does not exist" );
             }
 
             string username = User.Identity?.Name;
-            return _recipeBuilder.BuildRecipeDetail( recipe, username );
+            return await _recipeBuilder.BuildRecipeDetail( recipe, username );
         }
 
         [HttpGet( "recipe-of-day" )]
-        public RecipeOfDayDto GetRecipeOfDay()
+        public async Task<RecipeOfDayDto> GetRecipeOfDay()
         {
-            Recipe recipe = _recipeRepository.GetRecipeOfDay();
+            Recipe recipe = await _recipeRepository.GetRecipeOfDay();
             if ( recipe == null )
             {
                 throw new ValidationException( "Recipe does not exist" );
             }
 
-            return _recipeBuilder.BuildRecipeOfDay( recipe );
+            return await _recipeBuilder.BuildRecipeOfDay( recipe );
         }
 
         [HttpGet( "favorite" )]
         [Authorize]
-        public List<RecipeDto> GetFavoriteRecipes( [FromQuery] int skip, [FromQuery] int take )
+        public async Task<List<RecipeDto>> GetFavoriteRecipes( [FromQuery] int skip, [FromQuery] int take )
         {
             string username = User.Identity?.Name;
-            IReadOnlyList<Recipe> searchResult = _recipeService.GetFavoriteRecipes( skip, take, username );
-            return _recipeBuilder.BuildRecipes( searchResult, username );
+            IReadOnlyList<Recipe> searchResult = await _recipeService.GetFavoriteRecipes( skip, take, username );
+            return await _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
         [HttpGet( "user-owned" )]
         [Authorize]
-        public List<RecipeDto> GetUserOwnedRecipes( [FromQuery] int skip, [FromQuery] int take )
+        public async Task<List<RecipeDto>> GetUserOwnedRecipes( [FromQuery] int skip, [FromQuery] int take )
         {
             string username = User.Identity?.Name;
-            IReadOnlyList<Recipe> searchResult = _recipeService.GetUserOwnedRecipes( skip, take, username );
-            return _recipeBuilder.BuildRecipes( searchResult, username );
+            IReadOnlyList<Recipe> searchResult = await _recipeService.GetUserOwnedRecipes( skip, take, username );
+            return await _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
         [HttpGet]
-        public List<RecipeDto> GetAllRecipes(
+        public async Task<List<RecipeDto>> GetAllRecipes(
             [FromQuery] int skip,
             [FromQuery] int take,
             [FromQuery] string searchQuery )
         {
-            IReadOnlyList<Recipe> searchResult = _recipeRepository.Search( skip, take, searchQuery );
+            IReadOnlyList<Recipe> searchResult = await _recipeRepository.Search( skip, take, searchQuery );
 
             string username = User.Identity?.Name;
-            return _recipeBuilder.BuildRecipes( searchResult, username );
+            return await _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
         private static RecipeCommand ParseRecipeCommand( IFormCollection formCollection, string username, int id = 0 )

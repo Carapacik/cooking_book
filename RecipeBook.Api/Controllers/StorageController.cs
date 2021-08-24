@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
 
@@ -16,9 +17,9 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet( "images/{fileName}" )]
-        public IActionResult GetImage( string fileName )
+        public async Task<IActionResult> GetImage( string fileName )
         {
-            GetFileResult result = _fileStorageService.GetFile( $"images\\{fileName}" );
+            GetFileResult result = await _fileStorageService.GetFile( $"images\\{fileName}" );
             return new FileContentResult( result.Content, $"image/{result.Extension}" );
         }
     }

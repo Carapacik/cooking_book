@@ -1,7 +1,9 @@
-﻿namespace RecipeBook.Application
+﻿using System.Threading.Tasks;
+
+namespace RecipeBook.Application
 {
     public interface IUnitOfWork
     {
-        void Commit();
+        Task Commit();
     }
 }
