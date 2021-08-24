@@ -1,6 +1,6 @@
 ﻿namespace RecipeBook.Application.Entities
 {
-    public class ProfileResult
+    public class UserProfile
     {
         public int RecipesCount { get; set; }
         public int LikesCount { get; set; }

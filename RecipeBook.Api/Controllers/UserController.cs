@@ -32,7 +32,7 @@ namespace RecipeBook.Api.Controllers
                 return null;
             }
 
-            User user = _userRepository.GetByLogin( User.Identity?.Name );
+            User user = _userRepository.GetByLogin( User.Identity.Name );
             return user.Convert();
         }
 
@@ -64,12 +64,7 @@ namespace RecipeBook.Api.Controllers
         [Authorize]
         public ProfileDto GetProfile()
         {
-            if ( User.Identity is { Name: null } )
-            {
-                return null;
-            }
-
-            ProfileResult result = _userService.GetProfileData( User.Identity?.Name );
+            UserProfile result = _userService.GetUserProfile( User.Identity?.Name );
             return new ProfileDto
             {
                 RecipesCount = result.RecipesCount,
@@ -77,7 +72,10 @@ namespace RecipeBook.Api.Controllers
                 LikesCount = result.LikesCount,
                 UserForm = new UserFormDto
                 {
-                    Description = result.Description, Name = result.Name, Login = result.Login, Password = result.Password
+                    Description = result.Description,
+                    Name = result.Name,
+                    Login = result.Login,
+                    Password = result.Password
                 }
             };
         }

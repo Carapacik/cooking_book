@@ -63,13 +63,13 @@ namespace RecipeBook.Application.Services
             return new AuthenticationResult( true, null );
         }
 
-        public ProfileResult GetProfileData( string username )
+        public UserProfile GetUserProfile( string username )
         {
             User user = _userRepository.GetByLogin( username );
             int favoritesCount = _ratingRepository.GetUserFavoritesCountByUserId( user.UserId );
             int likesCount = _ratingRepository.GetUserLikesCountByUserId( user.UserId );
             int recipesCount = _recipeRepository.GetUserRecipesCountByUserId( user.UserId );
-            return new ProfileResult
+            return new UserProfile
             {
                 RecipesCount = recipesCount,
                 FavoritesCount = favoritesCount,

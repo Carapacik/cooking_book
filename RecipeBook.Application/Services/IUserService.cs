@@ -6,6 +6,6 @@ namespace RecipeBook.Application.Services
     {
         AuthenticationResult Login( AuthenticateUserCommand authenticateUserCommand );
         AuthenticationResult Register( AuthenticateUserCommand result );
-        ProfileResult GetProfileData( string username );
+        UserProfile GetUserProfile( string username );
     }
 }
