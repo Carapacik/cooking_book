@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Domain.Entities;
@@ -18,48 +19,50 @@ namespace RecipeBook.Api.Builder
             _ratingRepository = ratingRepository;
         }
 
-        public RecipeDetailDto BuildRecipeDetail( Recipe recipe, string username )
+        public async Task<RecipeDetailDto> BuildRecipeDetail( Recipe recipe, string username )
         {
-            Rating rating = GetRating( username, recipe.RecipeId );
-            User author = _userRepository.GetById( recipe.UserId );
+            Rating rating = await GetRating( username, recipe.RecipeId );
+            User author = await _userRepository.GetById( recipe.UserId );
             return recipe.ConvertToRecipeDetailDto( author?.Login, rating );
         }
 
-        public RecipeOfDayDto BuildRecipeOfDay( Recipe recipe )
+        public async Task<RecipeOfDayDto> BuildRecipeOfDay( Recipe recipe )
         {
-            User author = _userRepository.GetById( recipe.UserId );
+            User author = await _userRepository.GetById( recipe.UserId );
             return recipe.ConvertToRecipeOfDayDto( author?.Login );
         }
 
-        public List<RecipeDto> BuildRecipes( IReadOnlyList<Recipe> recipes, string username )
+        public async Task<List<RecipeDto>> BuildRecipes( IReadOnlyList<Recipe> recipes, string username )
         {
             List<int> authorIds = recipes.Select( x => x.UserId ).Distinct().ToList();
-            Dictionary<int, User> authorByUserId = _userRepository.GetByIds( authorIds ).ToDictionary( x => x.UserId );
+            IReadOnlyList<User> authors = await _userRepository.GetByIds( authorIds );
+            Dictionary<int, User> authorByUserIdDictionary = authors.ToDictionary( x => x.UserId );
 
             Dictionary<int, Rating> ratingByRecipeId = new();
             Rating rating;
             if ( username != null )
             {
                 List<int> recipeIds = recipes.Select( x => x.RecipeId ).Distinct().ToList();
-                User user = _userRepository.GetByLogin( username );
-                ratingByRecipeId = _ratingRepository.Get( user.UserId, recipeIds ).ToDictionary( x => x.RecipeId );
+                User user = await _userRepository.GetByLogin( username );
+                IReadOnlyList<Rating> ratings = await _ratingRepository.Get( user.UserId, recipeIds );
+                ratingByRecipeId = ratings.ToDictionary( x => x.RecipeId );
             }
 
             return recipes.Select( x =>
             {
                 rating = ratingByRecipeId.GetValueOrDefault( x.RecipeId );
-                User author = authorByUserId.GetValueOrDefault( x.UserId );
+                User author = authorByUserIdDictionary.GetValueOrDefault( x.UserId );
                 return x.ConvertToRecipeDto( author?.Login, rating );
             } ).ToList();
         }
 
-        private Rating GetRating( string username, int recipeId )
+        private async Task<Rating> GetRating( string username, int recipeId )
         {
-            User user = _userRepository.GetByLogin( username );
+            User user = await _userRepository.GetByLogin( username );
             Rating rating = null;
             if ( user != null )
             {
-                rating = _ratingRepository.Get( user.UserId, recipeId );
+                rating = await _ratingRepository.Get( user.UserId, recipeId );
             }
 
             return rating;

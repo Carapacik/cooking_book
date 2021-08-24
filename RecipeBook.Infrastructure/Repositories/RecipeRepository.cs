@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
@@ -20,9 +22,9 @@ namespace RecipeBook.Infrastructure.Repositories
             _context.Set<Recipe>().Add( newRecipe );
         }
 
-        public void Delete( int id )
+        public async Task Delete( int id )
         {
-            Recipe recipe = GetById( id );
+            Recipe recipe = await GetById( id );
             _context.Set<Recipe>().Remove( recipe );
         }
 
@@ -42,27 +44,31 @@ namespace RecipeBook.Infrastructure.Repositories
             existingRecipe.Ingredients = editedRecipe.Ingredients;
         }
 
-        public Recipe GetById( int id )
+        public async Task<Recipe> GetById( int id )
         {
-            return GetQuery().FirstOrDefault( x => x.RecipeId == id );
+            return await GetQuery().FirstOrDefaultAsync( x => x.RecipeId == id );
         }
 
-        public Recipe GetRecipeOfDay()
+        public async Task<Recipe> GetRecipeOfDay()
         {
-            return GetQuery().OrderByDescending( x => x.LikesCount ).FirstOrDefault();
+            DateTime window = DateTime.Now.AddDays( -1 );
+            return await GetQuery()
+                .Where( x => x.CreationDateTime > window )
+                .OrderByDescending( x => x.LikesCount )
+                .FirstOrDefaultAsync();
         }
 
-        public IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds )
+        public async Task<IReadOnlyList<Recipe>> Search( int skip, int take, IEnumerable<int> recipeIds )
         {
             IEnumerable<int> uniqueRecipeIds = recipeIds.Distinct();
             IQueryable<Recipe> query = GetQuery().Where( x => uniqueRecipeIds.Contains( x.RecipeId ) );
-            return query.OrderByDescending( x => x.FavoritesCount )
+            return await query.OrderByDescending( x => x.CreationDateTime )
                 .Skip( skip )
                 .Take( take )
-                .ToList();
+                .ToListAsync();
         }
 
-        public IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery )
+        public async Task<IReadOnlyList<Recipe>> Search( int skip, int take, string searchQuery )
         {
             IQueryable<Recipe> query = GetQuery();
             if ( !string.IsNullOrWhiteSpace( searchQuery ) )
@@ -73,15 +79,15 @@ namespace RecipeBook.Infrastructure.Repositories
                     || x.Tags.Any( y => y.Name.ToLower().Contains( trimmedQuery ) ) );
             }
 
-            return query.OrderByDescending( x => x.LikesCount )
+            return await query.OrderByDescending( x => x.CreationDateTime )
                 .Skip( skip )
                 .Take( take )
-                .ToList();
+                .ToListAsync();
         }
 
-        public int GetUserRecipesCountByUserId( int userId )
+        public async Task<int> GetUserRecipesCountByUserId( int userId )
         {
-            return _context.Set<Recipe>().Count( x => x.UserId == userId );
+            return await _context.Set<Recipe>().CountAsync( x => x.UserId == userId );
         }
 
         private IQueryable<Recipe> GetQuery()

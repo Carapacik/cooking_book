@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Domain.Repositories
@@ -6,8 +7,8 @@ namespace RecipeBook.Domain.Repositories
     public interface IUserRepository
     {
         void Add( User user );
-        User GetById( int id );
-        List<User> GetByIds( List<int> ids );
-        User GetByLogin( string login );
+        Task<User> GetById( int id );
+        Task<IReadOnlyList<User>> GetByIds( List<int> ids );
+        Task<User> GetByLogin( string login );
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 
@@ -17,19 +18,19 @@ namespace RecipeBook.Application.Services
             _userRepository = userRepository;
         }
 
-        public void AddToFavorites( string username, int recipeId )
+        public async Task AddToFavorites( string username, int recipeId )
         {
-            Recipe recipe = _recipeRepository.GetById( recipeId );
+            Recipe recipe = await _recipeRepository.GetById( recipeId );
             if ( recipe == null )
             {
                 throw new ArgumentException( $"Recipe with id [{recipeId}] does not exist" );
             }
 
-            int userId = _userRepository.GetByLogin( username ).UserId;
-            Rating rating = _ratingRepository.Get( userId, recipeId );
+            User user = await _userRepository.GetByLogin( username );
+            Rating rating = await _ratingRepository.Get( user.UserId, recipeId );
             if ( rating == null )
             {
-                rating = new Rating( userId, recipeId );
+                rating = new Rating( user.UserId, recipeId );
                 _ratingRepository.Add( rating );
             }
 
@@ -39,6 +40,7 @@ namespace RecipeBook.Application.Services
             }
 
             rating.InFavorite = true;
+            rating.ModificationDateTime = DateTime.Now;
             recipe.FavoritesCount += 1;
 
             if ( rating.IsLiked )
@@ -50,16 +52,16 @@ namespace RecipeBook.Application.Services
             recipe.LikesCount += 1;
         }
 
-        public void RemoveFromFavorites( string username, int recipeId )
+        public async Task RemoveFromFavorites( string username, int recipeId )
         {
-            Recipe recipe = _recipeRepository.GetById( recipeId );
+            Recipe recipe = await _recipeRepository.GetById( recipeId );
             if ( recipe == null )
             {
                 throw new ArgumentException( $"Recipe with id:{recipeId} does not exist" );
             }
 
-            int userId = _userRepository.GetByLogin( username ).UserId;
-            Rating rating = _ratingRepository.Get( userId, recipeId );
+            User user = await _userRepository.GetByLogin( username );
+            Rating rating = await _ratingRepository.Get( user.UserId, recipeId );
             if ( rating == null )
             {
                 return;
@@ -71,22 +73,23 @@ namespace RecipeBook.Application.Services
             }
 
             rating.InFavorite = false;
+            rating.ModificationDateTime = DateTime.Now;
             recipe.FavoritesCount -= 1;
         }
 
-        public void AddToLikes( string username, int recipeId )
+        public async Task AddToLikes( string username, int recipeId )
         {
-            Recipe recipe = _recipeRepository.GetById( recipeId );
+            Recipe recipe = await _recipeRepository.GetById( recipeId );
             if ( recipe == null )
             {
                 throw new ArgumentException( $"Recipe with id [{recipeId}] does not exist" );
             }
 
-            int userId = _userRepository.GetByLogin( username ).UserId;
-            Rating rating = _ratingRepository.Get( userId, recipeId );
+            User user = await _userRepository.GetByLogin( username );
+            Rating rating = await _ratingRepository.Get( user.UserId, recipeId );
             if ( rating == null )
             {
-                rating = new Rating( userId, recipeId );
+                rating = new Rating( user.UserId, recipeId );
                 _ratingRepository.Add( rating );
             }
 
@@ -99,16 +102,16 @@ namespace RecipeBook.Application.Services
             recipe.LikesCount += 1;
         }
 
-        public void RemoveFromLikes( string username, int recipeId )
+        public async Task RemoveFromLikes( string username, int recipeId )
         {
-            Recipe recipe = _recipeRepository.GetById( recipeId );
+            Recipe recipe = await _recipeRepository.GetById( recipeId );
             if ( recipe == null )
             {
                 throw new ArgumentException( $"Recipe with id [{recipeId}] does not exist" );
             }
 
-            int userId = _userRepository.GetByLogin( username ).UserId;
-            Rating rating = _ratingRepository.Get( userId, recipeId );
+            User user = await _userRepository.GetByLogin( username );
+            Rating rating = await _ratingRepository.Get( user.UserId, recipeId );
             if ( rating == null )
             {
                 return;

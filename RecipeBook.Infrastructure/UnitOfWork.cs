@@ -1,4 +1,5 @@
-﻿using RecipeBook.Application;
+﻿using System.Threading.Tasks;
+using RecipeBook.Application;
 
 namespace RecipeBook.Infrastructure
 {
@@ -11,9 +12,9 @@ namespace RecipeBook.Infrastructure
             _context = context;
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

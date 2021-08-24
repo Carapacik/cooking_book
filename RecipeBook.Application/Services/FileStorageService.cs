@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using RecipeBook.Application.Configs;
 using RecipeBook.Application.Entities;
 
@@ -15,9 +16,11 @@ namespace RecipeBook.Application.Services
             _fileStorageSettings = fileStorageSettings;
         }
 
-        public GetFileResult GetFile( string path )
+        public async Task<GetFileResult> GetFile( string path )
         {
-            return new GetFileResult( File.ReadAllBytes( $"{_fileStorageSettings.BasePath}\\{path}" ), path.Split( '.' ).LastOrDefault() );
+            return new GetFileResult(
+                await File.ReadAllBytesAsync( $"{_fileStorageSettings.BasePath}\\{path}" ),
+                path.Split( '.' ).LastOrDefault() );
         }
 
         public void RemoveFile( string path, string fileName )
@@ -25,11 +28,11 @@ namespace RecipeBook.Application.Services
             File.Delete( $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}" );
         }
 
-        public SaveFileResult SaveFile( StorageFile file, string path )
+        public async Task<SaveFileResult> SaveFile( StorageFile file, string path )
         {
             string fileName = $"{Guid.NewGuid().ToString()}.{file.FileExtension}";
             string newFilePath = $"{_fileStorageSettings.BasePath}\\{path}\\{fileName}";
-            File.WriteAllBytes( newFilePath, file.Data );
+            await File.WriteAllBytesAsync( newFilePath, file.Data );
             return new SaveFileResult( $"{fileName}" );
         }
     }

@@ -1,11 +1,12 @@
-﻿using RecipeBook.Application.Entities;
+﻿using System.Threading.Tasks;
+using RecipeBook.Application.Entities;
 
 namespace RecipeBook.Application.Services
 {
     public interface IFileStorageService
     {
-        GetFileResult GetFile( string path );
+        Task<GetFileResult> GetFile( string path );
         void RemoveFile( string path, string fileName );
-        SaveFileResult SaveFile( StorageFile file, string path );
+        Task<SaveFileResult> SaveFile( StorageFile file, string path );
     }
 }

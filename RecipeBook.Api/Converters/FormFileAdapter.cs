@@ -17,7 +17,7 @@ namespace RecipeBook.Api.Converters
             using ( MemoryStream ms = new() )
             using ( Stream stream = formFile.OpenReadStream() )
             {
-                stream.CopyTo( ms );
+                stream.CopyToAsync( ms );
                 bytes = ms.ToArray();
             }
 

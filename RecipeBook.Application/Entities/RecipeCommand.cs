@@ -5,7 +5,8 @@ namespace RecipeBook.Application.Entities
 {
     public class RecipeCommand
     {
-        public RecipeCommand( int id,
+        public RecipeCommand(
+            int id,
             string title,
             string description,
             int cookingTimeInMinutes,

@@ -9,6 +9,7 @@ namespace RecipeBook.Infrastructure.Configurations
         public void Configure( EntityTypeBuilder<Rating> builder )
         {
             builder.ToTable( nameof( Rating ) ).HasKey( x => new { x.RecipeId, x.UserId } );
+            builder.Property( x => x.ModificationDateTime ).IsRequired();
         }
     }
 }

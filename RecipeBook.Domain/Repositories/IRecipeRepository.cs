@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RecipeBook.Domain.Entities;
 
 namespace RecipeBook.Domain.Repositories
@@ -6,12 +7,12 @@ namespace RecipeBook.Domain.Repositories
     public interface IRecipeRepository
     {
         void Add( Recipe recipe );
-        void Delete( int id );
+        Task Delete( int id );
         void Edit( Recipe existingRecipe, Recipe editedRecipe );
-        Recipe GetById( int id );
-        Recipe GetRecipeOfDay();
-        IReadOnlyList<Recipe> Search( int skip, int take, IEnumerable<int> recipeIds );
-        IReadOnlyList<Recipe> Search( int skip, int take, string searchQuery );
-        int GetUserRecipesCountByUserId( int userId );
+        Task<Recipe> GetById( int id );
+        Task<Recipe> GetRecipeOfDay();
+        Task<int> GetUserRecipesCountByUserId( int userId );
+        Task<IReadOnlyList<Recipe>> Search( int skip, int take, IEnumerable<int> recipeIds );
+        Task<IReadOnlyList<Recipe>> Search( int skip, int take, string searchQuery );
     }
 }

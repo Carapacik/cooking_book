@@ -1,11 +1,12 @@
-﻿using RecipeBook.Application.Entities;
+﻿using System.Threading.Tasks;
+using RecipeBook.Application.Entities;
 
 namespace RecipeBook.Application.Services
 {
     public interface IUserService
     {
-        AuthenticationResult Login( AuthenticateUserCommand authenticateUserCommand );
-        AuthenticationResult Register( AuthenticateUserCommand result );
-        UserProfile GetUserProfile( string username );
+        Task<AuthenticationResult> Login( AuthenticateUserCommand authenticateUserCommand );
+        Task<AuthenticationResult> Register( AuthenticateUserCommand result );
+        Task<UserProfile> GetUserProfile( string username );
     }
 }

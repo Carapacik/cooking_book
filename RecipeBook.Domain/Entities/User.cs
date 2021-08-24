@@ -1,4 +1,6 @@
-﻿namespace RecipeBook.Domain.Entities
+﻿using System;
+
+namespace RecipeBook.Domain.Entities
 {
     public class User
     {
@@ -7,5 +9,6 @@
         public string Description { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+        public DateTime CreationDateTime { get; set; }
     }
 }

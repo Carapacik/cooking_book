@@ -14,6 +14,7 @@ namespace RecipeBook.Infrastructure.Configurations
             builder.Property( x => x.ImageUrl ).IsRequired();
             builder.Property( x => x.CookingTimeInMinutes ).IsRequired();
             builder.Property( x => x.PortionsCount ).IsRequired();
+            builder.Property( x => x.CreationDateTime ).IsRequired();
         }
     }
 }

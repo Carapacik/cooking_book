@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using RecipeBook.Application.Entities;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
@@ -26,42 +28,42 @@ namespace RecipeBook.Application.Services
             _ratingRepository = ratingRepository;
         }
 
-        public Recipe AddRecipe( RecipeCommand command )
+        public async Task<Recipe> AddRecipe( RecipeCommand command )
         {
-            SaveFileResult filePath = _fileStorageService.SaveFile( command.StorageFile, "images" );
-            int userId = _userRepository.GetByLogin( command.UserName ).UserId;
-            Recipe recipe = ConvertToRecipe( command, filePath, userId );
+            SaveFileResult filePath = await _fileStorageService.SaveFile( command.StorageFile, "images" );
+            User user = await _userRepository.GetByLogin( command.UserName );
+            Recipe recipe = ConvertToRecipe( command, filePath, user.UserId );
             _recipeRepository.Add( recipe );
             return recipe;
         }
 
-        public void DeleteRecipe( int id, string username )
+        public async Task DeleteRecipe( int id, string username )
         {
-            Recipe recipe = _recipeRepository.GetById( id );
+            Recipe recipe = await _recipeRepository.GetById( id );
             if ( recipe == null )
             {
                 throw new ValidationException( $"Recipe with id:{id} does not exist" );
             }
 
-            User user = _userRepository.GetByLogin( username );
+            User user = await _userRepository.GetByLogin( username );
             if ( user.UserId != recipe.UserId )
             {
                 throw new ValidationException( "Incorrect user" );
             }
 
             _fileStorageService.RemoveFile( "images", recipe.ImageUrl );
-            _recipeRepository.Delete( id );
+            await _recipeRepository.Delete( id );
         }
 
-        public Recipe EditRecipe( RecipeCommand editCommand )
+        public async Task<Recipe> EditRecipe( RecipeCommand editCommand )
         {
-            Recipe existingRecipe = _recipeRepository.GetById( editCommand.RecipeId );
+            Recipe existingRecipe = await _recipeRepository.GetById( editCommand.RecipeId );
             if ( existingRecipe == null )
             {
                 throw new ValidationException( $"Recipe with id:{editCommand.RecipeId} does not exist" );
             }
 
-            User user = _userRepository.GetByLogin( editCommand.UserName );
+            User user = await _userRepository.GetByLogin( editCommand.UserName );
             if ( user.UserId != existingRecipe.UserId )
             {
                 throw new ValidationException( "Incorrect user" );
@@ -70,11 +72,10 @@ namespace RecipeBook.Application.Services
             SaveFileResult filePath = null;
             if ( editCommand.StorageFile != null )
             {
-                filePath = _fileStorageService.SaveFile( editCommand.StorageFile, "images" );
+                filePath = await _fileStorageService.SaveFile( editCommand.StorageFile, "images" );
             }
 
-            int userId = _userRepository.GetByLogin( editCommand.UserName ).UserId;
-            Recipe recipe = ConvertToRecipe( editCommand, filePath, userId );
+            Recipe recipe = ConvertToRecipe( editCommand, filePath, user.UserId );
             if ( filePath != null )
             {
                 _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
@@ -84,20 +85,20 @@ namespace RecipeBook.Application.Services
             return recipe;
         }
 
-        public IReadOnlyList<Recipe> GetFavoriteRecipes( int skip, int take, string username )
+        public async Task<IReadOnlyList<Recipe>> GetFavoriteRecipes( int skip, int take, string username )
         {
-            User user = _userRepository.GetByLogin( username );
-            IEnumerable<Rating> ratings = _ratingRepository.GetInFavoriteByUserId( user.UserId );
+            User user = await _userRepository.GetByLogin( username );
+            IReadOnlyList<Rating> ratings = await _ratingRepository.GetInFavoriteByUserId( user.UserId );
             List<int> recipeIds = ratings.Select( x => x.RecipeId ).ToList();
-            return _recipeRepository.Search( skip, take, recipeIds );
+            return await _recipeRepository.Search( skip, take, recipeIds );
         }
 
-        public IReadOnlyList<Recipe> GetUserOwnedRecipes( int skip, int take, string username )
+        public async Task<IReadOnlyList<Recipe>> GetUserOwnedRecipes( int skip, int take, string username )
         {
-            User user = _userRepository.GetByLogin( username );
-            IEnumerable<Rating> ratings = _ratingRepository.GetInUserOwnedByUserId( user.UserId );
+            User user = await _userRepository.GetByLogin( username );
+            IReadOnlyList<Rating> ratings = await _ratingRepository.GetInUserOwnedByUserId( user.UserId );
             List<int> recipeIds = ratings.Select( x => x.RecipeId ).ToList();
-            return _recipeRepository.Search( skip, take, recipeIds );
+            return await _recipeRepository.Search( skip, take, recipeIds );
         }
 
         private static Recipe ConvertToRecipe( RecipeCommand recipeCommand, SaveFileResult saveFileResult, int userId )
@@ -111,6 +112,7 @@ namespace RecipeBook.Application.Services
                 CookingTimeInMinutes = recipeCommand.CookingTimeInMinutes,
                 PortionsCount = recipeCommand.PortionsCount,
                 UserId = userId,
+                CreationDateTime = DateTime.Now,
                 Tags = recipeCommand.Tags.Select( x => new Tag { Name = x } ).ToList(),
                 Steps = recipeCommand.Steps.Select( x => new Step { Description = x } ).ToList(),
                 Ingredients = recipeCommand.Ingredients

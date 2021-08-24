@@ -1,10 +1,12 @@
-﻿namespace RecipeBook.Application.Services
+﻿using System.Threading.Tasks;
+
+namespace RecipeBook.Application.Services
 {
     public interface IRatingService
     {
-        void AddToFavorites( string username, int recipeId );
-        void RemoveFromFavorites( string username, int recipeId );
-        void AddToLikes( string username, int recipeId );
-        void RemoveFromLikes( string username, int recipeId );
+        Task AddToFavorites( string username, int recipeId );
+        Task RemoveFromFavorites( string username, int recipeId );
+        Task AddToLikes( string username, int recipeId );
+        Task RemoveFromLikes( string username, int recipeId );
     }
 }
