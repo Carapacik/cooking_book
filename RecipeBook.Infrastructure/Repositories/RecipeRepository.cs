@@ -51,9 +51,9 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public async Task<Recipe> GetRecipeOfDay()
         {
-            const int daysAgo = 3;
+            DateTime window = DateTime.Now.AddDays( -1 );
             return await GetQuery()
-                .Where( x => x.CreationDateTime > DateTime.Now.AddDays( -daysAgo ) )
+                .Where( x => x.CreationDateTime > window )
                 .OrderByDescending( x => x.LikesCount )
                 .FirstOrDefaultAsync();
         }
@@ -62,7 +62,7 @@ namespace RecipeBook.Infrastructure.Repositories
         {
             IEnumerable<int> uniqueRecipeIds = recipeIds.Distinct();
             IQueryable<Recipe> query = GetQuery().Where( x => uniqueRecipeIds.Contains( x.RecipeId ) );
-            return await query.OrderByDescending( x => x.FavoritesCount )
+            return await query.OrderByDescending( x => x.CreationDateTime )
                 .Skip( skip )
                 .Take( take )
                 .ToListAsync();

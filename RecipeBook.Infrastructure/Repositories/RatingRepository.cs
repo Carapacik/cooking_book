@@ -35,14 +35,16 @@ namespace RecipeBook.Infrastructure.Repositories
         {
             return await _context.Set<Rating>()
                 .Where( x => x.UserId == userId && x.InFavorite )
-                .OrderByDescending( x => x.ModificationDateTime ).ToListAsync();
+                .OrderByDescending( x => x.ModificationDateTime )
+                .ToListAsync();
         }
 
         public async Task<IReadOnlyList<Rating>> GetInUserOwnedByUserId( int userId )
         {
             return await _context.Set<Rating>()
                 .Where( x => x.UserId == userId )
-                .OrderByDescending( x => x.ModificationDateTime ).ToListAsync();
+                .OrderByDescending( x => x.ModificationDateTime )
+                .ToListAsync();
         }
 
         public async Task<int> GetUserLikesCountByUserId( int userId )

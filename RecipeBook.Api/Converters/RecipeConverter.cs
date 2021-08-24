@@ -58,7 +58,8 @@ namespace RecipeBook.Api.Converters
                 Steps = recipe.Steps.Select( x => x.Description ).ToList(),
                 Ingredients = recipe.Ingredients.Select( x => new IngredientDto
                 {
-                    Title = x.Title, IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()
+                    Title = x.Title, 
+                    IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()
                 } ).ToList()
             };
         }
