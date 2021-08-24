@@ -39,14 +39,6 @@ namespace RecipeBook.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IReadOnlyList<Rating>> GetInUserOwnedByUserId( int userId )
-        {
-            return await _context.Set<Rating>()
-                .Where( x => x.UserId == userId )
-                .OrderByDescending( x => x.ModificationDateTime )
-                .ToListAsync();
-        }
-
         public async Task<int> GetUserLikesCountByUserId( int userId )
         {
             return await _context.Set<Rating>().CountAsync( x => x.UserId == userId && x.IsLiked );

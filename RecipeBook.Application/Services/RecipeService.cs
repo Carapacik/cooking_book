@@ -96,8 +96,8 @@ namespace RecipeBook.Application.Services
         public async Task<IReadOnlyList<Recipe>> GetUserOwnedRecipes( int skip, int take, string username )
         {
             User user = await _userRepository.GetByLogin( username );
-            IReadOnlyList<Rating> ratings = await _ratingRepository.GetInUserOwnedByUserId( user.UserId );
-            List<int> recipeIds = ratings.Select( x => x.RecipeId ).ToList();
+            IReadOnlyList<Recipe> recipes = await _recipeRepository.GetInUserOwnedByUserId( user.UserId );
+            List<int> recipeIds = recipes.Select( x => x.RecipeId ).ToList();
             return await _recipeRepository.Search( skip, take, recipeIds );
         }
 

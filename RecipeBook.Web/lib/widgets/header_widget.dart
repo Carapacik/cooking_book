@@ -61,12 +61,12 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                   child: Text(
                     HeaderButtons.getById(index).name,
-                        style: widget.currentSelectedPage?.index == index
-                            ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
-                            : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
-                      ),
-                    ),
+                    style: widget.currentSelectedPage?.index == index
+                        ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
+                        : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
                   ),
+                ),
+              ),
             ),
             const Expanded(child: SizedBox()),
             Consumer<AuthNotifier>(
@@ -75,11 +75,11 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   TextButton(
                     onPressed: auth.isAuth
                         ? () {
-                      context.beamToNamed("/profile");
-                    }
+                            context.beamToNamed("/profile");
+                          }
                         : () {
-                      loginDialog(context);
-                    },
+                            loginDialog(context);
+                          },
                     style: TextButton.styleFrom(primary: Palette.orange),
                     child: Row(
                       children: [

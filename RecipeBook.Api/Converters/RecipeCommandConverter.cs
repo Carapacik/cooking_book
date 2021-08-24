@@ -22,8 +22,7 @@ namespace RecipeBook.Api.Converters
                 recipe.Steps,
                 recipe.Ingredients.Select( x => new Ingredient
                 {
-                    Title = x.Title, 
-                    IngredientItems = x.IngredientNames.Select( y => new IngredientItem { Name = y } ).ToList()
+                    Title = x.Title, IngredientItems = x.IngredientNames.Select( y => new IngredientItem { Name = y } ).ToList()
                 } ).ToList(),
                 fileAdapter.ConvertToStorageFile()
             );

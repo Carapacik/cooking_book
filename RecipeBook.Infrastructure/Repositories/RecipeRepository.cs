@@ -90,6 +90,14 @@ namespace RecipeBook.Infrastructure.Repositories
             return await _context.Set<Recipe>().CountAsync( x => x.UserId == userId );
         }
 
+        public async Task<IReadOnlyList<Recipe>> GetInUserOwnedByUserId( int userId )
+        {
+            return await _context.Set<Recipe>()
+                .Where( x => x.UserId == userId )
+                .OrderByDescending( x => x.CreationDateTime )
+                .ToListAsync();
+        }
+
         private IQueryable<Recipe> GetQuery()
         {
             return _context.Set<Recipe>()
@@ -97,7 +105,7 @@ namespace RecipeBook.Infrastructure.Repositories
                 .Include( x => x.Steps )
                 .Include( x => x.Ingredients )
                 .ThenInclude( y => y.IngredientItems )
-                .AsQueryable();
+                .AsSplitQuery();
         }
     }
 }

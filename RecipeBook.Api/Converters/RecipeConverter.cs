@@ -6,17 +6,27 @@ namespace RecipeBook.Api.Converters
 {
     public static class RecipeConverter
     {
-        public static RecipeOfDayDto ConvertToRecipeOfDayDto( this Recipe recipe, string username )
+        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe, string username, Rating rating )
         {
-            return new RecipeOfDayDto
+            return new RecipeDetailDto
             {
                 RecipeId = recipe.RecipeId,
                 Title = recipe.Title,
                 Description = recipe.Description,
                 ImageUrl = recipe.ImageUrl,
                 CookingTimeInMinutes = recipe.CookingTimeInMinutes,
+                PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
-                Username = username
+                FavoritesCount = recipe.FavoritesCount,
+                Username = username,
+                IsLiked = rating?.IsLiked ?? false,
+                IsFavorite = rating?.InFavorite ?? false,
+                Tags = recipe.Tags.Select( x => x.Name ).ToList(),
+                Steps = recipe.Steps.Select( x => x.Description ).ToList(),
+                Ingredients = recipe.Ingredients.Select( x => new IngredientDto
+                {
+                    Title = x.Title, IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()
+                } ).ToList()
             };
         }
 
@@ -39,28 +49,17 @@ namespace RecipeBook.Api.Converters
             };
         }
 
-        public static RecipeDetailDto ConvertToRecipeDetailDto( this Recipe recipe, string username, Rating rating )
+        public static RecipeOfDayDto ConvertToRecipeOfDayDto( this Recipe recipe, string username )
         {
-            return new RecipeDetailDto
+            return new RecipeOfDayDto
             {
                 RecipeId = recipe.RecipeId,
                 Title = recipe.Title,
                 Description = recipe.Description,
                 ImageUrl = recipe.ImageUrl,
                 CookingTimeInMinutes = recipe.CookingTimeInMinutes,
-                PortionsCount = recipe.PortionsCount,
                 LikesCount = recipe.LikesCount,
-                FavoritesCount = recipe.FavoritesCount,
-                Username = username,
-                IsLiked = rating?.IsLiked ?? false,
-                IsFavorite = rating?.InFavorite ?? false,
-                Tags = recipe.Tags.Select( x => x.Name ).ToList(),
-                Steps = recipe.Steps.Select( x => x.Description ).ToList(),
-                Ingredients = recipe.Ingredients.Select( x => new IngredientDto
-                {
-                    Title = x.Title, 
-                    IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()
-                } ).ToList()
+                Username = username
             };
         }
     }

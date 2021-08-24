@@ -78,9 +78,9 @@ namespace RecipeBook.Api.Controllers
                 LikesCount = result.LikesCount,
                 UserForm = new UserFormDto
                 {
-                    Description = result.Description, 
-                    Name = result.Name, 
-                    Login = result.Login, 
+                    Description = result.Description,
+                    Name = result.Name,
+                    Login = result.Login,
                     Password = result.Password
                 }
             };

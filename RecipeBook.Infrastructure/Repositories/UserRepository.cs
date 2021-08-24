@@ -23,22 +23,17 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public async Task<User> GetById( int id )
         {
-            return await GetQuery().FirstOrDefaultAsync( x => x.UserId == id );
+            return await _context.Set<User>().FirstOrDefaultAsync( x => x.UserId == id );
         }
 
         public async Task<IReadOnlyList<User>> GetByIds( List<int> ids )
         {
-            return await GetQuery().Where( x => ids.Contains( x.UserId ) ).ToListAsync();
+            return await _context.Set<User>().Where( x => ids.Contains( x.UserId ) ).ToListAsync();
         }
 
         public async Task<User> GetByLogin( string login )
         {
-            return await GetQuery().FirstOrDefaultAsync( x => x.Login == login );
-        }
-
-        private IQueryable<User> GetQuery()
-        {
-            return _context.Set<User>().AsQueryable();
+            return await _context.Set<User>().FirstOrDefaultAsync( x => x.Login == login );
         }
     }
 }

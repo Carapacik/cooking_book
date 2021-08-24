@@ -96,17 +96,31 @@ class RecipesLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     final List<BeamPage> beamPages = [];
 
-    if (state.pathBlueprintSegments.contains('recipes')) {
-      final searchQuery = state.queryParameters['searchQuery'] ?? '';
-      final pageTitle = searchQuery != '' ? "Результаты по '$searchQuery'" : 'Рецепты';
+    if (state.uri.pathSegments.contains('edit')) {
+      final recipeId = state.pathParameters['recipeId'];
+      const pageTitle = 'Редактировать рецепта';
 
       beamPages.add(
         BeamPage(
-          key: ValueKey('recipes-$searchQuery'),
+          key: ValueKey('recipes-$recipeId-edit'),
           title: pageTitle,
-          child: RecipesPage(searchQuery: searchQuery),
+          child: RecipeFormPage(recipeId: recipeId),
         ),
       );
+      return beamPages;
+    }
+
+    if (state.uri.pathSegments.contains('add')) {
+      const pageTitle = 'Добавить рецепт';
+
+      beamPages.add(
+        BeamPage(
+          key: const ValueKey('recipes-add'),
+          title: pageTitle,
+          child: const RecipeFormPage(),
+        ),
+      );
+      return beamPages;
     }
 
     if (state.pathParameters.containsKey('recipeId')) {
@@ -120,30 +134,18 @@ class RecipesLocation extends BeamLocation<BeamState> {
           child: RecipeDetailPage(recipeId: recipeId!),
         ),
       );
+      return beamPages;
     }
 
-    if (state.uri.pathSegments.contains('add')) {
-      const pageTitle = 'Добавить рецепт';
+    if (state.pathBlueprintSegments.contains('recipes')) {
+      final searchQuery = state.queryParameters['searchQuery'] ?? '';
+      final pageTitle = searchQuery != '' ? "Результаты по '$searchQuery'" : 'Рецепты';
 
       beamPages.add(
         BeamPage(
-          key: const ValueKey('recipes-add'),
+          key: ValueKey('recipes-$searchQuery'),
           title: pageTitle,
-          child: const RecipeFormPage(),
-        ),
-      );
-    }
-
-    if (state.uri.pathSegments.contains('edit')) {
-      final recipeId = state.pathParameters['recipeId'];
-      const pageTitle = 'Редактировать рецепта';
-
-      beamPages.clear();
-      beamPages.add(
-        BeamPage(
-          key: ValueKey('recipes-$recipeId-edit'),
-          title: pageTitle,
-          child: RecipeFormPage(recipeId: recipeId),
+          child: RecipesPage(searchQuery: searchQuery),
         ),
       );
     }

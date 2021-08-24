@@ -40,9 +40,11 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
 
     try {
       widget.recipeItem.favoritesCount++;
-      widget.recipeItem.likesCount++;
       widget.recipeItem.isFavorite = true;
-      widget.recipeItem.isLiked = true;
+      if (!widget.recipeItem.isLiked) {
+        widget.recipeItem.likesCount++;
+        widget.recipeItem.isLiked = true;
+      }
       response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/add-to-favorites");
       if (response.statusCode == 200) {
         setState(() {});
@@ -64,7 +66,6 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
     try {
       widget.recipeItem.favoritesCount--;
       widget.recipeItem.isFavorite = false;
-      widget.recipeItem.likesCount--;
       response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/remove-from-favorites");
       if (response.statusCode == 200) {
         setState(() {});

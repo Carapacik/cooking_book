@@ -7,13 +7,13 @@ namespace RecipeBook.Api.Converters
 {
     public class FormFileAdapter
     {
-        public byte[] Data { get; set; }
-        public string FileExtension { get; set; }
+        public byte[] Data { get; private set; }
+        public string FileExtension { get; private set; }
 
         public static async Task<FormFileAdapter> Create( IFormFile formFile )
         {
             if ( formFile == null )
-            {   
+            {
                 return null;
             }
 

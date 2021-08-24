@@ -10,7 +10,6 @@ namespace RecipeBook.Domain.Repositories
         Task<Rating> Get( int userId, int recipeId );
         Task<IReadOnlyList<Rating>> Get( int userId, List<int> recipeIds );
         Task<IReadOnlyList<Rating>> GetInFavoriteByUserId( int userId );
-        Task<IReadOnlyList<Rating>> GetInUserOwnedByUserId( int userId );
         Task<int> GetUserLikesCountByUserId( int userId );
         Task<int> GetUserFavoritesCountByUserId( int userId );
     }
