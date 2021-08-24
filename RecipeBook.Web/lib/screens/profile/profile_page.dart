@@ -91,6 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       response = await _apiService.getInitialWithParam("recipes/user-owned", 2);
       if (response.statusCode == 200) {
+        _recipeNotifier.resultString = "Ваш список пуст";
         _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
         skipCounter += 2;
       } else {
@@ -190,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: Theme.of(context).textTheme.b24,
                     ),
                     const SizedBox(height: 40),
-                    const RecipeListWidget(),
+                    const Center(child: RecipeListWidget()),
                     const SizedBox(height: 73),
                   ],
                 ),

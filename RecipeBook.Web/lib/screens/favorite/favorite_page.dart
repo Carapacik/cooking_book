@@ -55,6 +55,7 @@ class _FavoritePageState extends State<FavoritePage> {
     try {
       response = await _apiService.getInitialWithParam("recipes/favorite", 2);
       if (response.statusCode == 200) {
+        _recipeNotifier.resultString = "Ваш список пуст";
         _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
         skipCounter += 2;
       } else {

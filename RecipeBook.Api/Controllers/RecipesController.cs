@@ -44,7 +44,7 @@ namespace RecipeBook.Api.Controllers
         public async Task<int> AddRecipe()
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = await _recipeService.AddRecipe( ParseRecipeCommand( Request.Form, username ) );
+            Recipe newRecipe = await _recipeService.AddRecipe( await ParseRecipeCommand( Request.Form, username ) );
             await _unitOfWork.Commit();
             return newRecipe.RecipeId;
         }
@@ -64,7 +64,7 @@ namespace RecipeBook.Api.Controllers
         public async Task<int> EditRecipe( int id )
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = await _recipeService.EditRecipe( ParseRecipeCommand( Request.Form, username, id ) );
+            Recipe newRecipe = await _recipeService.EditRecipe( await ParseRecipeCommand( Request.Form, username, id ) );
             await _unitOfWork.Commit();
 
             return newRecipe.RecipeId;
@@ -125,7 +125,7 @@ namespace RecipeBook.Api.Controllers
             return await _recipeBuilder.BuildRecipes( searchResult, username );
         }
 
-        private static RecipeCommand ParseRecipeCommand( IFormCollection formCollection, string username, int id = 0 )
+        private static async Task<RecipeCommand> ParseRecipeCommand( IFormCollection formCollection, string username, int id = 0 )
         {
             RecipeCommandDto recipeData = JsonConvert.DeserializeObject<RecipeCommandDto>( formCollection[ "data" ] );
             if ( recipeData == null )
@@ -140,7 +140,7 @@ namespace RecipeBook.Api.Controllers
                 formFile = formCollection.Files[ 0 ];
             }
 
-            return recipeData.ConvertToRecipeCommand( FormFileAdapter.Create( formFile ), username );
+            return recipeData.ConvertToRecipeCommand( await FormFileAdapter.Create( formFile ), username );
         }
     }
 }

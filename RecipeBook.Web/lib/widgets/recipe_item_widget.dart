@@ -175,63 +175,59 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  constraints: const BoxConstraints(
-                      maxWidth: 690),
+                  constraints: const BoxConstraints(maxWidth: 690),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       RecipeTagsList(tags: widget.recipeItem.tags),
-                      SizedBox(
-                        width: 230,
-                        child: Row(
-                          children: [
-                            ButtonOutlinedWidget(
-                              icon: widget.recipeItem.isFavorite ? Icons.star : Icons.star_border,
-                              color: widget.recipeItem.isFavorite ? Palette.red : Palette.orange,
-                              padding: 12,
-                              text: widget.recipeItem.favoritesCount.toString(),
-                              width: 107,
-                              height: 50,
-                              onPressed: () {
-                                if (authNotifier.isAuth) {
-                                  if (widget.recipeItem.isFavorite) {
-                                    removeFavorite();
-                                  } else {
-                                    addFavorite();
-                                  }
+                      Row(
+                        children: [
+                          ButtonOutlinedWidget(
+                            icon: widget.recipeItem.isFavorite ? Icons.star : Icons.star_border,
+                            color: widget.recipeItem.isFavorite ? Palette.red : Palette.orange,
+                            padding: 12,
+                            text: widget.recipeItem.favoritesCount.toString(),
+                            width: 107,
+                            height: 50,
+                            onPressed: () {
+                              if (authNotifier.isAuth) {
+                                if (widget.recipeItem.isFavorite) {
+                                  removeFavorite();
                                 } else {
-                                  notAuthDialog(
-                                    context,
-                                    "Оценивать рецепты могут только авторизированные пользователи.",
-                                  );
+                                  addFavorite();
                                 }
-                              },
-                            ),
-                            const SizedBox(width: 15),
-                            ButtonOutlinedWidget(
-                              icon: widget.recipeItem.isLiked ? Icons.favorite : Icons.favorite_outline,
-                              color: widget.recipeItem.isLiked ? Palette.red : Palette.orange,
-                              padding: 12,
-                              text: widget.recipeItem.likesCount.toString(),
-                              width: 107,
-                              height: 50,
-                              onPressed: () {
-                                if (authNotifier.isAuth) {
-                                  if (widget.recipeItem.isLiked) {
-                                    removeLike();
-                                  } else {
-                                    addLike();
-                                  }
+                              } else {
+                                notAuthDialog(
+                                  context,
+                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                );
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 15),
+                          ButtonOutlinedWidget(
+                            icon: widget.recipeItem.isLiked ? Icons.favorite : Icons.favorite_outline,
+                            color: widget.recipeItem.isLiked ? Palette.red : Palette.orange,
+                            padding: 12,
+                            text: widget.recipeItem.likesCount.toString(),
+                            width: 107,
+                            height: 50,
+                            onPressed: () {
+                              if (authNotifier.isAuth) {
+                                if (widget.recipeItem.isLiked) {
+                                  removeLike();
                                 } else {
-                                  notAuthDialog(
-                                    context,
-                                    "Оценивать рецепты могут только авторизированные пользователи.",
-                                  );
+                                  addLike();
                                 }
-                              },
-                            ),
-                          ],
-                        ),
+                              } else {
+                                notAuthDialog(
+                                  context,
+                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
