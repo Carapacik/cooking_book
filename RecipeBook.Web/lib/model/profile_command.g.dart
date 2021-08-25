@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_form.dart';
+part of 'profile_command.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserForm _$UserFormFromJson(Map<String, dynamic> json) {
-  return UserForm(
+ProfileCommand _$ProfileCommandFromJson(Map<String, dynamic> json) {
+  return ProfileCommand(
     name: json['name'] as String,
     description: json['description'] as String?,
     login: json['login'] as String,
@@ -15,7 +15,8 @@ UserForm _$UserFormFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$UserFormToJson(UserForm instance) => <String, dynamic>{
+Map<String, dynamic> _$ProfileCommandToJson(ProfileCommand instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,

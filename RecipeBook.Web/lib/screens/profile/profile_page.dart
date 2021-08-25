@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/profile_detail.dart';
+import 'package:recipebook/model/profile_model.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -26,11 +26,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late ApiService _apiService;
-  late ProfileDetail profileDetail;
+  late ProfileModel profileDetail;
   late RecipeNotifier _recipeNotifier;
   TextEditingController? nameController = TextEditingController();
   TextEditingController? loginController = TextEditingController();
-  TextEditingController? passwordController = TextEditingController();
   TextEditingController? descriptionController = TextEditingController();
   bool readOnlyTextField = true;
   bool isLoading = true;
@@ -45,13 +44,12 @@ class _ProfilePageState extends State<ProfilePage> {
       isLoading = false;
       if (response.statusCode == 200) {
         setState(() {
-          profileDetail = ProfileDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+          profileDetail = ProfileModel.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         });
-        nameController?.text = profileDetail.userForm.name;
-        loginController?.text = profileDetail.userForm.login;
-        passwordController?.text = profileDetail.userForm.password;
-        if (profileDetail.userForm.description != null) {
-          descriptionController?.text = profileDetail.userForm.description!;
+        nameController?.text = profileDetail.name;
+        loginController?.text = profileDetail.login;
+        if (profileDetail.description != null) {
+          descriptionController?.text = profileDetail.description!;
         }
       } else {
         // код не 200
@@ -117,7 +115,6 @@ class _ProfilePageState extends State<ProfilePage> {
     nameController?.dispose();
     loginController?.dispose();
     descriptionController?.dispose();
-    passwordController?.dispose();
     super.dispose();
   }
 
@@ -172,7 +169,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         nameController: nameController,
                         readOnlyTextField: readOnlyTextField,
                         loginController: loginController,
-                        passwordController: passwordController,
                         descriptionController: descriptionController,
                       ),
                     const SizedBox(height: 40),
@@ -210,14 +206,12 @@ class UserProfileForm extends StatelessWidget {
     required this.nameController,
     required this.readOnlyTextField,
     required this.loginController,
-    required this.passwordController,
     required this.descriptionController,
   }) : super(key: key);
 
   final TextEditingController? nameController;
   final bool readOnlyTextField;
   final TextEditingController? loginController;
-  final TextEditingController? passwordController;
   final TextEditingController? descriptionController;
 
   @override
@@ -263,7 +257,6 @@ class UserProfileForm extends StatelessWidget {
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         hintText: "Пароль",
-                        controller: passwordController,
                         readOnly: readOnlyTextField,
                       ),
                     ],

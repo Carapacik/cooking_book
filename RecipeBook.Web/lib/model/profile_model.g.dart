@@ -1,24 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile_detail.dart';
+part of 'profile_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProfileDetail _$ProfileDetailFromJson(Map<String, dynamic> json) {
-  return ProfileDetail(
+ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) {
+  return ProfileModel(
     recipesCount: json['recipesCount'] as int,
     likesCount: json['likesCount'] as int,
     favoritesCount: json['favoritesCount'] as int,
-    userForm: UserForm.fromJson(json['userForm'] as Map<String, dynamic>),
+    name: json['name'] as String,
+    description: json['description'] as String?,
+    login: json['login'] as String,
   );
 }
 
-Map<String, dynamic> _$ProfileDetailToJson(ProfileDetail instance) =>
+Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
     <String, dynamic>{
       'recipesCount': instance.recipesCount,
       'likesCount': instance.likesCount,
       'favoritesCount': instance.favoritesCount,
-      'userForm': instance.userForm.toJson(),
+      'name': instance.name,
+      'description': instance.description,
+      'login': instance.login,
     };

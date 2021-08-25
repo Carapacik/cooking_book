@@ -7,7 +7,13 @@ namespace RecipeBook.Api.Converters
     {
         public static ProfileCommand Convert( this ProfileCommandDto profileCommand )
         {
-            return new ProfileCommand();
+            return new ProfileCommand
+            {
+                Password = profileCommand.Password,
+                Description = profileCommand.Description,
+                Login = profileCommand.Login,
+                Name = profileCommand.Name
+            };
         }
     }
 }
