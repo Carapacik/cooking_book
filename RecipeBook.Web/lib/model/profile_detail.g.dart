@@ -15,7 +15,8 @@ ProfileDetail _$ProfileDetailFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProfileDetailToJson(ProfileDetail instance) => <String, dynamic>{
+Map<String, dynamic> _$ProfileDetailToJson(ProfileDetail instance) =>
+    <String, dynamic>{
       'recipesCount': instance.recipesCount,
       'likesCount': instance.likesCount,
       'favoritesCount': instance.favoritesCount,

@@ -8,5 +8,6 @@ namespace RecipeBook.Application.Services
         Task<UserProfile> GetUserProfile( string username );
         Task<AuthenticationResult> Login( AuthenticateUserCommand authenticateUserCommand );
         Task<AuthenticationResult> Register( AuthenticateUserCommand result );
+        Task EditUserProfile( string username, ProfileCommand profileCommand );
     }
 }

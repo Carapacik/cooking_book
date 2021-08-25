@@ -21,6 +21,14 @@ namespace RecipeBook.Infrastructure.Repositories
             _context.Set<User>().Add( user );
         }
 
+        public void Edit( User existingUser, User editedUser )
+        {
+            existingUser.Name = editedUser.Name;
+            existingUser.Description = editedUser.Description;
+            existingUser.Login = editedUser.Login;
+            editedUser.Password = existingUser.Password;
+        }
+
         public async Task<User> GetById( int id )
         {
             return await _context.Set<User>().FirstOrDefaultAsync( x => x.UserId == id );

@@ -6,13 +6,11 @@ part 'auth_user_command.g.dart';
 class AuthUserCommand {
   AuthUserCommand({
     this.name,
-    this.description,
     this.login,
     this.password,
   });
 
   String? name;
-  String? description;
   String? login;
   String? password;
 

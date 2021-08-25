@@ -1,6 +1,6 @@
-﻿namespace RecipeBook.Api.Dtos
+﻿namespace RecipeBook.Application.Entities
 {
-    public class UserFormDto
+    public class ProfileCommand
     {
         public string Name { get; set; }
         public string Description { get; set; }

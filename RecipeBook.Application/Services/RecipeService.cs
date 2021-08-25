@@ -75,14 +75,14 @@ namespace RecipeBook.Application.Services
                 filePath = await _fileStorageService.SaveFile( editCommand.StorageFile, "images" );
             }
 
-            Recipe recipe = ConvertToRecipe( editCommand, filePath, user.UserId );
+            Recipe editedRecipe = ConvertToRecipe( editCommand, filePath, user.UserId );
             if ( filePath != null )
             {
                 _fileStorageService.RemoveFile( "images", existingRecipe.ImageUrl );
             }
 
-            _recipeRepository.Edit( existingRecipe, recipe );
-            return recipe;
+            _recipeRepository.Edit( existingRecipe, editedRecipe );
+            return editedRecipe;
         }
 
         public async Task<IReadOnlyList<Recipe>> GetFavoriteRecipes( int skip, int take, string username )

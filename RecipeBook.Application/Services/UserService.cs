@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -65,6 +66,24 @@ namespace RecipeBook.Application.Services
             return new AuthenticationResult( true, null );
         }
 
+        public async Task EditUserProfile( string username, ProfileCommand profileCommand )
+        {
+            User user = await _userRepository.GetByLogin( username );
+            if ( user == null )
+            {
+                throw new ValidationException( "User is null" );
+            }
+
+            User existingUser = await _userRepository.GetByLogin( profileCommand.Login );
+            if ( existingUser == null )
+            {
+                throw new ValidationException( $"User with login:{profileCommand.Login} does not exist" );
+            }
+
+            User editedUser = ConvertToUser( profileCommand );
+            _userRepository.Edit( existingUser, editedUser );
+        }
+
         public async Task<UserProfile> GetUserProfile( string username )
         {
             User user = await _userRepository.GetByLogin( username );
@@ -88,6 +107,17 @@ namespace RecipeBook.Application.Services
             List<Claim> claims = new() { new Claim( ClaimsIdentity.DefaultNameClaimType, userName ) };
             ClaimsIdentity id = new(claims, "RecipeBookCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await httpContext.SignInAsync( CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal( id ) );
+        }
+
+        private static User ConvertToUser( ProfileCommand profileCommand )
+        {
+            return new User
+            {
+                Description = profileCommand.Description,
+                Name = profileCommand.Name,
+                Login = profileCommand.Login,
+                Password = profileCommand.Password
+            };
         }
     }
 }
