@@ -68,12 +68,6 @@ namespace RecipeBook.Application.Services
 
         public async Task EditUserProfile( string username, ProfileCommand profileCommand )
         {
-            User user = await _userRepository.GetByLogin( username );
-            if ( user == null )
-            {
-                throw new ValidationException( "User is null" );
-            }
-
             User existingUser = await _userRepository.GetByLogin( profileCommand.Login );
             if ( existingUser == null )
             {
