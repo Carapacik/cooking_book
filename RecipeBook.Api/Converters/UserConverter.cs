@@ -5,13 +5,9 @@ namespace RecipeBook.Api.Converters
 {
     public static class UserConverter
     {
-        public static DetailUserDto Convert( this User user )
+        public static UserDto Convert( this User user )
         {
-            return new DetailUserDto {
-                Id = user.UserId,
-                Name = user.Name,
-                Login = user.Login
-            };
+            return new UserDto { Name = user.Name, Login = user.Login };
         }
     }
 }

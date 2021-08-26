@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_detail.dart';
+part of 'profile_command.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserDetail _$UserDetailFromJson(Map<String, dynamic> json) {
-  return UserDetail(
-    id: json['id'] as int,
+ProfileCommand _$ProfileCommandFromJson(Map<String, dynamic> json) {
+  return ProfileCommand(
     name: json['name'] as String,
     description: json['description'] as String?,
     login: json['login'] as String,
+    password: json['password'] as String,
   );
 }
 
-Map<String, dynamic> _$UserDetailToJson(UserDetail instance) => <String, dynamic>{
-      'id': instance.id,
+Map<String, dynamic> _$ProfileCommandToJson(ProfileCommand instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,
+      'password': instance.password,
     };

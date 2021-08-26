@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/profile_detail.dart';
+import 'package:recipebook/model/profile_command.dart';
+import 'package:recipebook/model/profile_model.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -26,12 +27,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late ApiService _apiService;
-  late ProfileDetail profileDetail;
+  ProfileModel? profileDetail;
   late RecipeNotifier _recipeNotifier;
   TextEditingController? nameController = TextEditingController();
   TextEditingController? loginController = TextEditingController();
   TextEditingController? passwordController = TextEditingController();
   TextEditingController? descriptionController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ProfileCommand? profileCommand;
   bool readOnlyTextField = true;
   bool isLoading = true;
   bool isEndOfList = true;
@@ -41,18 +44,22 @@ class _ProfilePageState extends State<ProfilePage> {
     Response response;
 
     try {
-      response = await _apiService.getRequest("/user/profile");
+      response = await _apiService.getRequest("user/profile");
       isLoading = false;
       if (response.statusCode == 200) {
         setState(() {
-          profileDetail = ProfileDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+          profileDetail = ProfileModel.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
         });
-        nameController?.text = profileDetail.userForm.name;
-        loginController?.text = profileDetail.userForm.login;
-        passwordController?.text = profileDetail.userForm.password;
-        if (profileDetail.userForm.description != null) {
-          descriptionController?.text = profileDetail.userForm.description!;
+        nameController?.text = profileDetail!.name;
+        loginController?.text = profileDetail!.login;
+        if (profileDetail!.description != null) {
+          descriptionController?.text = profileDetail!.description!;
         }
+        profileCommand = ProfileCommand(
+          name: profileDetail!.name,
+          login: profileDetail!.login,
+          description: profileDetail!.description,
+        );
       } else {
         // код не 200
       }
@@ -117,7 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
     nameController?.dispose();
     loginController?.dispose();
     descriptionController?.dispose();
-    passwordController?.dispose();
     super.dispose();
   }
 
@@ -168,21 +174,157 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 50),
                     if (!isLoading)
-                      UserProfileForm(
-                        nameController: nameController,
-                        readOnlyTextField: readOnlyTextField,
-                        loginController: loginController,
-                        passwordController: passwordController,
-                        descriptionController: descriptionController,
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Palette.shadowColor,
+                              offset: Offset(0, 16),
+                              blurRadius: 72,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20, right: 20),
+                              child: readOnlyTextField
+                                  ? IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          readOnlyTextField = false;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Palette.grey.withOpacity(0.5),
+                                        size: 18,
+                                      ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () async {
+                                        final form = _formKey.currentState!;
+                                        if (form.validate()) {
+                                          form.save();
+                                          try {
+                                            await _apiService.patchRequest("user/profile/edit", profileCommand!.toJson());
+                                            readOnlyTextField = true;
+                                            getDetailProfile();
+                                          } catch (e) {
+                                            context.beamToNamed("/error?e=$e");
+                                          }
+                                        }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        primary: Palette.orange,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        height: 40,
+                                        width: 150,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Подтвердить",
+                                          style: Theme.of(context).textTheme.r18.copyWith(color: Palette.grey.withOpacity(0.8)),
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16, bottom: 60, right: 73, left: 73),
+                              child: Form(
+                                key: _formKey,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 542,
+                                      child: Column(
+                                        children: [
+                                          FormTextFieldWidget(
+                                            hintText: "Имя",
+                                            keyboardType: TextInputType.name,
+                                            controller: nameController,
+                                            readOnly: readOnlyTextField,
+                                            validator: (value) {
+                                              if (value!.isEmpty) return "Не может быть пустым";
+                                              return null;
+                                            },
+                                            onSaved: (value) {
+                                              profileCommand!.name = value!;
+                                            },
+                                          ),
+                                          const SizedBox(height: 20),
+                                          FormTextFieldWidget(
+                                            hintText: "Логин",
+                                            controller: loginController,
+                                            readOnly: readOnlyTextField,
+                                            validator: (value) {
+                                              if (value!.isEmpty) return "Не может быть пустым";
+                                              if (value.length > 20) return "Логин меньше 20 символов";
+                                              return null;
+                                            },
+                                            onSaved: (value) {
+                                              profileCommand!.login = value!;
+                                            },
+                                          ),
+                                          const SizedBox(height: 20),
+                                          FormTextFieldWidget(
+                                            obscureText: true,
+                                            keyboardType: TextInputType.visiblePassword,
+                                            hintText: "Пароль",
+                                            readOnly: readOnlyTextField,
+                                            validator: (value) {
+                                              if (value!.isEmpty) return "Не может быть пустым";
+                                              if (value.length < 8) return "Минимум 8 символов";
+                                              return null;
+                                            },
+                                            onSaved: (value) {
+                                              profileCommand!.password = value;
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 472,
+                                      child: FormTextFieldWidget(
+                                        keyboardType: TextInputType.multiline,
+                                        hintText: "Напишите немного о себе",
+                                        height: 180,
+                                        textarea: true,
+                                        controller: descriptionController,
+                                        readOnly: readOnlyTextField,
+                                        validator: (value) {
+                                          if (value!.isNotEmpty && value.length > 150) return "Максимум 150 символов";
+                                          return null;
+                                        },
+                                        onSaved: (value) {
+                                          profileCommand!.description = value;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     const SizedBox(height: 40),
                     if (!isLoading)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ProfileCard(value: profileDetail.recipesCount, text: "Всего рецептов"),
-                          ProfileCard(value: profileDetail.likesCount, text: "Всего лайков"),
-                          ProfileCard(value: profileDetail.favoritesCount, text: "В избранных"),
+                          ProfileCard(value: profileDetail!.recipesCount, text: "Всего рецептов"),
+                          ProfileCard(value: profileDetail!.likesCount, text: "Всего лайков"),
+                          ProfileCard(value: profileDetail!.favoritesCount, text: "В избранных"),
                         ],
                       ),
                     const SizedBox(height: 40),
@@ -199,91 +341,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class UserProfileForm extends StatelessWidget {
-  const UserProfileForm({
-    Key? key,
-    required this.nameController,
-    required this.readOnlyTextField,
-    required this.loginController,
-    required this.passwordController,
-    required this.descriptionController,
-  }) : super(key: key);
-
-  final TextEditingController? nameController;
-  final bool readOnlyTextField;
-  final TextEditingController? loginController;
-  final TextEditingController? passwordController;
-  final TextEditingController? descriptionController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: const [
-          BoxShadow(
-            color: Palette.shadowColor,
-            offset: Offset(0, 16),
-            blurRadius: 72,
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 60, right: 73, left: 73),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 542,
-                  child: Column(
-                    children: [
-                      FormTextFieldWidget(
-                        hintText: "Имя",
-                        keyboardType: TextInputType.name,
-                        controller: nameController,
-                        readOnly: readOnlyTextField,
-                      ),
-                      const SizedBox(height: 20),
-                      FormTextFieldWidget(
-                        hintText: "Логин",
-                        controller: loginController,
-                        readOnly: readOnlyTextField,
-                      ),
-                      const SizedBox(height: 20),
-                      FormTextFieldWidget(
-                        obscureText: true,
-                        keyboardType: TextInputType.visiblePassword,
-                        hintText: "Пароль",
-                        controller: passwordController,
-                        readOnly: readOnlyTextField,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 472,
-                  child: FormTextFieldWidget(
-                    keyboardType: TextInputType.multiline,
-                    hintText: "Напишите немного о себе",
-                    height: 180,
-                    textarea: true,
-                    controller: descriptionController,
-                    readOnly: readOnlyTextField,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

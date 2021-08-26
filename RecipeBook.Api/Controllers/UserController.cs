@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace RecipeBook.Api.Controllers
         }
 
         [HttpGet( "current-user" )]
-        public async Task<DetailUserDto> GetCurrentUser()
+        public async Task<UserDto> GetCurrentUser()
         {
             if ( User.Identity is { Name: null } )
             {
@@ -76,14 +77,24 @@ namespace RecipeBook.Api.Controllers
                 RecipesCount = result.RecipesCount,
                 FavoritesCount = result.FavoritesCount,
                 LikesCount = result.LikesCount,
-                UserForm = new UserFormDto
-                {
-                    Description = result.Description,
-                    Name = result.Name,
-                    Login = result.Login,
-                    Password = result.Password
-                }
+                Description = result.Description,
+                Name = result.Name,
+                Login = result.Login
             };
+        }
+
+        [HttpPatch( "profile/edit" )]
+        [Authorize]
+        public async Task EditProfile( ProfileCommandDto profileCommandDto )
+        {
+            if ( profileCommandDto == null )
+            {
+                throw new ArgumentException( "Data is null" );
+            }
+
+            string username = User.Identity?.Name;
+            await _userService.EditUserProfile( username, profileCommandDto.Convert() );
+            await _unitOfWork.Commit();
         }
 
         private AuthenticateUserCommand ParseAuthenticateUserCommand( AuthenticateUserCommandDto authenticateUserCommandDto )
