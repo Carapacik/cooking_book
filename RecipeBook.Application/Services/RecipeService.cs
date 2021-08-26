@@ -105,7 +105,7 @@ namespace RecipeBook.Application.Services
         {
             return new Recipe
             {
-                ImageUrl = saveFileResult?.RelativeUri ?? "",
+                ImageUrl = saveFileResult?.RelativeUri,
                 RecipeId = recipeCommand.RecipeId,
                 Title = recipeCommand.Title,
                 Description = recipeCommand.Description,

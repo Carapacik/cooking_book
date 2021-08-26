@@ -30,7 +30,7 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            if ( editedRecipe.ImageUrl != "" )
+            if ( !string.IsNullOrWhiteSpace( editedRecipe.ImageUrl ) )
             {
                 existingRecipe.ImageUrl = editedRecipe.ImageUrl;
             }
