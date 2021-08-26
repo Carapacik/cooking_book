@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -37,7 +39,7 @@ namespace RecipeBook.Application.Services
                 return new AuthenticationResult( false, "user" );
             }
 
-            if ( authenticateUserCommand.Password != user.Password )
+            if ( HashPassword( authenticateUserCommand.Password ) != user.Password )
             {
                 return new AuthenticationResult( false, "password" );
             }
@@ -58,8 +60,8 @@ namespace RecipeBook.Application.Services
             {
                 Login = authenticateUserCommand.Login,
                 Name = authenticateUserCommand.Name,
-                Password = authenticateUserCommand.Password,
-                CreationDateTime = DateTime.Now
+                CreationDateTime = DateTime.Now,
+                Password = HashPassword( authenticateUserCommand.Password )
             } );
 
             await Authenticate( authenticateUserCommand.Login, authenticateUserCommand.HttpContext );
@@ -110,8 +112,15 @@ namespace RecipeBook.Application.Services
                 Description = profileCommand.Description,
                 Name = profileCommand.Name,
                 Login = profileCommand.Login,
-                Password = profileCommand.Password
+                Password = HashPassword( profileCommand.Password )
             };
+        }
+
+        private static string HashPassword( string password )
+        {
+            byte[] hash = MD5.Create().ComputeHash( Encoding.UTF8.GetBytes( password ) );
+
+            return Convert.ToBase64String( hash );
         }
     }
 }
