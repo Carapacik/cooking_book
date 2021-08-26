@@ -45,7 +45,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       height: widget.height,
       width: widget.width ?? double.infinity,
       child: TextFormField(
-        readOnly: widget.readOnly != null,
+        readOnly: widget.readOnly == null ? false : widget.readOnly != false,
         obscureText: widget.obscureText != null,
         onChanged: widget.onChanged,
         controller: widget.controller,

@@ -14,8 +14,7 @@ AuthUserCommand _$AuthUserCommandFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AuthUserCommandToJson(AuthUserCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AuthUserCommandToJson(AuthUserCommand instance) => <String, dynamic>{
       'name': instance.name,
       'login': instance.login,
       'password': instance.password,

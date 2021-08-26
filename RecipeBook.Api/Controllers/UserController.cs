@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
 using RecipeBook.Application;
@@ -86,9 +85,8 @@ namespace RecipeBook.Api.Controllers
 
         [HttpPatch( "profile/edit" )]
         [Authorize]
-        public async Task EditProfile()
+        public async Task EditProfile( ProfileCommandDto profileCommandDto )
         {
-            ProfileCommandDto profileCommandDto = JsonConvert.DeserializeObject<ProfileCommandDto>( Request.Form[ "data" ] );
             if ( profileCommandDto == null )
             {
                 throw new ArgumentException( "Data is null" );
@@ -96,6 +94,7 @@ namespace RecipeBook.Api.Controllers
 
             string username = User.Identity?.Name;
             await _userService.EditUserProfile( username, profileCommandDto.Convert() );
+            await _unitOfWork.Commit();
         }
 
         private AuthenticateUserCommand ParseAuthenticateUserCommand( AuthenticateUserCommandDto authenticateUserCommandDto )

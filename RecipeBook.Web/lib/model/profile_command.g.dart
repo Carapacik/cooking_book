@@ -15,8 +15,7 @@ ProfileCommand _$ProfileCommandFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProfileCommandToJson(ProfileCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ProfileCommandToJson(ProfileCommand instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'login': instance.login,

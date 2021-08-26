@@ -17,8 +17,7 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) => <String, dynamic>{
       'recipesCount': instance.recipesCount,
       'likesCount': instance.likesCount,
       'favoritesCount': instance.favoritesCount,

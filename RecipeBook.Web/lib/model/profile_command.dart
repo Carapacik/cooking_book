@@ -6,15 +6,15 @@ part 'profile_command.g.dart';
 class ProfileCommand {
   ProfileCommand({
     required this.name,
-    required this.description,
+    this.description,
     required this.login,
-    required this.password,
+    this.password,
   });
 
-  final String name;
-  final String? description;
-  final String login;
-  final String password;
+  String name;
+  String? description;
+  String login;
+  String? password;
 
   factory ProfileCommand.fromJson(Map<String, dynamic> json) => _$ProfileCommandFromJson(json);
 

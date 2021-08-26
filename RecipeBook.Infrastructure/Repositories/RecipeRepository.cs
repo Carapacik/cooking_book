@@ -30,10 +30,7 @@ namespace RecipeBook.Infrastructure.Repositories
 
         public void Edit( Recipe existingRecipe, Recipe editedRecipe )
         {
-            if ( editedRecipe.ImageUrl != "" )
-            {
-                existingRecipe.ImageUrl = editedRecipe.ImageUrl;
-            }
+            if ( editedRecipe.ImageUrl != "" ) existingRecipe.ImageUrl = editedRecipe.ImageUrl;
 
             existingRecipe.Title = editedRecipe.Title;
             existingRecipe.Description = editedRecipe.Description;
@@ -52,10 +49,13 @@ namespace RecipeBook.Infrastructure.Repositories
         public async Task<Recipe> GetRecipeOfDay()
         {
             DateTime window = DateTime.Now.AddDays( -1 );
-            return await GetQuery()
+            Recipe recipeOfDay = await GetQuery()
                 .Where( x => x.CreationDateTime > window )
                 .OrderByDescending( x => x.LikesCount )
+                .FirstOrDefaultAsync() ?? await GetQuery().OrderByDescending( x => x.LikesCount )
                 .FirstOrDefaultAsync();
+
+            return recipeOfDay;
         }
 
         public async Task<IReadOnlyList<Recipe>> Search( int skip, int take, IEnumerable<int> recipeIds )
