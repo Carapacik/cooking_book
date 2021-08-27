@@ -64,10 +64,9 @@ namespace RecipeBook.Api.Controllers
         public async Task<int> EditRecipe( int id )
         {
             string username = User.Identity?.Name;
-            Recipe newRecipe = await _recipeService.EditRecipe( await ParseRecipeCommand( Request.Form, username, id ) );
+            await _recipeService.EditRecipe( await ParseRecipeCommand( Request.Form, username, id ) );
             await _unitOfWork.Commit();
-
-            return newRecipe.RecipeId;
+            return id;
         }
 
         [HttpGet( "{id:int}" )]

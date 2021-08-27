@@ -68,9 +68,9 @@ namespace RecipeBook.Application.Services
             return new AuthenticationResult( true, null );
         }
 
-        public async Task EditUserProfile( string username, ProfileCommand profileCommand )
+        public async Task EditUserProfile( ProfileCommand profileCommand )
         {
-            User existingUser = await _userRepository.GetByLogin( profileCommand.Login );
+            User existingUser = await _userRepository.GetByLogin( profileCommand.OldLogin );
             if ( existingUser == null )
             {
                 throw new ValidationException( $"User with login:{profileCommand.Login} does not exist" );
