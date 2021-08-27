@@ -23,6 +23,7 @@ import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/components/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
+import 'package:recipebook/widgets/error_snack_bar.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
@@ -123,249 +124,253 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
               width: MediaQuery.of(context).size.width,
             ),
             const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
-            Padding(
-              padding: const EdgeInsets.only(top: 127, left: 120, right: 120),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        context.beamBack();
-                      },
-                      style: TextButton.styleFrom(primary: Palette.orange),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+            Center(
+              child: Container(
+                alignment: Alignment.topLeft,
+                constraints: const BoxConstraints(maxWidth: 1200),
+                margin: const EdgeInsets.only(top: 127),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.beamBack();
+                        },
+                        style: TextButton.styleFrom(primary: Palette.orange),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.arrow_back,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              "Назад",
+                              style: Theme.of(context).textTheme.n18,
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 11),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Icon(
-                            Icons.arrow_back,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 12),
                           Text(
-                            "Назад",
-                            style: Theme.of(context).textTheme.n18,
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 11),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          recipeDetail == null ? "Добавить новый рецепт" : "Редактировать рецепт",
-                          style: Theme.of(context).textTheme.b42,
-                        ),
-                        ButtonContainedWidget(
-                          text: recipeDetail == null ? "Опубликовать" : "Изменить",
-                          width: 278,
-                          height: 60,
-                          onPressed: _getSendingFunction(context),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 50),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: const [
-                          BoxShadow(
-                            offset: Offset(0, 16),
-                            blurRadius: 72,
-                            color: Palette.shadowColor,
+                            recipeDetail == null ? "Добавить новый рецепт" : "Редактировать рецепт",
+                            style: Theme.of(context).textTheme.b42,
+                          ),
+                          ButtonContainedWidget(
+                            text: recipeDetail == null ? "Опубликовать" : "Изменить",
+                            width: 278,
+                            height: 60,
+                            onPressed: _getSendingFunction(context),
                           ),
                         ],
                       ),
-                      child: Row(
-                        children: [
-                          TextButton(
-                              onPressed: () async {
-                                result = await FilePicker.platform.pickFiles(type: FileType.image);
-                                if (result == null) {
-                                  setState(() {
-                                    isFilePicked = false;
-                                  });
-                                } else {
-                                  setState(() {
-                                    isFilePicked = true;
-                                  });
-                                }
-                              },
-                              clipBehavior: Clip.antiAlias,
-                              style: TextButton.styleFrom(
-                                backgroundColor: !isFilePicked ? Palette.red.withOpacity(0.4) : Palette.uploadPhotoBackground,
-                                primary: Palette.orange,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(72),
-                                    bottomRight: Radius.circular(72),
+                      const SizedBox(height: 50),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: const [
+                            BoxShadow(
+                              offset: Offset(0, 16),
+                              blurRadius: 72,
+                              color: Palette.shadowColor,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            TextButton(
+                                onPressed: () async {
+                                  result = await FilePicker.platform.pickFiles(type: FileType.image);
+                                  if (result == null) {
+                                    setState(() {
+                                      isFilePicked = false;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      isFilePicked = true;
+                                    });
+                                  }
+                                },
+                                clipBehavior: Clip.antiAlias,
+                                style: TextButton.styleFrom(
+                                  backgroundColor: !isFilePicked ? Palette.red.withOpacity(0.4) : Palette.uploadPhotoBackground,
+                                  primary: Palette.orange,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(72),
+                                      bottomRight: Radius.circular(72),
+                                    ),
                                   ),
                                 ),
+                                child: _getUploadedImageButton()),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 53, right: 70),
+                              child: SizedBox(
+                                width: 647,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FormTextFieldWidget(
+                                      controller: titleController,
+                                      hintText: "Название рецепта",
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Название рецепта обязательно";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        recipeTitle = value;
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FormTextFieldWidget(
+                                      keyboardType: TextInputType.multiline,
+                                      controller: descriptionController,
+                                      textarea: true,
+                                      height: 120,
+                                      hintText: "Краткое описание рецепта (150 символов)",
+                                      maxLength: 150,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Описание рецепта обязательно";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        recipeDescription = value;
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    FormTextFieldWidget(
+                                      controller: tagsController,
+                                      hintText: "Добавить теги",
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Введите хотя бы один тэг";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        tags = value!.trim().split(",");
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        FormTextFieldWidget(
+                                          width: 220,
+                                          controller: cookingTimeController,
+                                          keyboardType: TextInputType.number,
+                                          hintText: "Время готовки",
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Не должно быть пустым";
+                                            }
+                                            final result = int.tryParse(value) ?? "";
+                                            if (result == "") {
+                                              return "Должно быть целым";
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) {
+                                            cookingTime = value;
+                                          },
+                                        ),
+                                        const SizedBox(width: 11),
+                                        Text(
+                                          "Минут",
+                                          style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                        ),
+                                        const SizedBox(width: 64),
+                                        FormTextFieldWidget(
+                                          width: 220,
+                                          controller: portionsCountController,
+                                          keyboardType: TextInputType.number,
+                                          hintText: "Порций в блюде",
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Не должно быть пустым";
+                                            }
+                                            final result = int.tryParse(value) ?? "";
+                                            if (result == "") {
+                                              return "Должно быть целым";
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) {
+                                            portionsCount = value;
+                                          },
+                                        ),
+                                        const SizedBox(width: 11),
+                                        Text(
+                                          "Персон",
+                                          style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: _getUploadedImageButton()),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 53, right: 70),
-                            child: SizedBox(
-                              width: 647,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FormTextFieldWidget(
-                                    controller: titleController,
-                                    hintText: "Название рецепта",
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Название рецепта обязательно";
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (value) {
-                                      recipeTitle = value;
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FormTextFieldWidget(
-                                    keyboardType: TextInputType.multiline,
-                                    controller: descriptionController,
-                                    textarea: true,
-                                    height: 120,
-                                    hintText: "Краткое описание рецепта (150 символов)",
-                                    maxLength: 150,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Описание рецепта обязательно";
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (value) {
-                                      recipeDescription = value;
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  FormTextFieldWidget(
-                                    controller: tagsController,
-                                    hintText: "Добавить теги",
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Введите хотя бы один тэг";
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (value) {
-                                      tags = value!.trim().split(",");
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      FormTextFieldWidget(
-                                        width: 220,
-                                        controller: cookingTimeController,
-                                        keyboardType: TextInputType.number,
-                                        hintText: "Время готовки",
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return "Не должно быть пустым";
-                                          }
-                                          final result = int.tryParse(value) ?? "";
-                                          if (result == "") {
-                                            return "Должно быть целым";
-                                          }
-                                          return null;
-                                        },
-                                        onSaved: (value) {
-                                          cookingTime = value;
-                                        },
-                                      ),
-                                      const SizedBox(width: 11),
-                                      Text(
-                                        "Минут",
-                                        style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
-                                      ),
-                                      const SizedBox(width: 64),
-                                      FormTextFieldWidget(
-                                        width: 220,
-                                        controller: portionsCountController,
-                                        keyboardType: TextInputType.number,
-                                        hintText: "Порций в блюде",
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return "Не должно быть пустым";
-                                          }
-                                          final result = int.tryParse(value) ?? "";
-                                          if (result == "") {
-                                            return "Должно быть целым";
-                                          }
-                                          return null;
-                                        },
-                                        onSaved: (value) {
-                                          portionsCount = value;
-                                        },
-                                      ),
-                                      const SizedBox(width: 11),
-                                      Text(
-                                        "Персон",
-                                        style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 380,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Ингредиенты",
+                                  style: Theme.of(context).textTheme.b20,
+                                ),
+                                const IngredientListWidget(),
+                                const SizedBox(height: 40),
+                                ButtonOutlinedWidget(
+                                  text: "Добавить заголовок",
+                                  width: 380,
+                                  height: 60,
+                                  onPressed: () {
+                                    ingredientNotifier.addNewIngredient();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 790,
+                            child: Column(
+                              children: [
+                                const StepListWidget(),
+                                ButtonOutlinedWidget(
+                                  text: "Добавить шаг",
+                                  width: 380,
+                                  height: 60,
+                                  onPressed: () {
+                                    stepNotifier.addStep();
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 380,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Ингредиенты",
-                                style: Theme.of(context).textTheme.b20,
-                              ),
-                              const IngredientListWidget(),
-                              const SizedBox(height: 40),
-                              ButtonOutlinedWidget(
-                                text: "Добавить заголовок",
-                                width: 380,
-                                height: 60,
-                                onPressed: () {
-                                  ingredientNotifier.addNewIngredient();
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 790,
-                          child: Column(
-                            children: [
-                              const StepListWidget(),
-                              ButtonOutlinedWidget(
-                                text: "Добавить шаг",
-                                width: 380,
-                                height: 60,
-                                onPressed: () {
-                                  stepNotifier.addStep();
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 106),
-                  ],
+                      const SizedBox(height: 106),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -528,7 +533,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
             await apiService.patchRequest("recipes/${recipeDetail!.recipeId}/edit", formData).then((value) => nextPageIndex = value.toString());
             context.beamToNamed("/recipes/$nextPageIndex");
           } catch (e) {
-            context.beamToNamed("/error?e=$e");
+            errorSnackBar(context, "Ошибка изменения: $e");
           }
         } else {
           formData = FormData.fromMap({
@@ -542,7 +547,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
 
             context.beamToNamed("/recipes/$nextPageIndex");
           } catch (e) {
-            context.beamToNamed("/error?e=$e");
+            errorSnackBar(context, "Ошибка добавления: $e");
           }
         }
       }

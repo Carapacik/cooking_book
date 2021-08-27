@@ -56,6 +56,7 @@ class HomePage extends StatelessWidget {
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 1200),
                 margin: const EdgeInsets.only(top: 210),
+                alignment: Alignment.topLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

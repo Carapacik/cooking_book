@@ -21,21 +21,21 @@ class HeaderWidget extends StatefulWidget {
 
 class _HeaderWidgetState extends State<HeaderWidget> {
   late ApiService apiService;
-  late AuthNotifier authNotifier;
+  late AuthNotifier _authNotifier;
 
   @override
   void initState() {
     apiService = ApiService();
-    authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    if (!authNotifier.isAuth) {
-      authNotifier.getCurrentUser();
+    _authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    if (!_authNotifier.isAuth) {
+      _authNotifier.getCurrentUser();
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    authNotifier = Provider.of<AuthNotifier>(context); // чтоюы избранное появлялось после создания экрана
+    _authNotifier = Provider.of<AuthNotifier>(context); // чтоюы избранное появлялось после создания экрана
     return SizedBox(
       height: 80,
       child: Padding(
@@ -49,7 +49,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
             const SizedBox(width: 80),
             ...List.generate(
-              !authNotifier.isAuth ? 2 : 3,
+              !_authNotifier.isAuth ? 2 : 3,
               (index) => TextButton(
                 onPressed: () {
                   context.beamToNamed(HeaderButtons.getById(index).route);
