@@ -1,8 +1,8 @@
 # Recipe Book
 
 ### Технологии
-- **Backend**: [.NET](https://dotnet.microsoft.com/download/dotnet/5.0)
-- **Frontend**: [Flutter](https://flutter.dev/) (in future [fish-redux](https://pub.dev/packages/fish_redux))
+- **Backend**: [.NET](https://github.com/dotnet/core)
+- **Frontend**: [Flutter](https://github.com/flutter/flutter) with [fish-redux](https://github.com/alibaba/fish-redux)
 - **Database**: PostgreSQL or MSSQL
 -  **ORM**: Entity Framework Core
 
@@ -14,7 +14,7 @@
     - Количество рецептов
     - Количество лайков
     - Количество избранных
-- Пользователь может просматривать список избранных рецептов в отдельной вкладке
+- Список избранных рецептов в отдельной вкладке у авторизированных пользователей
 - Возможность `редактировать` профиль
 - Авторизированные пользователи могут добавлять `лайки` и `избранное` на рецепт
 - Поиск по названиям рецептов и по `тэгам`

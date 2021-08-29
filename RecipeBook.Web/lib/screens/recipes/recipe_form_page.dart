@@ -21,7 +21,7 @@ import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dar
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/error_snack_bar.dart';
 import 'package:recipebook/widgets/header_widget.dart';

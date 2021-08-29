@@ -13,7 +13,7 @@ import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
-import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/not_auth_dialog.dart';
