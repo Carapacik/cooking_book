@@ -19,7 +19,17 @@ namespace RecipeBook.Api.Controllers
         [HttpGet( "images/{fileName}" )]
         public async Task<IActionResult> GetImage( string fileName )
         {
+            if ( fileName.Contains( "\\" ) )
+            {
+                return BadRequest();
+            }
+
             GetFileResult result = await _fileStorageService.GetFile( $"images\\{fileName}" );
+            if ( result == null )
+            {
+                return NotFound();
+            }
+
             return new FileContentResult( result.Content, $"image/{result.Extension}" );
         }
     }
