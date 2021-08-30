@@ -22,7 +22,7 @@ namespace RecipeBook.Api.Converters
                 IsLiked = rating?.IsLiked ?? false,
                 IsFavorite = rating?.InFavorite ?? false,
                 Tags = recipe.Tags.Select( x => x.Name ).ToList(),
-                Steps = recipe.Steps.Select( x => x.Description ).ToList(),
+                Steps = recipe.Steps.OrderBy( x => x.Number ).Select( x => x.Description ).ToList(),
                 Ingredients = recipe.Ingredients.Select( x => new IngredientDto
                 {
                     Title = x.Title, IngredientNames = x.IngredientItems.Select( y => y.Name ).ToList()

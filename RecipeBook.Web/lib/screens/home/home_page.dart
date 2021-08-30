@@ -10,7 +10,7 @@ import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/screens/home/components/recipe_of_day.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
-import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/login_dialog.dart';
@@ -56,6 +56,7 @@ class HomePage extends StatelessWidget {
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 1200),
                 margin: const EdgeInsets.only(top: 210),
+                alignment: Alignment.topLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

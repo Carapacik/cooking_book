@@ -55,7 +55,7 @@ namespace RecipeBook.Application.Services
             await _recipeRepository.Delete( id );
         }
 
-        public async Task<Recipe> EditRecipe( RecipeCommand editCommand )
+        public async Task EditRecipe( RecipeCommand editCommand )
         {
             Recipe existingRecipe = await _recipeRepository.GetById( editCommand.RecipeId );
             if ( existingRecipe == null )
@@ -82,7 +82,6 @@ namespace RecipeBook.Application.Services
             }
 
             _recipeRepository.Edit( existingRecipe, editedRecipe );
-            return editedRecipe;
         }
 
         public async Task<IReadOnlyList<Recipe>> GetFavoriteRecipes( int skip, int take, string username )
@@ -114,7 +113,7 @@ namespace RecipeBook.Application.Services
                 UserId = userId,
                 CreationDateTime = DateTime.Now,
                 Tags = recipeCommand.Tags.Select( x => new Tag { Name = x } ).ToList(),
-                Steps = recipeCommand.Steps.Select( x => new Step { Description = x } ).ToList(),
+                Steps = recipeCommand.Steps.Select( ( x, i ) => new Step { Number = i + 1, Description = x } ).ToList(),
                 Ingredients = recipeCommand.Ingredients
             };
         }

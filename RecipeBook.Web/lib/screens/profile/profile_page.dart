@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/profile_command.dart';
 import 'package:recipebook/model/profile_model.dart';
+import 'package:recipebook/notifier/auth_notifier.dart';
 import 'package:recipebook/notifier/recipe_notifier.dart';
 import 'package:recipebook/resources/images.dart';
 import 'package:recipebook/resources/palette.dart';
@@ -14,7 +15,8 @@ import 'package:recipebook/screens/profile/components/profile_card.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/components/header_buttons.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
+import 'package:recipebook/widgets/error_snack_bar.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/recipe_list_widget.dart';
 
@@ -129,6 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -213,9 +216,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                           try {
                                             await _apiService.patchRequest("user/profile/edit", profileCommand!.toJson());
                                             readOnlyTextField = true;
+                                            _authNotifier.getCurrentUser();
                                             getDetailProfile();
                                           } catch (e) {
-                                            context.beamToNamed("/error?e=$e");
+                                            errorSnackBar(context, "Ошибка изменения: $e");
                                           }
                                         }
                                       },

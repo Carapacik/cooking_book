@@ -38,7 +38,7 @@ namespace RecipeBook.Api.Controllers
             }
 
             User user = await _userRepository.GetByLogin( User.Identity?.Name );
-            return user.Convert();
+            return user?.Convert();
         }
 
         [HttpPost( "login" )]
@@ -93,7 +93,7 @@ namespace RecipeBook.Api.Controllers
             }
 
             string username = User.Identity?.Name;
-            await _userService.EditUserProfile( username, profileCommandDto.Convert() );
+            await _userService.EditUserProfile( profileCommandDto.Convert( username ) );
             await _unitOfWork.Commit();
         }
 
