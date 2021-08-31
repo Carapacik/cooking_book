@@ -17,4 +17,8 @@ class IngredientNotifier extends ChangeNotifier {
     _ingredientList.removeAt(index);
     notifyListeners();
   }
+
+  clearList(){
+    _ingredientList = [Ingredient(title: "", ingredientNames: [])];
+  }
 }

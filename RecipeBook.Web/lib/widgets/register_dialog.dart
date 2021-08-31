@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/auth_result.dart';
 import 'package:recipebook/model/auth_user_command.dart';
@@ -63,6 +64,7 @@ void registerDialog(BuildContext context) {
             FormTextFieldWidget(
               keyboardType: TextInputType.name,
               hintText: "Логин",
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))],
               onChanged: (value) {
                 isUserExist = false;
               },

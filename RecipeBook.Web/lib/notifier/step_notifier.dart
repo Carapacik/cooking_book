@@ -16,4 +16,8 @@ class StepNotifier extends ChangeNotifier {
     _stepList.removeAt(index);
     notifyListeners();
   }
+
+  clearList(){
+    _stepList = [""];
+  }
 }

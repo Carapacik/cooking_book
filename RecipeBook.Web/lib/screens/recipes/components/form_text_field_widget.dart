@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/theme.dart';
 
 class FormTextFieldWidget extends StatefulWidget {
   const FormTextFieldWidget({
+    Key? key,
     required this.hintText,
     this.height,
     this.width,
@@ -17,7 +19,7 @@ class FormTextFieldWidget extends StatefulWidget {
     this.onChanged,
     this.obscureText,
     this.readOnly,
-    Key? key,
+    this.inputFormatters,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -33,6 +35,7 @@ class FormTextFieldWidget extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final FormFieldSetter<String>? onSaved;
   final bool? readOnly;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   _FormTextFieldWidgetState createState() => _FormTextFieldWidgetState();
@@ -46,6 +49,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       width: widget.width ?? double.infinity,
       child: TextFormField(
         readOnly: widget.readOnly == null ? false : widget.readOnly != false,
+        inputFormatters: widget.inputFormatters,
         obscureText: widget.obscureText != null,
         onChanged: widget.onChanged,
         controller: widget.controller,

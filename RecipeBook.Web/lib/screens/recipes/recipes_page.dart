@@ -13,8 +13,8 @@ import 'package:recipebook/resources/palette.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/category_card.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/not_auth_dialog.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
@@ -88,6 +88,10 @@ class _RecipesPageState extends State<RecipesPage> {
           setState(() {
             isEndOfList = false;
           });
+        } else {
+          setState(() {
+            isEndOfList = true;
+          });
         }
         recipeNotifier.addRecipes(listOfRecipes);
         skipCounter += 4;
@@ -106,7 +110,13 @@ class _RecipesPageState extends State<RecipesPage> {
     try {
       response = await apiService.getInitialWithParam("recipes", 4);
       if (response.statusCode == 200) {
-        recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length == 4) {
+          setState(() {
+            isEndOfList = false;
+          });
+        }
+        recipeNotifier.addClearRecipes(listOfRecipes);
         skipCounter += 4;
       } else {
         // затычка, код не 200
@@ -311,7 +321,7 @@ class _RecipesPageState extends State<RecipesPage> {
                       ],
                     ),
                     const SizedBox(height: 80),
-                    const RecipeListWidget(),
+                    const Center(child: RecipeListWidget()),
                     const SizedBox(height: 65),
                     if (!isEndOfList)
                       ButtonOutlinedWidget(

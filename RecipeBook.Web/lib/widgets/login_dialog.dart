@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/auth_result.dart';
 import 'package:recipebook/model/auth_user_command.dart';
@@ -51,6 +52,7 @@ void loginDialog(BuildContext context) {
             FormTextFieldWidget(
               keyboardType: TextInputType.name,
               hintText: "Логин",
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))],
               validator: (value) {
                 if (value!.isEmpty) return "Не может быть пустым";
                 if (!isUserExist) return "Такого пользователя не существует";

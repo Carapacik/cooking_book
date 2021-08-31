@@ -7,6 +7,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:recipebook/model/recipe_command.dart';
@@ -21,9 +22,9 @@ import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dar
 import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/contained_button.dart';
 import 'package:recipebook/widgets/error_snack_bar.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
 import 'package:recipebook/widgets/outlined_button.dart';
 
@@ -270,6 +271,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                           controller: cookingTimeController,
                                           keyboardType: TextInputType.number,
                                           hintText: "Время готовки",
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return "Не должно быть пустым";
@@ -294,6 +296,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                           width: 220,
                                           controller: portionsCountController,
                                           keyboardType: TextInputType.number,
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                           hintText: "Порций в блюде",
                                           validator: (value) {
                                             if (value!.isEmpty) {
@@ -532,6 +535,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
             late String nextPageIndex;
             await apiService.patchRequest("recipes/${recipeDetail!.recipeId}/edit", formData).then((value) => nextPageIndex = value.toString());
             context.beamToNamed("/recipes/$nextPageIndex");
+
+            stepNotifier.clearList();
+            ingredientNotifier.clearList();
           } catch (e) {
             errorSnackBar(context, "Ошибка изменения: $e");
           }
@@ -546,6 +552,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
             await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
 
             context.beamToNamed("/recipes/$nextPageIndex");
+
+            stepNotifier.clearList();
+            ingredientNotifier.clearList();
           } catch (e) {
             errorSnackBar(context, "Ошибка добавления: $e");
           }

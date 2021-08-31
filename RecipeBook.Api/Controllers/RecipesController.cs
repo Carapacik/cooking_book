@@ -88,7 +88,7 @@ namespace RecipeBook.Api.Controllers
             Recipe recipe = await _recipeRepository.GetRecipeOfDay();
             if ( recipe == null )
             {
-                throw new ValidationException( "Recipe does not exist" );
+                throw new ValidationException( "Recipe of day does not exist" );
             }
 
             return await _recipeBuilder.BuildRecipeOfDay( recipe );

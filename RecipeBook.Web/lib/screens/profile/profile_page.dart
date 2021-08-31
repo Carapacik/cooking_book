@@ -15,9 +15,10 @@ import 'package:recipebook/screens/profile/components/profile_card.dart';
 import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
 import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/error_snack_bar.dart';
+import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_list_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -82,6 +83,10 @@ class _ProfilePageState extends State<ProfilePage> {
           setState(() {
             isEndOfList = false;
           });
+        } else {
+          setState(() {
+            isEndOfList = true;
+          });
         }
         _recipeNotifier.addRecipes(listOfRecipes);
         skipCounter += 4;
@@ -100,8 +105,14 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       response = await _apiService.getInitialWithParam("recipes/user-owned", 2);
       if (response.statusCode == 200) {
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length == 2) {
+          setState(() {
+            isEndOfList = false;
+          });
+        }
         _recipeNotifier.resultString = "Ваш список пуст";
-        _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        _recipeNotifier.addClearRecipes(listOfRecipes);
         skipCounter += 2;
       } else {
         // затычка, код не 200
@@ -338,6 +349,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 40),
                     const Center(child: RecipeListWidget()),
+                    const SizedBox(height: 65),
+                    if (!isEndOfList)
+                      Center(
+                        child: ButtonOutlinedWidget(
+                          text: "Загрузить еще",
+                          width: 309,
+                          height: 60,
+                          onPressed: () {
+                            getMoreRecipes();
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 73),
                   ],
                 ),

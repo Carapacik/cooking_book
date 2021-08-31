@@ -11,6 +11,7 @@ import 'package:recipebook/service/api_service.dart';
 import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/header_buttons.dart';
 import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipebook/widgets/outlined_button.dart';
 import 'package:recipebook/widgets/recipe_list_widget.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -37,6 +38,10 @@ class _FavoritePageState extends State<FavoritePage> {
           setState(() {
             isEndOfList = false;
           });
+        } else {
+          setState(() {
+            isEndOfList = true;
+          });
         }
         _recipeNotifier.addRecipes(listOfRecipes);
         skipCounter += 4;
@@ -55,8 +60,14 @@ class _FavoritePageState extends State<FavoritePage> {
     try {
       response = await _apiService.getInitialWithParam("recipes/favorite", 2);
       if (response.statusCode == 200) {
+        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        if (listOfRecipes.length == 2) {
+          setState(() {
+            isEndOfList = false;
+          });
+        }
         _recipeNotifier.resultString = "Ваш список пуст";
-        _recipeNotifier.addClearRecipes(jsonDecode(response.data as String) as List<dynamic>);
+        _recipeNotifier.addClearRecipes(listOfRecipes);
         skipCounter += 2;
       } else {
         // затычка, код не 200
@@ -101,6 +112,18 @@ class _FavoritePageState extends State<FavoritePage> {
                     ),
                     const SizedBox(height: 50),
                     const Center(child: RecipeListWidget()),
+                    const SizedBox(height: 65),
+                    if (!isEndOfList)
+                      Center(
+                        child: ButtonOutlinedWidget(
+                          text: "Загрузить еще",
+                          width: 309,
+                          height: 60,
+                          onPressed: () {
+                            getMoreRecipes();
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 100),
                   ],
                 ),
