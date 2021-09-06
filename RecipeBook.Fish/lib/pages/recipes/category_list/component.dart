@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:recipebook/pages/recipes/category_list/category_card/component.dart';
+import 'package:recipebook/pages/recipes/category_list/category_card/state.dart';
 
 import 'effect.dart';
 import 'reducer.dart';
@@ -15,7 +16,7 @@ class CategoryListComponent extends Component<CategoryListState> {
           dependencies: Dependencies<CategoryListState>(
             adapter: null,
             slots: <String, Dependent<CategoryListState>>{
-              'category_card': CategoryCardComponent(), // тут не получается закинуть
+              'category_card':CategoryCardConnector() + CategoryCardComponent(), // тут не получается закинуть
             },
           ),
         );

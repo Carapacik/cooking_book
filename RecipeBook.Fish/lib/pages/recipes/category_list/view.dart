@@ -9,6 +9,8 @@ Widget buildView(CategoryListState state, Dispatch dispatch, ViewService viewSer
     children: [
       categoryCardWidget,
       categoryCardWidget,
+      categoryCardWidget,
+      categoryCardWidget,
     ],
   );
 }
