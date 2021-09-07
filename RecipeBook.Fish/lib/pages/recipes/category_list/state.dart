@@ -3,6 +3,7 @@ import 'package:recipebook/pages/recipes/category_list/category_card/state.dart'
 
 class CategoryListState implements Cloneable<CategoryListState> {
   late CategoryCardState categoryCardState;
+
   @override
   CategoryListState clone() {
     return CategoryListState();
@@ -10,7 +11,8 @@ class CategoryListState implements Cloneable<CategoryListState> {
 }
 
 CategoryListState initState(Map<String, dynamic> args) {
-  return CategoryListState();
+  return CategoryListState()
+    ..categoryCardState = CategoryCardState();
 }
 
 class CategoryCardConnector extends ConnOp<CategoryListState, CategoryCardState> {
@@ -20,3 +22,4 @@ class CategoryCardConnector extends ConnOp<CategoryListState, CategoryCardState>
   @override
   void set(CategoryListState state, CategoryCardState subState) => state.categoryCardState = subState;
 }
+

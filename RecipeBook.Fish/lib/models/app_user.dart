@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'app_user.g.dart';
+part 'generated/app_user.g.dart';
 
 @JsonSerializable()
 class AppUser {

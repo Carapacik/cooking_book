@@ -16,7 +16,7 @@ class CategoryListComponent extends Component<CategoryListState> {
           dependencies: Dependencies<CategoryListState>(
             adapter: null,
             slots: <String, Dependent<CategoryListState>>{
-              'category_card':CategoryCardConnector() + CategoryCardComponent(), // тут не получается закинуть
+              'category_card': CategoryCardConnector() + CategoryCardComponent(), // тут не получается закинуть
             },
           ),
         );

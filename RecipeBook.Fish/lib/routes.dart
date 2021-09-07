@@ -16,6 +16,23 @@ class Routes {
       RoutePath.favoritePage: FavoritePage(),
       RoutePath.profilePage: ProfilePage(),
     },
+    // visitor: (String path, Page<Object, dynamic> page) {
+    //   if (page.isTypeof<GlobalBaseState>()) {
+    //     page.connectExtraStore<GlobalState>(GlobalStore.store,
+    //             (Object pagestate, GlobalState appState) {
+    //           final GlobalBaseState p = pagestate as GlobalBaseState;
+    //           if (p.user != appState.user) {
+    //             if (pagestate is Cloneable) {
+    //               final GlobalBaseState copy = (pagestate as GlobalState).clone();
+    //               final GlobalBaseState newState = copy;
+    //               newState.user = appState.user;
+    //               return newState;
+    //             }
+    //           }
+    //           return pagestate;
+    //         });
+    //   }
+    // сверху новый
     // visitor: (String path, fish.Page<Object, dynamic> page) {
     //   if (page.isTypeof<GlobalBaseState>()) {
     //     page.connectExtraStore<GlobalState>(GlobalStore.store,
