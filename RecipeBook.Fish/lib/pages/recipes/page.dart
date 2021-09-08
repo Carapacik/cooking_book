@@ -7,6 +7,7 @@ import 'package:recipebook/widgets/header_widget/state.dart' as headerState;
 import 'package:recipebook/widgets/search_bar/component.dart';
 import 'package:recipebook/widgets/search_bar/state.dart' as searchBarState;
 
+
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';

@@ -8,6 +8,7 @@ class RecipesState implements Cloneable<RecipesState> {
   late HeaderWidgetState headerWidgetState;
   late SearchBarState searchBarState;
 
+
   @override
   RecipesState clone() {
     return RecipesState();
@@ -15,8 +16,10 @@ class RecipesState implements Cloneable<RecipesState> {
 }
 
 RecipesState initState(Map<String, dynamic> args) {
+
   return RecipesState()
     ..headerWidgetState = HeaderWidgetState()
     ..categoryListState = CategoryListState()
     ..searchBarState = SearchBarState();
+
 }

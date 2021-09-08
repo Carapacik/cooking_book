@@ -18,7 +18,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final AbstractRoutes routes = Routes.routes;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
