@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeBook.Api.Converters;
 using RecipeBook.Api.Dtos;
-using RecipeBook.Application;
 using RecipeBook.Application.Entities;
 using RecipeBook.Application.Services;
+using RecipeBook.Domain;
 using RecipeBook.Domain.Entities;
 using RecipeBook.Domain.Repositories;
 

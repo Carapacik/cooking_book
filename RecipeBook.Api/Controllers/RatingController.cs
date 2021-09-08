@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecipeBook.Application;
 using RecipeBook.Application.Services;
+using RecipeBook.Domain;
 
 namespace RecipeBook.Api.Controllers
 {
     [ApiController]
     [Route( "api/recipes/{recipeId:int}/rating" )]
-    public class RatingController : Controller
+    public class RatingController : ControllerBase
     {
         private readonly IRatingService _ratingService;
         private readonly IUnitOfWork _unitOfWork;
