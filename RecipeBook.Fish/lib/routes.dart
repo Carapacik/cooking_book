@@ -1,4 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:recipebook/global_store/state.dart';
+import 'package:recipebook/global_store/store.dart';
 import 'package:recipebook/pages/favorite/page.dart';
 import 'package:recipebook/pages/home/page.dart';
 import 'package:recipebook/pages/profile/page.dart';
@@ -16,61 +18,41 @@ class Routes {
       RoutePath.favoritePage: FavoritePage(),
       RoutePath.profilePage: ProfilePage(),
     },
-    // visitor: (String path, Page<Object, dynamic> page) {
-    //   if (page.isTypeof<GlobalBaseState>()) {
-    //     page.connectExtraStore<GlobalState>(GlobalStore.store,
-    //             (Object pagestate, GlobalState appState) {
-    //           final GlobalBaseState p = pagestate as GlobalBaseState;
-    //           if (p.user != appState.user) {
-    //             if (pagestate is Cloneable) {
-    //               final GlobalBaseState copy = (pagestate as GlobalState).clone();
-    //               final GlobalBaseState newState = copy;
-    //               newState.user = appState.user;
-    //               return newState;
-    //             }
-    //           }
-    //           return pagestate;
-    //         });
-    //   }
-    // сверху новый
-    // visitor: (String path, fish.Page<Object, dynamic> page) {
-    //   if (page.isTypeof<GlobalBaseState>()) {
-    //     page.connectExtraStore<GlobalState>(GlobalStore.store,
-    //             (Object pagestate, GlobalState appState) {
-    //           final GlobalBaseState p = pagestate;
-    //           if (p.user != appState.user) {
-    //             if (pagestate is Cloneable) {
-    //               final Object copy = pagestate.clone();
-    //               final GlobalBaseState newState = copy;
-    //               newState.user = appState.user;
-    //               return newState;
-    //             }
-    //           }
-    //           return pagestate;
-    //         });
-    //   }
-    //   page.enhancer.append(
-    //     /// View AOP
-    //     viewMiddleware: <ViewMiddleware<dynamic>>[
-    //       safetyView<dynamic>(),
-    //     ],
-    //
-    //     /// Adapter AOP
-    //     adapterMiddleware: <AdapterMiddleware<dynamic>>[
-    //       safetyAdapter<dynamic>()
-    //     ],
-    //
-    //     /// Effect AOP
-    //     effectMiddleware: [
-    //       _pageAnalyticsMiddleware<dynamic>(),
-    //     ],
-    //
-    //     /// Store AOP
-    //     middleware: <Middleware<dynamic>>[
-    //       logMiddleware<dynamic>(tag: page.runtimeType.toString()),
-    //     ],
-    //   );
-    // },
+    visitor: (String path, Page<Object, dynamic> page) {
+      if (page.isTypeof<GlobalBaseState>()) {
+        page.connectExtraStore<GlobalState>(GlobalStore.store, (Object pageState, GlobalState appState) {
+          final GlobalBaseState p = pageState as GlobalBaseState;
+          if (p.user != appState.user) {
+            if (pageState is Cloneable) {
+              final GlobalBaseState copy = (pageState as GlobalState).clone();
+              final GlobalBaseState newState = copy;
+              newState.user = appState.user;
+              return newState;
+            }
+          }
+          return pageState;
+        });
+      }
+      page.enhancer.append(
+        /// View AOP
+        viewMiddleware: <ViewMiddleware<dynamic>>[
+          safetyView<dynamic>(),
+        ],
+
+        /// Adapter AOP
+        adapterMiddleware: <AdapterMiddleware<dynamic>>[safetyAdapter<dynamic>()],
+
+        /// Effect AOP
+        effectMiddleware: [
+          _pageAnalyticsMiddleware<dynamic>(),
+        ],
+
+        /// Store AOP
+        middleware: <Middleware<dynamic>>[
+          logMiddleware<dynamic>(tag: page.runtimeType.toString()),
+        ],
+      );
+    },
   );
 }
 

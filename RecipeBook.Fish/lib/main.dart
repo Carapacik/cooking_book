@@ -1,8 +1,11 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:recipebook/routes.dart';
+import 'package:recipebook/theme.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
+  setPathUrlStrategy();
   runApp(App());
 }
 
@@ -19,11 +22,14 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: themeData,
       home: routes.buildPage(RoutePath.recipesPage, null),
       onGenerateRoute: (RouteSettings settings) {
-        return MaterialPageRoute<Object>(builder: (BuildContext context) {
-          return routes.buildPage(settings.name, settings.arguments);
-        });
+        return MaterialPageRoute<Object>(
+          builder: (BuildContext context) {
+            return routes.buildPage(settings.name, settings.arguments);
+          },
+        );
       },
     );
   }
