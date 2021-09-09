@@ -8,12 +8,9 @@ import 'view.dart';
 class SearchBarComponent extends Component<SearchBarState> {
   SearchBarComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<SearchBarState>(
-                adapter: null,
-                slots: <String, Dependent<SearchBarState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<SearchBarState>(adapter: null, slots: <String, Dependent<SearchBarState>>{}),
+        );
 }

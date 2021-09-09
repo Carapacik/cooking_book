@@ -9,5 +9,4 @@ Effect<StepInputsState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<StepInputsState> ctx) {
-}
+void _onAction(Action action, Context<StepInputsState> ctx) {}

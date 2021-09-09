@@ -9,5 +9,4 @@ Effect<RecipeDetailState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<RecipeDetailState> ctx) {
-}
+void _onAction(Action action, Context<RecipeDetailState> ctx) {}

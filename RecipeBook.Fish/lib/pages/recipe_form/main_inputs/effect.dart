@@ -9,5 +9,4 @@ Effect<MainInputsState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<MainInputsState> ctx) {
-}
+void _onAction(Action action, Context<MainInputsState> ctx) {}

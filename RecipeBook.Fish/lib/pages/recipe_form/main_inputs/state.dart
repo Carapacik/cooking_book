@@ -1,7 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 
 class MainInputsState implements Cloneable<MainInputsState> {
-
   @override
   MainInputsState clone() {
     return MainInputsState();

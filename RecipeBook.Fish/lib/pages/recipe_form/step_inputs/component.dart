@@ -8,12 +8,9 @@ import 'view.dart';
 class StepInputsComponent extends Component<StepInputsState> {
   StepInputsComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<StepInputsState>(
-                adapter: null,
-                slots: <String, Dependent<StepInputsState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<StepInputsState>(adapter: null, slots: <String, Dependent<StepInputsState>>{}),
+        );
 }

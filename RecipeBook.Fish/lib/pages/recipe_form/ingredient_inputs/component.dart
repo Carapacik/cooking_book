@@ -8,12 +8,9 @@ import 'view.dart';
 class IngredientInputsComponent extends Component<IngredientInputsState> {
   IngredientInputsComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<IngredientInputsState>(
-                adapter: null,
-                slots: <String, Dependent<IngredientInputsState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<IngredientInputsState>(adapter: null, slots: <String, Dependent<IngredientInputsState>>{}),
+        );
 }

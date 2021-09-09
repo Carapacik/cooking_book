@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:recipebook/pages/recipes/state.dart';
+import 'package:recipebook/pages/recipes_page/state.dart';
 
 class CategoryListState implements Cloneable<CategoryListState> {
   @override

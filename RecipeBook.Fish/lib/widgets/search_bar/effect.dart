@@ -9,5 +9,4 @@ Effect<SearchBarState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<SearchBarState> ctx) {
-}
+void _onAction(Action action, Context<SearchBarState> ctx) {}

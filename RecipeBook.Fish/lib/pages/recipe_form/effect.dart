@@ -9,5 +9,4 @@ Effect<RecipeFormState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<RecipeFormState> ctx) {
-}
+void _onAction(Action action, Context<RecipeFormState> ctx) {}

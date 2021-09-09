@@ -18,11 +18,12 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final AbstractRoutes routes = Routes.routes;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: themeData,
-      home: routes.buildPage(RoutePath.recipesPage, null),
+      home: routes.buildPage(RoutePath.mainPage, null),
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<Object>(
           builder: (BuildContext context) {

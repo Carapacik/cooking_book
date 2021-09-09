@@ -9,5 +9,4 @@ Effect<HomeState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<HomeState> ctx) {
-}
+void _onAction(Action action, Context<HomeState> ctx) {}

@@ -8,12 +8,9 @@ import 'view.dart';
 class RecipesListComponent extends Component<RecipesListState> {
   RecipesListComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<RecipesListState>(
-                adapter: null,
-                slots: <String, Dependent<RecipesListState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<RecipesListState>(adapter: null, slots: <String, Dependent<RecipesListState>>{}),
+        );
 }

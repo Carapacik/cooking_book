@@ -9,5 +9,4 @@ Effect<RecipesListState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<RecipesListState> ctx) {
-}
+void _onAction(Action action, Context<RecipesListState> ctx) {}

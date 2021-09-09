@@ -8,12 +8,9 @@ import 'view.dart';
 class UploadImageComponent extends Component<UploadImageState> {
   UploadImageComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<UploadImageState>(
-                adapter: null,
-                slots: <String, Dependent<UploadImageState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<UploadImageState>(adapter: null, slots: <String, Dependent<UploadImageState>>{}),
+        );
 }

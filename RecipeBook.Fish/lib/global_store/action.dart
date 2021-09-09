@@ -9,4 +9,3 @@ class GlobalActionCreator {
     return Action(GlobalAction.setUser, payload: user);
   }
 }
-

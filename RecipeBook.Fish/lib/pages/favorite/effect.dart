@@ -9,5 +9,4 @@ Effect<FavoriteState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<FavoriteState> ctx) {
-}
+void _onAction(Action action, Context<FavoriteState> ctx) {}

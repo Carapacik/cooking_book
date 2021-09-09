@@ -9,5 +9,4 @@ Effect<ProfileState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<ProfileState> ctx) {
-}
+void _onAction(Action action, Context<ProfileState> ctx) {}

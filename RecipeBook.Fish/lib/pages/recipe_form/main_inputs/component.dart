@@ -8,12 +8,9 @@ import 'view.dart';
 class MainInputsComponent extends Component<MainInputsState> {
   MainInputsComponent()
       : super(
-            effect: buildEffect(),
-            reducer: buildReducer(),
-            view: buildView,
-            dependencies: Dependencies<MainInputsState>(
-                adapter: null,
-                slots: <String, Dependent<MainInputsState>>{
-                }),);
-
+          effect: buildEffect(),
+          reducer: buildReducer(),
+          view: buildView,
+          dependencies: Dependencies<MainInputsState>(adapter: null, slots: <String, Dependent<MainInputsState>>{}),
+        );
 }

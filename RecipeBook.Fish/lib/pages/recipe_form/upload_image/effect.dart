@@ -9,5 +9,4 @@ Effect<UploadImageState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<UploadImageState> ctx) {
-}
+void _onAction(Action action, Context<UploadImageState> ctx) {}

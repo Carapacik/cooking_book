@@ -9,5 +9,4 @@ Effect<CategoryListState> buildEffect() {
   });
 }
 
-void _onAction(Action action, Context<CategoryListState> ctx) {
-}
+void _onAction(Action action, Context<CategoryListState> ctx) {}
