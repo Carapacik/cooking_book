@@ -3,10 +3,10 @@ import 'package:fish_redux/fish_redux.dart';
 import 'action.dart';
 import 'state.dart';
 
-Effect<RecipesListState> buildEffect() {
-  return combineEffects(<Object, Effect<RecipesListState>>{
-    RecipesListAction.action: _onAction,
+Effect<RecipeListState> buildEffect() {
+  return combineEffects(<Object, Effect<RecipeListState>>{
+    RecipeListAction.action: _onAction,
   });
 }
 
-void _onAction(Action action, Context<RecipesListState> ctx) {}
+void _onAction(Action action, Context<RecipeListState> ctx) {}

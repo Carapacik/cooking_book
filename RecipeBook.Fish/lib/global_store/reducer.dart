@@ -13,6 +13,6 @@ Reducer<GlobalState> buildReducer() {
 }
 
 GlobalState _onSetUser(GlobalState state, Action action) {
-  final AppUser user = action.payload;
+  final AppUser user = action.payload as AppUser;
   return state.clone()..user = user;
 }

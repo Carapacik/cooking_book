@@ -1,6 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:recipebook/pages/components/header_widget/component.dart';
 import 'package:recipebook/pages/components/header_widget/state.dart' as headerState;
+import 'package:recipebook/pages/home_page/component.dart';
+import 'package:recipebook/pages/home_page/state.dart' as homeState;
 import 'package:recipebook/pages/recipes_page/component.dart';
 import 'package:recipebook/pages/recipes_page/state.dart' as recipesState;
 
@@ -18,6 +20,7 @@ class MainPage extends Page<MainState, Map<String, dynamic>> {
           view: buildView,
           dependencies: Dependencies<MainState>(adapter: null, slots: <String, Dependent<MainState>>{
             'header_widget': headerState.HeaderWidgetConnector() + HeaderWidgetComponent(),
+            'home_page': homeState.HomeConnector() + HomeComponent(),
             'recipes_page': recipesState.RecipesConnector() + RecipesComponent(),
           }),
           middleware: <Middleware<MainState>>[],

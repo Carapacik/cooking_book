@@ -9,7 +9,7 @@ class RecipesState implements Cloneable<RecipesState> {
 
   late CategoryListState categoryListState;
   late SearchBarState searchBarState;
-  late RecipesListState recipesListState;
+  late RecipeListState recipesListState;
 
   @override
   RecipesState clone() {
@@ -23,7 +23,7 @@ class RecipesState implements Cloneable<RecipesState> {
     return RecipesState()
       ..categoryListState = CategoryListState()
       ..searchBarState = SearchBarState()
-      ..recipesListState = RecipesListState();
+      ..recipesListState = RecipeListState();
   }
 }
 
@@ -31,7 +31,7 @@ RecipesState initState(Map<String, dynamic> args) {
   return RecipesState()
     ..categoryListState = CategoryListState()
     ..searchBarState = SearchBarState()
-    ..recipesListState = RecipesListState();
+    ..recipesListState = RecipeListState();
 }
 
 class RecipesConnector extends ConnOp<MainState, RecipesState> {

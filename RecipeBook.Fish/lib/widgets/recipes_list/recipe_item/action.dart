@@ -1,10 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
 
 //TODO replace with your own action
-enum UploadImageAction { action }
+enum RecipeItemAction { action }
 
-class UploadImageActionCreator {
+class RecipeItemActionCreator {
   static Action onAction() {
-    return const Action(UploadImageAction.action);
+    return const Action(RecipeItemAction.action);
   }
 }

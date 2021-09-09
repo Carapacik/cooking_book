@@ -1,8 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:recipebook/widgets/category_list/component.dart';
 import 'package:recipebook/widgets/category_list/state.dart';
-import 'package:recipebook/widgets/recipes_list/component.dart';
-import 'package:recipebook/widgets/recipes_list/state.dart';
 import 'package:recipebook/widgets/search_bar/component.dart';
 import 'package:recipebook/widgets/search_bar/state.dart';
 
@@ -11,18 +9,17 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class RecipesComponent extends Component<RecipesState> {
-  RecipesComponent()
+class HomeComponent extends Component<HomeState> {
+  HomeComponent()
       : super(
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<RecipesState>(
+          dependencies: Dependencies<HomeState>(
             adapter: null,
-            slots: <String, Dependent<RecipesState>>{
-              'category_list': CategoryListConnector() + CategoryListComponent(),
-              'search_bar': SearchBarConnector() + SearchBarComponent(),
-              'recipe_list': RecipeListConnector() + RecipeListComponent(),
+            slots: <String, Dependent<HomeState>>{
+              'category_list': CategoryListConnectorHome() + CategoryListComponent(),
+              'search_bar': SearchBarConnectorHome() + SearchBarComponent(),
             },
           ),
         );

@@ -1,22 +1,12 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:recipebook/global_store/state.dart';
 import 'package:recipebook/global_store/store.dart';
-import 'package:recipebook/pages/favorite/page.dart';
-import 'package:recipebook/pages/home/page.dart';
 import 'package:recipebook/pages/page.dart';
-import 'package:recipebook/pages/profile/page.dart';
-import 'package:recipebook/pages/recipe_detail/page.dart';
-import 'package:recipebook/pages/recipe_form/page.dart';
 
 class Routes {
   static final PageRoutes routes = PageRoutes(
     pages: <String, Page<Object, dynamic>>{
       RoutePath.mainPage: MainPage(),
-      RoutePath.homePage: HomePage(),
-      RoutePath.recipeFormPage: RecipeFormPage(),
-      RoutePath.recipeDetailPage: RecipeDetailPage(),
-      RoutePath.favoritePage: FavoritePage(),
-      RoutePath.profilePage: ProfilePage(),
     },
     visitor: (String path, Page<Object, dynamic> page) {
       if (page.isTypeof<GlobalBaseState>()) {

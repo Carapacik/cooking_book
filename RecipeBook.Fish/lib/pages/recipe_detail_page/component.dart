@@ -5,12 +5,12 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class UploadImageComponent extends Component<UploadImageState> {
-  UploadImageComponent()
+class RecipeDetailComponent extends Component<RecipeDetailState> {
+  RecipeDetailComponent()
       : super(
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<UploadImageState>(adapter: null, slots: <String, Dependent<UploadImageState>>{}),
+          dependencies: Dependencies<RecipeDetailState>(adapter: null, slots: <String, Dependent<RecipeDetailState>>{}),
         );
 }

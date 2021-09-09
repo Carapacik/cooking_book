@@ -1,21 +1,21 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:recipebook/pages/recipes_page/state.dart';
 
-class RecipesListState implements Cloneable<RecipesListState> {
+class RecipeListState implements Cloneable<RecipeListState> {
   @override
-  RecipesListState clone() {
-    return RecipesListState();
+  RecipeListState clone() {
+    return RecipeListState();
   }
 }
 
-RecipesListState initState(Map<String, dynamic> args) {
-  return RecipesListState();
+RecipeListState initState(Map<String, dynamic> args) {
+  return RecipeListState();
 }
 
-class RecipesListConnector extends ConnOp<RecipesState, RecipesListState> {
+class RecipeListConnector extends ConnOp<RecipesState, RecipeListState> {
   @override
-  RecipesListState get(RecipesState state) => state.recipesListState;
+  RecipeListState get(RecipesState state) => state.recipesListState;
 
   @override
-  void set(RecipesState state, RecipesListState subState) => state.recipesListState = subState;
+  void set(RecipesState state, RecipeListState subState) => state.recipesListState = subState;
 }

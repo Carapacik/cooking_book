@@ -3,6 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'state.dart';
 
-Widget buildView(StepInputsState state, Dispatch dispatch, ViewService viewService) {
+Widget buildView(RecipeItemState state, Dispatch dispatch, ViewService viewService) {
   return Container();
 }

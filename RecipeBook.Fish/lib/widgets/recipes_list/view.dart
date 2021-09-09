@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'state.dart';
 
-Widget buildView(RecipesListState state, Dispatch dispatch, ViewService viewService) {
+Widget buildView(RecipeListState state, Dispatch dispatch, ViewService viewService) {
   return Container(
     child: Center(child: Text("Список рецептов")),
   );

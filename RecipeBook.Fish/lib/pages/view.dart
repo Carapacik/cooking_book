@@ -8,15 +8,16 @@ Widget buildView(MainState state, Dispatch dispatch, ViewService viewService) {
   final headerWidget = viewService.buildComponent('header_widget');
 
   return Scaffold(
-    body: Center(
-      child: SizedBox(
-        width: 1200,
-        child: Column(
-          children: [
-            headerWidget,
-            const SizedBox(height: 40),
-            _buildBody(state, viewService),
-          ],
+    body: SingleChildScrollView(
+      child: Center(
+        child: SizedBox(
+          width: 1200,
+          child: Column(
+            children: [
+              headerWidget,
+              _buildBody(state, viewService),
+            ],
+          ),
         ),
       ),
     ),
@@ -26,7 +27,7 @@ Widget buildView(MainState state, Dispatch dispatch, ViewService viewService) {
 Widget _buildBody(MainState state, ViewService viewService) {
   switch (state.headerWidgetState.selectedItem) {
     case HeaderItem.home:
-    // return viewService.buildComponent('home_page');
+      return viewService.buildComponent('home_page');
     case HeaderItem.recipes:
       return viewService.buildComponent('recipes_page');
     case HeaderItem.favorite:

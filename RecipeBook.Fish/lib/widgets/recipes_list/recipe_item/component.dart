@@ -5,12 +5,12 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class StepInputsComponent extends Component<StepInputsState> {
-  StepInputsComponent()
+class RecipeItemComponent extends Component<RecipeItemState> {
+  RecipeItemComponent()
       : super(
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<StepInputsState>(adapter: null, slots: <String, Dependent<StepInputsState>>{}),
+          dependencies: Dependencies<RecipeItemState>(adapter: null, slots: <String, Dependent<RecipeItemState>>{}),
         );
 }

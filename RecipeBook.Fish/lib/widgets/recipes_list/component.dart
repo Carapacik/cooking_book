@@ -5,12 +5,12 @@ import 'reducer.dart';
 import 'state.dart';
 import 'view.dart';
 
-class RecipesListComponent extends Component<RecipesListState> {
-  RecipesListComponent()
+class RecipeListComponent extends Component<RecipeListState> {
+  RecipeListComponent()
       : super(
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
-          dependencies: Dependencies<RecipesListState>(adapter: null, slots: <String, Dependent<RecipesListState>>{}),
+          dependencies: Dependencies<RecipeListState>(adapter: null, slots: <String, Dependent<RecipeListState>>{}),
         );
 }
