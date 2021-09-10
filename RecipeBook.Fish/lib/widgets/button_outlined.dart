@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class ButtonOutlinedWidget extends StatelessWidget {
   const ButtonOutlinedWidget({
@@ -37,7 +38,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
         child: icon == null
             ? Text(
                 text,
-                //style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
               )
             : text != ""
                 ? Row(
@@ -51,7 +52,7 @@ class ButtonOutlinedWidget extends StatelessWidget {
                       SizedBox(width: padding),
                       Text(
                         text,
-                        //style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                        style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
                       ),
                     ],
                   )

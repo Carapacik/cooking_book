@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class ButtonBack extends StatelessWidget {
   const ButtonBack({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class ButtonBack extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             "Назад",
-            //style: Theme.of(context).textTheme.n18,
+            style: Theme.of(context).textTheme.n18,
           )
         ],
       ),

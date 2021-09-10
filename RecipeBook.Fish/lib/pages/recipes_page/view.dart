@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/button_contained.dart';
 
 import 'state.dart';
@@ -18,7 +19,7 @@ Widget buildView(RecipesState state, Dispatch dispatch, ViewService viewService)
         children: [
           Text(
             "Рецепты",
-            // style: Theme.of(context).textTheme.b42,
+            style: Theme.of(viewService.context).textTheme.b42,
           ),
           ButtonContainedWidget(
             icon: Icons.add,
@@ -38,7 +39,7 @@ Widget buildView(RecipesState state, Dispatch dispatch, ViewService viewService)
         children: [
           Text(
             "Поиск рецепта",
-            //style: Theme.of(context).textTheme.b24,
+            style: Theme.of(viewService.context).textTheme.b24,
           ),
           searchBar,
         ],

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace RecipeBook.Domain
+namespace RecipeBook.Application
 {
     public interface IUnitOfWork
     {

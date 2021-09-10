@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
+import 'package:recipebook/theme.dart';
 import 'package:recipebook/widgets/button_back.dart';
 import 'package:recipebook/widgets/button_contained.dart';
 import 'package:recipebook/widgets/button_outlined.dart';
@@ -11,22 +12,22 @@ Widget buildView(RecipeDetailState state, Dispatch dispatch, ViewService viewSer
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 48),
-      ButtonBack(),
+      const ButtonBack(),
       const SizedBox(height: 11),
-      _titlePart(),
+      _titlePart(state, viewService),
       const SizedBox(height: 50),
       //RecipeItem
     ],
   );
 }
 
-Widget _titlePart() {
+Widget _titlePart(RecipeDetailState state, ViewService viewService) {
   return Row(
     children: [
       Expanded(
         child: Text(
           "Детайльный рецепт",
-          //style: Theme.of(context).textTheme.b42,
+          style: Theme.of(viewService.context).textTheme.b42,
         ),
       ),
       ButtonOutlinedWidget(

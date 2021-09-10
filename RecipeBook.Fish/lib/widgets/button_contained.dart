@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class ButtonContainedWidget extends StatelessWidget {
   const ButtonContainedWidget({
@@ -36,7 +37,7 @@ class ButtonContainedWidget extends StatelessWidget {
         child: icon == null
             ? Text(
                 text,
-                //style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
               )
             : Row(
                 mainAxisSize: MainAxisSize.min,
@@ -49,7 +50,7 @@ class ButtonContainedWidget extends StatelessWidget {
                   SizedBox(width: padding),
                   Text(
                     text,
-                    //style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
                   ),
                 ],
               ),

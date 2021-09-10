@@ -30,12 +30,12 @@ Widget _buildBody(MainState state, ViewService viewService) {
       return viewService.buildComponent('home_page');
     case HeaderItem.recipes:
       return viewService.buildComponent('recipes_page');
+    case HeaderItem.recipeForm:
+      return viewService.buildComponent('recipe_form_page');
+    case HeaderItem.recipeDetail:
+      return viewService.buildComponent('recipe_detail_page');
     case HeaderItem.favorite:
     // return viewService.buildComponent('favorite_page');
-    case HeaderItem.recipeForm:
-    // return viewService.buildComponent('recipe_form_page');
-    case HeaderItem.recipeDetail:
-    // return viewService.buildComponent('recipe_detail_page');
     case HeaderItem.profile:
     // return viewService.buildComponent('profile_page');
     default:

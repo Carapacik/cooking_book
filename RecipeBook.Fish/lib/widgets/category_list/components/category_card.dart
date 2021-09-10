@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 class CategoryCardWidget extends StatelessWidget {
   final String title;
@@ -22,6 +23,7 @@ class CategoryCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 278,
+      height: description != null ? 270 : 165,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -65,18 +67,16 @@ class CategoryCardWidget extends StatelessWidget {
                 const SizedBox(height: 24),
                 Text(
                   title,
-                  // style: Theme.of(context).textTheme.b24,
+                  style: Theme.of(context).textTheme.b24,
                 ),
                 if (description != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 8),
+                    padding: const EdgeInsets.only(top: 16),
                     child: Text(
                       description!,
-                      // style: Theme.of(context).textTheme.r18,
+                      style: Theme.of(context).textTheme.r18,
                     ),
                   )
-                else
-                  const SizedBox(height: 12),
               ],
             ),
           ),

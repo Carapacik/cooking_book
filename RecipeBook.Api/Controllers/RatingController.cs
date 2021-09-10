@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipeBook.Application;
 using RecipeBook.Application.Services;
-using RecipeBook.Domain;
 
 namespace RecipeBook.Api.Controllers
 {

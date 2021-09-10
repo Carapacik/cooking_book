@@ -13,7 +13,7 @@ Widget buildView(CategoryListState state, Dispatch dispatch, ViewService viewSer
         iconPath: AppIcons.menu,
         title: "Простые блюда",
         searchQuery: "простое",
-        description: "Время приготвления таких блюд не более 1 часа",
+        description:  "Время приготвления таких блюд не более 1 часа",
       ),
       CategoryCardWidget(
         iconPath: AppIcons.cook,

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RecipeBook.Api.Builder;
+using RecipeBook.Application;
 using RecipeBook.Application.Services;
-using RecipeBook.Domain;
 using RecipeBook.Domain.Repositories;
 using RecipeBook.Infrastructure;
 using RecipeBook.Infrastructure.Repositories;

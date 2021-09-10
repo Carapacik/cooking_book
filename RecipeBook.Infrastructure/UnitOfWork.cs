@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using RecipeBook.Domain;
+using RecipeBook.Application;
 
 namespace RecipeBook.Infrastructure
 {

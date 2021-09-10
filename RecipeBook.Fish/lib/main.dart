@@ -23,6 +23,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: themeData,
+      debugShowCheckedModeBanner: false,
       home: routes.buildPage(RoutePath.mainPage, null),
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<Object>(

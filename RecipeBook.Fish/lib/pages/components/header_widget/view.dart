@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recipebook/resources/icons.dart';
 import 'package:recipebook/resources/palette.dart';
+import 'package:recipebook/theme.dart';
 
 import 'state.dart';
 
@@ -21,7 +22,7 @@ Widget buildView(HeaderWidgetState state, Dispatch dispatch, ViewService viewSer
               style: TextButton.styleFrom(primary: Palette.orange),
               child: Text(
                 "Recipes",
-                //style: Theme.of(context).textTheme.b24.copyWith(color: Palette.orange),
+                style: Theme.of(viewService.context).textTheme.b24.copyWith(color: Palette.orange),
               ),
             ),
             const SizedBox(width: 80),
@@ -32,6 +33,7 @@ Widget buildView(HeaderWidgetState state, Dispatch dispatch, ViewService viewSer
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Text(
                   HeaderButtons.getById(0).name,
+                  style: Theme.of(viewService.context).textTheme.r18.copyWith(color: Palette.grey),
                   // style: widget.currentSelectedPage?.index == index
                   //     ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
                   //     : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
@@ -45,6 +47,7 @@ Widget buildView(HeaderWidgetState state, Dispatch dispatch, ViewService viewSer
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Text(
                   HeaderButtons.getById(1).name,
+                  style: Theme.of(viewService.context).textTheme.r18.copyWith(color: Palette.grey),
                   // style: widget.currentSelectedPage?.index == index
                   //     ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
                   //     : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
@@ -58,6 +61,7 @@ Widget buildView(HeaderWidgetState state, Dispatch dispatch, ViewService viewSer
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Text(
                   HeaderButtons.getById(2).name,
+                  style: Theme.of(viewService.context).textTheme.r18.copyWith(color: Palette.grey),
                   // style: widget.currentSelectedPage?.index == index
                   //     ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
                   //     : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
@@ -80,7 +84,7 @@ Widget buildView(HeaderWidgetState state, Dispatch dispatch, ViewService viewSer
                       const SizedBox(width: 14),
                       Text(
                         "Войти",
-                        //style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                        style: Theme.of(viewService.context).textTheme.b18.copyWith(color: Palette.orange),
                       ),
                     ],
                   ),

@@ -1,4 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:recipebook/pages/home_page/components/daily_recipe/component.dart';
+import 'package:recipebook/pages/home_page/components/daily_recipe/state.dart';
 import 'package:recipebook/widgets/category_list/component.dart';
 import 'package:recipebook/widgets/category_list/state.dart';
 import 'package:recipebook/widgets/search_bar/component.dart';
@@ -20,6 +22,7 @@ class HomeComponent extends Component<HomeState> {
             slots: <String, Dependent<HomeState>>{
               'category_list': CategoryListConnectorHome() + CategoryListComponent(),
               'search_bar': SearchBarConnectorHome() + SearchBarComponent(),
+              'daily_recipe': DailyRecipeConnector() + DailyRecipeComponent(),
             },
           ),
         );
