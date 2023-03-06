@@ -1,23 +1,24 @@
 import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/recipe_item.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/recipe_tag_list_widget.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/not_auth_dialog.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/recipe_image_with_author.dart';
+import 'package:recipe_book_flutter/model/recipe_item.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/recipe_tag_list_widget.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/not_auth_dialog.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/widgets/recipe_image_with_author.dart';
 
 class RecipeItemWidget extends StatefulWidget {
   const RecipeItemWidget({
-    this.isDetail,
     required this.recipeItem,
-    Key? key,
-  }) : super(key: key);
+    this.isDetail,
+    super.key,
+  });
 
   final RecipeItem recipeItem;
   final bool? isDetail;
@@ -35,8 +36,8 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
     super.initState();
   }
 
-  Future addFavorite() async {
-    Response response;
+  Future<void> addFavorite() async {
+    Response<dynamic> response;
 
     try {
       widget.recipeItem.favoritesCount++;
@@ -45,7 +46,9 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
         widget.recipeItem.likesCount++;
         widget.recipeItem.isLiked = true;
       }
-      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/add-to-favorites");
+      response = await apiService.postRequestWithoutData(
+        'recipes/${widget.recipeItem.recipeId}/rating/add-to-favorites',
+      );
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -55,18 +58,21 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
         });
       }
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  Future removeFavorite() async {
-    Response response;
+  Future<void> removeFavorite() async {
+    Response<dynamic> response;
 
     try {
       widget.recipeItem.favoritesCount--;
       widget.recipeItem.isFavorite = false;
-      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/remove-from-favorites");
+      response = await apiService.postRequestWithoutData(
+        'recipes/${widget.recipeItem.recipeId}/rating/remove-from-favorites',
+      );
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -75,18 +81,21 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
         });
       }
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  Future addLike() async {
-    Response response;
+  Future<void> addLike() async {
+    Response<dynamic> response;
 
     try {
       widget.recipeItem.likesCount++;
       widget.recipeItem.isLiked = true;
-      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/add-to-likes");
+      response = await apiService.postRequestWithoutData(
+        'recipes/${widget.recipeItem.recipeId}/rating/add-to-likes',
+      );
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -95,18 +104,21 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
         });
       }
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  Future removeLike() async {
-    Response response;
+  Future<void> removeLike() async {
+    Response<dynamic> response;
 
     try {
       widget.recipeItem.likesCount--;
       widget.recipeItem.isLiked = false;
-      response = await apiService.postRequestWithoutData("recipes/${widget.recipeItem.recipeId}/rating/remove-from-likes");
+      response = await apiService.postRequestWithoutData(
+        'recipes/${widget.recipeItem.recipeId}/rating/remove-from-likes',
+      );
       if (response.statusCode == 200) {
         setState(() {});
       } else {
@@ -115,8 +127,9 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
         });
       }
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -146,10 +159,10 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
           if (widget.isDetail == null)
             TextButton(
               onPressed: () {
-                context.beamToNamed("/recipes/${widget.recipeItem.recipeId}");
+                context.beamToNamed('/recipes/${widget.recipeItem.recipeId}');
               },
               style: TextButton.styleFrom(
-                primary: Palette.orange,
+                foregroundColor: Palette.orange,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(72),
@@ -184,46 +197,54 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
                       Row(
                         children: [
                           ButtonOutlinedWidget(
-                            icon: widget.recipeItem.isFavorite ? Icons.star : Icons.star_border,
-                            color: widget.recipeItem.isFavorite ? Palette.red : Palette.orange,
+                            icon: widget.recipeItem.isFavorite
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: widget.recipeItem.isFavorite
+                                ? Palette.red
+                                : Palette.orange,
                             padding: 12,
                             text: widget.recipeItem.favoritesCount.toString(),
                             width: 107,
                             height: 50,
-                            onPressed: () {
+                            onPressed: () async {
                               if (authNotifier.isAuth) {
                                 if (widget.recipeItem.isFavorite) {
-                                  removeFavorite();
+                                  await removeFavorite();
                                 } else {
-                                  addFavorite();
+                                  await addFavorite();
                                 }
                               } else {
                                 notAuthDialog(
                                   context,
-                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                  'Оценивать рецепты могут только авторизированные пользователи.',
                                 );
                               }
                             },
                           ),
                           const SizedBox(width: 15),
                           ButtonOutlinedWidget(
-                            icon: widget.recipeItem.isLiked ? Icons.favorite : Icons.favorite_outline,
-                            color: widget.recipeItem.isLiked ? Palette.red : Palette.orange,
+                            icon: widget.recipeItem.isLiked
+                                ? Icons.favorite
+                                : Icons.favorite_outline,
+                            color: widget.recipeItem.isLiked
+                                ? Palette.red
+                                : Palette.orange,
                             padding: 12,
                             text: widget.recipeItem.likesCount.toString(),
                             width: 107,
                             height: 50,
-                            onPressed: () {
+                            onPressed: () async {
                               if (authNotifier.isAuth) {
                                 if (widget.recipeItem.isLiked) {
-                                  removeLike();
+                                  await removeLike();
                                 } else {
-                                  addLike();
+                                  await addLike();
                                 }
                               } else {
                                 notAuthDialog(
                                   context,
-                                  "Оценивать рецепты могут только авторизированные пользователи.",
+                                  'Оценивать рецепты могут только авторизированные пользователи.',
                                 );
                               }
                             },
@@ -269,13 +290,16 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Время приготовления:",
+                                'Время приготовления:',
                                 style: Theme.of(context).textTheme.r14,
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                "${widget.recipeItem.cookingTimeInMinutes} мин",
-                                style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                '${widget.recipeItem.cookingTimeInMinutes} мин',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .r16
+                                    .copyWith(color: Palette.main),
                               ),
                             ],
                           )
@@ -292,13 +316,16 @@ class _RecipeItemWidgetState extends State<RecipeItemWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Рецепт на:",
+                                'Рецепт на:',
                                 style: Theme.of(context).textTheme.r14,
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                "${widget.recipeItem.portionsCount} персон",
-                                style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                '${widget.recipeItem.portionsCount} персон',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .r16
+                                    .copyWith(color: Palette.main),
                               ),
                             ],
                           )

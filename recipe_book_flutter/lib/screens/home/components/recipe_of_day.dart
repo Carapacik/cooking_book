@@ -1,18 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/model/recipe_of_day.dart';
-import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/recipe_image_with_author.dart';
+import 'package:recipe_book_flutter/model/recipe_of_day.dart';
+import 'package:recipe_book_flutter/resources/icons.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/recipe_image_with_author.dart';
 
 class RecipeOfDayWidget extends StatefulWidget {
-  const RecipeOfDayWidget({Key? key}) : super(key: key);
+  const RecipeOfDayWidget({super.key});
 
   @override
   _RecipeOfDayWidgetState createState() => _RecipeOfDayWidgetState();
@@ -25,31 +27,32 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
 
   @override
   void initState() {
-    apiService = ApiService();
-    getRecipeOfDay();
     super.initState();
+    apiService = ApiService();
+    unawaited(getRecipeOfDay());
   }
 
-  Future getRecipeOfDay() async {
-    Response response;
+  Future<void> getRecipeOfDay() async {
+    Response<dynamic> response;
 
     try {
-      response = await apiService.getRequest("recipes/recipe-of-day");
+      response = await apiService.getRequest('recipes/recipe-of-day');
       isLoading = false;
       if (response.statusCode == 200) {
         setState(() {
-          recipeOfDay = RecipeOfDay.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+          recipeOfDay = RecipeOfDay.fromJson(
+            jsonDecode(response.data as String) as Map<String, dynamic>,
+          );
         });
-      } else {
-        //
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
       setState(() {
         recipeOfDay = null;
       });
       isLoading = false;
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -66,7 +69,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
         height: 500,
         child: Center(
           child: Text(
-            "Не удалось найти рецепт",
+            'Не удалось найти рецепт',
             style: Theme.of(context).textTheme.m24.copyWith(color: Palette.red),
           ),
         ),
@@ -77,10 +80,10 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
       children: [
         TextButton(
           onPressed: () {
-            context.beamToNamed("/recipes/${recipeOfDay!.recipeId}");
+            context.beamToNamed('/recipes/${recipeOfDay!.recipeId}');
           },
           style: TextButton.styleFrom(
-            primary: Palette.orange,
+            foregroundColor: Palette.orange,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(72),
@@ -122,7 +125,7 @@ class _RecipeOfDayWidgetState extends State<RecipeOfDayWidget> {
                   ),
                   const SizedBox(width: 7),
                   Text(
-                    "${recipeOfDay!.cookingTimeInMinutes} минут",
+                    '${recipeOfDay!.cookingTimeInMinutes} минут',
                     style: Theme.of(context).textTheme.r16,
                   ),
                 ],

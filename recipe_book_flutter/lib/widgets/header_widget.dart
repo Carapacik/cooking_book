@@ -1,17 +1,19 @@
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
-import 'package:recipebook/widgets/login_dialog.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/icons.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/header_buttons.dart';
+import 'package:recipe_book_flutter/widgets/login_dialog.dart';
 
 class HeaderWidget extends StatefulWidget {
-  const HeaderWidget({Key? key, this.currentSelectedPage}) : super(key: key);
+  const HeaderWidget({super.key, this.currentSelectedPage});
 
   final HeaderButtons? currentSelectedPage;
 
@@ -28,14 +30,14 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     apiService = ApiService();
     _authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     if (!_authNotifier.isAuth) {
-      _authNotifier.getCurrentUser();
+      unawaited(_authNotifier.getCurrentUser());
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _authNotifier = Provider.of<AuthNotifier>(context); // чтоюы избранное появлялось после создания экрана
+    _authNotifier = Provider.of<AuthNotifier>(context);
     return SizedBox(
       height: 80,
       child: Center(
@@ -49,12 +51,13 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 onPressed: () {
                   context.beamToNamed(HeaderButtons.home.route);
                 },
-                style: TextButton.styleFrom(
-                  primary: Palette.orange
-                ),
+                style: TextButton.styleFrom(foregroundColor: Palette.orange),
                 child: Text(
-                  "Recipes",
-                  style: Theme.of(context).textTheme.b24.copyWith(color: Palette.orange),
+                  'Recipes',
+                  style: Theme.of(context)
+                      .textTheme
+                      .b24
+                      .copyWith(color: Palette.orange),
                 ),
               ),
               const SizedBox(width: 80),
@@ -64,16 +67,21 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   onPressed: () {
                     context.beamToNamed(HeaderButtons.getById(index).route);
                   },
-                  style: TextButton.styleFrom(
-                    primary: Palette.orange
-                  ),
+                  style: TextButton.styleFrom(foregroundColor: Palette.orange),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                     child: Text(
                       HeaderButtons.getById(index).name,
                       style: widget.currentSelectedPage?.index == index
-                          ? Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten2)
-                          : Theme.of(context).textTheme.r18.copyWith(color: Palette.grey),
+                          ? Theme.of(context)
+                              .textTheme
+                              .b18
+                              .copyWith(color: Palette.mainLighten2)
+                          : Theme.of(context)
+                              .textTheme
+                              .r18
+                              .copyWith(color: Palette.grey),
                     ),
                   ),
                 ),
@@ -85,12 +93,13 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     TextButton(
                       onPressed: auth.isAuth
                           ? () {
-                              context.beamToNamed("/profile");
+                              context.beamToNamed('/profile');
                             }
                           : () {
                               loginDialog(context);
                             },
-                      style: TextButton.styleFrom(primary: Palette.orange),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Palette.orange),
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -100,8 +109,13 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                           ),
                           const SizedBox(width: 14),
                           Text(
-                            auth.isAuth ? "Привет, ${auth.userDetail!.name}" : "Войти",
-                            style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                            auth.isAuth
+                                ? 'Привет, ${auth.userDetail!.name}'
+                                : 'Войти',
+                            style: Theme.of(context)
+                                .textTheme
+                                .b18
+                                .copyWith(color: Palette.orange),
                           ),
                         ],
                       ),
@@ -116,8 +130,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     if (auth.isAuth)
                       IconButton(
                         onPressed: () {
-                          auth.logout();
-                          context.beamToNamed("/");
+                          unawaited(auth.logout());
+                          context.beamToNamed('/');
                         },
                         splashRadius: 16,
                         icon: const Icon(

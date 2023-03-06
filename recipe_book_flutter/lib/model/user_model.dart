@@ -4,15 +4,16 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  UserModel({
+  const UserModel({
     required this.name,
     required this.login,
   });
 
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
+
   final String name;
   final String login;
-
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

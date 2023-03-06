@@ -1,30 +1,32 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/recipe_detail.dart';
-import 'package:recipebook/model/recipe_item.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/images.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/delete_dialog.dart';
-import 'package:recipebook/widgets/error_snack_bar.dart';
-import 'package:recipebook/widgets/header_widget.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/recipe_item_widget.dart';
+import 'package:recipe_book_flutter/model/recipe_detail.dart';
+import 'package:recipe_book_flutter/model/recipe_item.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/images.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/delete_dialog.dart';
+import 'package:recipe_book_flutter/widgets/error_snack_bar.dart';
+import 'package:recipe_book_flutter/widgets/header_buttons.dart';
+import 'package:recipe_book_flutter/widgets/header_widget.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/widgets/recipe_item_widget.dart';
 
 class RecipeDetailPage extends StatefulWidget {
   const RecipeDetailPage({
     required this.recipeId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String recipeId;
 
@@ -40,26 +42,27 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   @override
   void initState() {
     apiService = ApiService();
-    getDetailRecipe();
+    unawaited(getDetailRecipe());
     super.initState();
   }
 
-  Future getDetailRecipe() async {
-    Response response;
+  Future<void> getDetailRecipe() async {
+    Response<dynamic> response;
 
     try {
-      response = await apiService.getRequest("recipes/${widget.recipeId}");
+      response = await apiService.getRequest('recipes/${widget.recipeId}');
       isLoading = false;
       if (response.statusCode == 200) {
         setState(() {
-          recipeDetail = RecipeDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+          recipeDetail = RecipeDetail.fromJson(
+            jsonDecode(response.data as String) as Map<String, dynamic>,
+          );
         });
-      } else {
-        // затычка, код не 200
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -71,8 +74,9 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           children: [
             SvgPicture.asset(
               CookingImages.wave1,
-              color: Palette.wave,
               width: MediaQuery.of(context).size.width,
+              colorFilter:
+                  const ColorFilter.mode(Palette.wave, BlendMode.srcIn),
             ),
             const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Center(
@@ -87,7 +91,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                       onPressed: () {
                         context.beamBack();
                       },
-                      style: TextButton.styleFrom(primary: Palette.orange),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Palette.orange),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -97,7 +102,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            "Назад",
+                            'Назад',
                             style: Theme.of(context).textTheme.n18,
                           )
                         ],
@@ -109,7 +114,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                       children: [
                         if (isLoading)
                           Text(
-                            "Загрузка рецепта...",
+                            'Загрузка рецепта...',
                             style: Theme.of(context).textTheme.b42,
                           )
                         else
@@ -119,36 +124,48 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           ),
                         if (!isLoading)
                           Consumer<AuthNotifier>(
-                            builder: (context, auth, child) => auth.userDetail?.login == recipeDetail.username
-                                ? Row(
-                                    children: [
-                                      ButtonOutlinedWidget(
-                                        text: "",
-                                        width: 60,
-                                        height: 60,
-                                        icon: Icons.delete_outline,
-                                        onPressed: () {
-                                          deleteDialog(context, _deleteRecipe(context, recipeDetail.recipeId));
-                                        },
-                                      ),
-                                      const SizedBox(width: 18),
-                                      ButtonContainedWidget(
-                                        text: "Редактировать",
-                                        width: 278,
-                                        height: 60,
-                                        icon: Icons.edit,
-                                        padding: 18,
-                                        onPressed: () => context.beamToNamed("/recipes/${widget.recipeId}/edit"),
-                                      ),
-                                    ],
-                                  )
-                                : const SizedBox(),
+                            builder: (context, auth, child) =>
+                                auth.userDetail?.login == recipeDetail.username
+                                    ? Row(
+                                        children: [
+                                          ButtonOutlinedWidget(
+                                            text: '',
+                                            width: 60,
+                                            height: 60,
+                                            icon: Icons.delete_outline,
+                                            onPressed: () {
+                                              deleteDialog(
+                                                context,
+                                                _deleteRecipe(
+                                                  context,
+                                                  recipeDetail.recipeId,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(width: 18),
+                                          ButtonContainedWidget(
+                                            text: 'Редактировать',
+                                            width: 278,
+                                            height: 60,
+                                            icon: Icons.edit,
+                                            padding: 18,
+                                            onPressed: () =>
+                                                context.beamToNamed(
+                                              '/recipes/${widget.recipeId}/edit',
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox(),
                           ),
                       ],
                     ),
                     const SizedBox(height: 50),
                     if (isLoading)
-                      const Center(child: CircularProgressIndicator(color: Palette.orange))
+                      const Center(
+                        child: CircularProgressIndicator(color: Palette.orange),
+                      )
                     else
                       Column(
                         children: [
@@ -163,7 +180,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                               tags: recipeDetail.tags,
                               favoritesCount: recipeDetail.favoritesCount,
                               likesCount: recipeDetail.likesCount,
-                              cookingTimeInMinutes: recipeDetail.cookingTimeInMinutes,
+                              cookingTimeInMinutes:
+                                  recipeDetail.cookingTimeInMinutes,
                               portionsCount: recipeDetail.portionsCount,
                               isFavorite: recipeDetail.isFavorite,
                               isLiked: recipeDetail.isLiked,
@@ -180,33 +198,53 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Ингредиенты",
-                                      style: Theme.of(context).textTheme.b20.copyWith(color: Palette.orange),
+                                      'Ингредиенты',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .b20
+                                          .copyWith(color: Palette.orange),
                                     ),
                                     ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: recipeDetail.ingredients.length,
+                                      itemCount:
+                                          recipeDetail.ingredients.length,
                                       itemBuilder: (context, index) {
                                         return ListView.separated(
                                           shrinkWrap: true,
-                                          itemCount: recipeDetail.ingredients[index].ingredientNames.length + 1,
+                                          itemCount: recipeDetail
+                                                  .ingredients[index]
+                                                  .ingredientNames
+                                                  .length +
+                                              1,
                                           itemBuilder: (context, id) {
                                             if (id == 0) {
                                               return Padding(
-                                                padding: const EdgeInsets.only(top: 20),
+                                                padding: const EdgeInsets.only(
+                                                  top: 20,
+                                                ),
                                                 child: Text(
-                                                  recipeDetail.ingredients[index].title,
-                                                  style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                                                  recipeDetail
+                                                      .ingredients[index].title,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .b18
+                                                      .copyWith(
+                                                        color: Palette
+                                                            .mainLighten1,
+                                                      ),
                                                 ),
                                               );
                                             } else {
                                               return Text(
-                                                recipeDetail.ingredients[index].ingredientNames[id - 1],
-                                                style: Theme.of(context).textTheme.r18,
+                                                recipeDetail.ingredients[index]
+                                                    .ingredientNames[id - 1],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .r18,
                                               );
                                             }
                                           },
-                                          separatorBuilder: (BuildContext context, int index) {
+                                          separatorBuilder: (context, index) {
                                             return const SizedBox(height: 10);
                                           },
                                         );
@@ -226,7 +264,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                         return Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(24),
+                                            borderRadius:
+                                                BorderRadius.circular(24),
                                             boxShadow: const [
                                               BoxShadow(
                                                 offset: Offset(0, 16),
@@ -236,30 +275,42 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                                             ],
                                           ),
                                           width: 790,
-                                          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 73),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 50,
+                                            horizontal: 73,
+                                          ),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Шаг ${index + 1}",
-                                                style: Theme.of(context).textTheme.b18.copyWith(color: Palette.mainLighten1),
+                                                'Шаг ${index + 1}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .b18
+                                                    .copyWith(
+                                                      color:
+                                                          Palette.mainLighten1,
+                                                    ),
                                               ),
                                               const SizedBox(height: 10),
                                               Text(
                                                 recipeDetail.steps[index],
-                                                style: Theme.of(context).textTheme.r18,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .r18,
                                               ),
                                             ],
                                           ),
                                         );
                                       },
-                                      separatorBuilder: (BuildContext context, int index) {
+                                      separatorBuilder: (context, index) {
                                         return const SizedBox(height: 20);
                                       },
                                     ),
                                     const SizedBox(height: 40),
                                     Text(
-                                      "Приятного аппетита!",
+                                      'Приятного аппетита!',
                                       style: Theme.of(context).textTheme.m24,
                                     ),
                                   ],
@@ -281,14 +332,16 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   }
 
   VoidCallback? _deleteRecipe(BuildContext context, int id) {
+    final beamer = Beamer.of(context);
+    final navigator = Navigator.of(context);
     return () async {
       try {
-        await apiService.deleteRequest("recipes/$id/delete");
-        Navigator.of(context).pop();
-        context.beamToNamed("/");
-      } catch (e) {
-        Navigator.of(context).pop();
-        errorSnackBar(context, "Ошибка удаления: $e");
+        await apiService.deleteRequest('recipes/$id/delete');
+        navigator.pop();
+        beamer.beamToNamed('/');
+      } on Exception catch (e) {
+        navigator.pop();
+        errorSnackBar(context, 'Ошибка удаления: $e');
       }
     };
   }

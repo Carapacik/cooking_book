@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
@@ -5,34 +6,34 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/recipe_command.dart';
-import 'package:recipebook/model/recipe_detail.dart';
-import 'package:recipebook/notifier/ingredient_notifier.dart';
-import 'package:recipebook/notifier/step_notifier.dart';
-import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/images.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/screens/recipes/components/ingredient_list_widget.dart';
-import 'package:recipebook/screens/recipes/components/step_list_widget.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/error_snack_bar.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
-import 'package:recipebook/widgets/header_widget.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/model/recipe_command.dart';
+import 'package:recipe_book_flutter/model/recipe_detail.dart';
+import 'package:recipe_book_flutter/notifier/ingredient_notifier.dart';
+import 'package:recipe_book_flutter/notifier/step_notifier.dart';
+import 'package:recipe_book_flutter/resources/icons.dart';
+import 'package:recipe_book_flutter/resources/images.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/ingredient_list_widget.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/step_list_widget.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/error_snack_bar.dart';
+import 'package:recipe_book_flutter/widgets/header_buttons.dart';
+import 'package:recipe_book_flutter/widgets/header_widget.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
 
 class RecipeFormPage extends StatefulWidget {
   const RecipeFormPage({
     this.recipeId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String? recipeId;
 
@@ -47,7 +48,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   final cookingTimeController = TextEditingController();
   final portionsCountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  static const baseImageStorage = "http://localhost:5000/storage/images/";
+  static const baseImageStorage = 'http://localhost:5000/storage/images/';
   late ApiService apiService;
   RecipeDetail? recipeDetail;
   FilePickerResult? result;
@@ -63,32 +64,34 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   void initState() {
     apiService = ApiService();
     if (widget.recipeId != null) {
-      getDetailRecipe();
+      unawaited(getDetailRecipe());
     }
     super.initState();
   }
 
-  Future getDetailRecipe() async {
-    Response response;
+  Future<void> getDetailRecipe() async {
+    Response<dynamic> response;
 
     try {
-      response = await apiService.getRequest("recipes/${widget.recipeId}");
+      response = await apiService.getRequest('recipes/${widget.recipeId}');
       if (response.statusCode == 200) {
-        recipeDetail = RecipeDetail.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+        recipeDetail = RecipeDetail.fromJson(
+          jsonDecode(response.data as String) as Map<String, dynamic>,
+        );
         titleController.text = recipeDetail!.title;
         descriptionController.text = recipeDetail!.description;
-        cookingTimeController.text = recipeDetail!.cookingTimeInMinutes.toString();
+        cookingTimeController.text =
+            recipeDetail!.cookingTimeInMinutes.toString();
         portionsCountController.text = recipeDetail!.portionsCount.toString();
-        tagsController.text = recipeDetail!.tags.join(", ");
+        tagsController.text = recipeDetail!.tags.join(', ');
         setState(() {
           isLoading = false;
         });
-      } else {
-        // затычка, код не 200
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -104,12 +107,14 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    final stepNotifier = Provider.of<StepNotifier>(context);
+    final ingredientNotifier = Provider.of<IngredientNotifier>(context);
 
     if (widget.recipeId != null) {
       if (isLoading) {
-        return const Center(child: CircularProgressIndicator(color: Palette.orange));
+        return const Center(
+          child: CircularProgressIndicator(color: Palette.orange),
+        );
       }
       stepNotifier.replaceList(recipeDetail!.steps);
       ingredientNotifier.replaceList(recipeDetail!.ingredients);
@@ -121,8 +126,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           children: [
             SvgPicture.asset(
               CookingImages.wave1,
-              color: Palette.wave,
               width: MediaQuery.of(context).size.width,
+              colorFilter:
+                  const ColorFilter.mode(Palette.wave, BlendMode.srcIn),
             ),
             const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
             Center(
@@ -139,7 +145,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         onPressed: () {
                           context.beamBack();
                         },
-                        style: TextButton.styleFrom(primary: Palette.orange),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Palette.orange,
+                        ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -149,7 +157,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              "Назад",
+                              'Назад',
                               style: Theme.of(context).textTheme.n18,
                             )
                           ],
@@ -160,11 +168,15 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            recipeDetail == null ? "Добавить новый рецепт" : "Редактировать рецепт",
+                            recipeDetail == null
+                                ? 'Добавить новый рецепт'
+                                : 'Редактировать рецепт',
                             style: Theme.of(context).textTheme.b42,
                           ),
                           ButtonContainedWidget(
-                            text: recipeDetail == null ? "Опубликовать" : "Изменить",
+                            text: recipeDetail == null
+                                ? 'Опубликовать'
+                                : 'Изменить',
                             width: 278,
                             height: 60,
                             onPressed: _getSendingFunction(context),
@@ -172,7 +184,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         ],
                       ),
                       const SizedBox(height: 50),
-                      Container(
+                      DecoratedBox(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
@@ -187,32 +199,37 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         child: Row(
                           children: [
                             TextButton(
-                                onPressed: () async {
-                                  result = await FilePicker.platform.pickFiles(type: FileType.image);
-                                  if (result == null) {
-                                    setState(() {
-                                      isFilePicked = false;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      isFilePicked = true;
-                                    });
-                                  }
-                                },
-                                clipBehavior: Clip.antiAlias,
-                                style: TextButton.styleFrom(
-                                  backgroundColor: !isFilePicked ? Palette.red.withOpacity(0.4) : Palette.uploadPhotoBackground,
-                                  primary: Palette.orange,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(72),
-                                      bottomRight: Radius.circular(72),
-                                    ),
+                              onPressed: () async {
+                                result = await FilePicker.platform
+                                    .pickFiles(type: FileType.image);
+                                if (result == null) {
+                                  setState(() {
+                                    isFilePicked = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isFilePicked = true;
+                                  });
+                                }
+                              },
+                              clipBehavior: Clip.antiAlias,
+                              style: TextButton.styleFrom(
+                                foregroundColor: Palette.orange,
+                                backgroundColor: !isFilePicked
+                                    ? Palette.red.withOpacity(0.4)
+                                    : Palette.uploadPhotoBackground,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(72),
+                                    bottomRight: Radius.circular(72),
                                   ),
                                 ),
-                                child: _getUploadedImageButton()),
+                              ),
+                              child: _getUploadedImageButton(),
+                            ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 53, right: 70),
+                              padding:
+                                  const EdgeInsets.only(left: 53, right: 70),
                               child: SizedBox(
                                 width: 647,
                                 child: Column(
@@ -220,10 +237,10 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                   children: [
                                     FormTextFieldWidget(
                                       controller: titleController,
-                                      hintText: "Название рецепта",
+                                      hintText: 'Название рецепта',
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return "Название рецепта обязательно";
+                                          return 'Название рецепта обязательно';
                                         }
                                         return null;
                                       },
@@ -237,11 +254,12 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                       controller: descriptionController,
                                       textarea: true,
                                       height: 120,
-                                      hintText: "Краткое описание рецепта (150 символов)",
+                                      hintText:
+                                          'Краткое описание рецепта (150 символов)',
                                       maxLength: 150,
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return "Описание рецепта обязательно";
+                                          return 'Описание рецепта обязательно';
                                         }
                                         return null;
                                       },
@@ -252,15 +270,15 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                     const SizedBox(height: 20),
                                     FormTextFieldWidget(
                                       controller: tagsController,
-                                      hintText: "Добавить теги",
+                                      hintText: 'Добавить теги',
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return "Введите хотя бы один тэг";
+                                          return 'Введите хотя бы один тэг';
                                         }
                                         return null;
                                       },
                                       onSaved: (value) {
-                                        tags = value!.trim().split(",");
+                                        tags = value!.trim().split(',');
                                       },
                                     ),
                                     const SizedBox(height: 20),
@@ -270,15 +288,19 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                           width: 220,
                                           controller: cookingTimeController,
                                           keyboardType: TextInputType.number,
-                                          hintText: "Время готовки",
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          hintText: 'Время готовки',
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
                                           validator: (value) {
                                             if (value!.isEmpty) {
-                                              return "Не должно быть пустым";
+                                              return 'Не должно быть пустым';
                                             }
-                                            final result = int.tryParse(value) ?? "";
-                                            if (result == "") {
-                                              return "Должно быть целым";
+                                            final result =
+                                                int.tryParse(value) ?? '';
+                                            if (result == '') {
+                                              return 'Должно быть целым';
                                             }
                                             return null;
                                           },
@@ -288,23 +310,30 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                         ),
                                         const SizedBox(width: 11),
                                         Text(
-                                          "Минут",
-                                          style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                          'Минут',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .r16
+                                              .copyWith(color: Palette.main),
                                         ),
                                         const SizedBox(width: 64),
                                         FormTextFieldWidget(
                                           width: 220,
                                           controller: portionsCountController,
                                           keyboardType: TextInputType.number,
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                          hintText: "Порций в блюде",
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          hintText: 'Порций в блюде',
                                           validator: (value) {
                                             if (value!.isEmpty) {
-                                              return "Не должно быть пустым";
+                                              return 'Не должно быть пустым';
                                             }
-                                            final result = int.tryParse(value) ?? "";
-                                            if (result == "") {
-                                              return "Должно быть целым";
+                                            final result =
+                                                int.tryParse(value) ?? '';
+                                            if (result == '') {
+                                              return 'Должно быть целым';
                                             }
                                             return null;
                                           },
@@ -314,8 +343,11 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                                         ),
                                         const SizedBox(width: 11),
                                         Text(
-                                          "Персон",
-                                          style: Theme.of(context).textTheme.r16.copyWith(color: Palette.main),
+                                          'Персон',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .r16
+                                              .copyWith(color: Palette.main),
                                         ),
                                       ],
                                     ),
@@ -337,18 +369,17 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Ингредиенты",
+                                  'Ингредиенты',
                                   style: Theme.of(context).textTheme.b20,
                                 ),
                                 const IngredientListWidget(),
                                 const SizedBox(height: 40),
                                 ButtonOutlinedWidget(
-                                  text: "Добавить заголовок",
+                                  text: 'Добавить заголовок',
                                   width: 380,
                                   height: 60,
-                                  onPressed: () {
-                                    ingredientNotifier.addNewIngredient();
-                                  },
+                                  onPressed:
+                                      ingredientNotifier.addNewIngredient,
                                 ),
                               ],
                             ),
@@ -359,12 +390,10 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                               children: [
                                 const StepListWidget(),
                                 ButtonOutlinedWidget(
-                                  text: "Добавить шаг",
+                                  text: 'Добавить шаг',
                                   width: 380,
                                   height: 60,
-                                  onPressed: () {
-                                    stepNotifier.addStep();
-                                  },
+                                  onPressed: stepNotifier.addStep,
                                 ),
                               ],
                             ),
@@ -393,9 +422,9 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
 
   String _getText() {
     if (!isFilePicked) {
-      return "Необходимо загрузить\nфотографию";
+      return 'Необходимо загрузить\nфотографию';
     } else {
-      return "Загрузите фото\nготового блюда";
+      return 'Загрузите фото\nготового блюда';
     }
   }
 
@@ -430,13 +459,17 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         CookingIcons.upload,
                         height: 42,
                         width: 42,
-                        color: _getColor(),
+                        colorFilter:
+                            ColorFilter.mode(_getColor(), BlendMode.srcIn),
                       ),
                       const SizedBox(height: 30),
                       Text(
                         _getText(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
+                        style: Theme.of(context)
+                            .textTheme
+                            .r16
+                            .copyWith(color: _getColor()),
                       ),
                     ],
                   ),
@@ -476,13 +509,17 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                         CookingIcons.upload,
                         height: 42,
                         width: 42,
-                        color: _getColor(),
+                        colorFilter:
+                            ColorFilter.mode(_getColor(), BlendMode.srcIn),
                       ),
                       const SizedBox(height: 30),
                       Text(
                         _getText(),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.r16.copyWith(color: _getColor()),
+                        style: Theme.of(context)
+                            .textTheme
+                            .r16
+                            .copyWith(color: _getColor()),
                       ),
                     ],
                   ),
@@ -496,14 +533,16 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
   }
 
   VoidCallback? _getSendingFunction(BuildContext context) {
-    if (!isFilePicked || (isFilePicked && result == null && recipeDetail == null)) {
+    if (!isFilePicked ||
+        (isFilePicked && result == null && recipeDetail == null)) {
       // Кнопка не будет нажиматься
       return null;
     }
 
-    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    final stepNotifier = Provider.of<StepNotifier>(context);
+    final ingredientNotifier = Provider.of<IngredientNotifier>(context);
     return () async {
+      final beamer = Beamer.of(context);
       final form = _formKey.currentState!;
       if (form.validate()) {
         form.save();
@@ -514,7 +553,11 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           description: recipeDescription!,
           cookingTimeInMinutes: int.parse(cookingTime!),
           portionsCount: int.parse(portionsCount!),
-          tags: tags.map((e) => e.trim()).where((element) => element.isNotEmpty).toSet().toList(),
+          tags: tags
+              .map((e) => e.trim())
+              .where((element) => element.isNotEmpty)
+              .toSet()
+              .toList(),
           steps: stepNotifier.stepList,
           ingredients: ingredientNotifier.ingredientList.toList(),
         );
@@ -524,7 +567,10 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           if (result != null) {
             formData = FormData.fromMap({
               'data': jsonEncode(recipeCommand),
-              'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+              'file': MultipartFile.fromBytes(
+                result!.files.single.bytes!.toList(),
+                filename: result!.files.single.name,
+              ),
             });
           } else {
             formData = FormData.fromMap({
@@ -533,30 +579,40 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
           }
           try {
             late String nextPageIndex;
-            await apiService.patchRequest("recipes/${recipeDetail!.recipeId}/edit", formData).then((value) => nextPageIndex = value.toString());
-            context.beamToNamed("/recipes/$nextPageIndex");
+            await apiService
+                .patchRequest(
+                  'recipes/${recipeDetail!.recipeId}/edit',
+                  formData,
+                )
+                .then((value) => nextPageIndex = value.toString());
+            beamer.beamToNamed('/recipes/$nextPageIndex');
 
             stepNotifier.clearList();
             ingredientNotifier.clearList();
-          } catch (e) {
-            errorSnackBar(context, "Ошибка изменения: $e");
+          } on Exception catch (e) {
+            errorSnackBar(context, 'Ошибка изменения: $e');
           }
         } else {
           formData = FormData.fromMap({
             'data': jsonEncode(recipeCommand),
-            'file': MultipartFile.fromBytes(result!.files.single.bytes!.toList(), filename: result!.files.single.name),
+            'file': MultipartFile.fromBytes(
+              result!.files.single.bytes!.toList(),
+              filename: result!.files.single.name,
+            ),
           });
 
           try {
             late String nextPageIndex;
-            await apiService.postRequest("recipes", formData).then((value) => nextPageIndex = value.toString());
+            await apiService
+                .postRequest('recipes', formData)
+                .then((value) => nextPageIndex = value.toString());
 
-            context.beamToNamed("/recipes/$nextPageIndex");
+            beamer.beamToNamed('/recipes/$nextPageIndex');
 
             stepNotifier.clearList();
             ingredientNotifier.clearList();
-          } catch (e) {
-            errorSnackBar(context, "Ошибка добавления: $e");
+          } on Exception catch (e) {
+            errorSnackBar(context, 'Ошибка добавления: $e');
           }
         }
       }

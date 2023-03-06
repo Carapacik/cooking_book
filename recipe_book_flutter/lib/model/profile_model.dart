@@ -4,7 +4,7 @@ part 'profile_model.g.dart';
 
 @JsonSerializable()
 class ProfileModel {
-  ProfileModel({
+  const ProfileModel({
     required this.recipesCount,
     required this.likesCount,
     required this.favoritesCount,
@@ -13,14 +13,15 @@ class ProfileModel {
     required this.login,
   });
 
+  factory ProfileModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfileModelFromJson(json);
+
   final int recipesCount;
   final int likesCount;
   final int favoritesCount;
   final String name;
   final String? description;
   final String login;
-
-  factory ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileModelToJson(this);
 }

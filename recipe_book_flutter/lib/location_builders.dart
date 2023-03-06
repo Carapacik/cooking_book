@@ -1,12 +1,12 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/screens/error/error_page.dart';
-import 'package:recipebook/screens/favorite/favorite_page.dart';
-import 'package:recipebook/screens/home/home_page.dart';
-import 'package:recipebook/screens/profile/profile_page.dart';
-import 'package:recipebook/screens/recipes/recipe_detail_page.dart';
-import 'package:recipebook/screens/recipes/recipe_form_page.dart';
-import 'package:recipebook/screens/recipes/recipes_page.dart';
+import 'package:recipe_book_flutter/screens/error/error_page.dart';
+import 'package:recipe_book_flutter/screens/favorite/favorite_page.dart';
+import 'package:recipe_book_flutter/screens/home/home_page.dart';
+import 'package:recipe_book_flutter/screens/profile/profile_page.dart';
+import 'package:recipe_book_flutter/screens/recipes/recipe_detail_page.dart';
+import 'package:recipe_book_flutter/screens/recipes/recipe_form_page.dart';
+import 'package:recipe_book_flutter/screens/recipes/recipes_page.dart';
 
 final recipeLocationBuilder = BeamerLocationBuilder(
   beamLocations: [
@@ -24,7 +24,7 @@ class ErrorLocation extends BeamLocation<BeamState> {
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    final List<BeamPage> beamPages = [];
+    final beamPages = <BeamPage>[];
 
     if (state.pathBlueprintSegments.contains('error')) {
       final errorMessage = state.queryParameters['e'] ?? '';
@@ -32,7 +32,7 @@ class ErrorLocation extends BeamLocation<BeamState> {
       beamPages.add(
         BeamPage(
           key: const ValueKey('error'),
-          title: "Ошибка",
+          title: 'Ошибка',
           child: ErrorPage(errorMessage: errorMessage),
         ),
       );
@@ -94,7 +94,7 @@ class RecipesLocation extends BeamLocation<BeamState> {
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    final List<BeamPage> beamPages = [];
+    final beamPages = <BeamPage>[];
 
     if (state.uri.pathSegments.contains('edit')) {
       final recipeId = state.pathParameters['recipeId'];
@@ -139,7 +139,8 @@ class RecipesLocation extends BeamLocation<BeamState> {
 
     if (state.pathBlueprintSegments.contains('recipes')) {
       final searchQuery = state.queryParameters['searchQuery'] ?? '';
-      final pageTitle = searchQuery != '' ? "Результаты по '$searchQuery'" : 'Рецепты';
+      final pageTitle =
+          searchQuery != '' ? "Результаты по '$searchQuery'" : 'Рецепты';
 
       beamPages.add(
         BeamPage(

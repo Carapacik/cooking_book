@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/login_dialog.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/register_dialog.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/login_dialog.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/widgets/register_dialog.dart';
 
 void notAuthDialog(BuildContext context, String text) {
   final alert = AlertDialog(
@@ -29,7 +31,7 @@ void notAuthDialog(BuildContext context, String text) {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Войдите в профиль",
+            'Войдите в профиль',
             style: Theme.of(context).textTheme.b24,
           ),
           const SizedBox(height: 30),
@@ -41,7 +43,7 @@ void notAuthDialog(BuildContext context, String text) {
           Row(
             children: [
               ButtonContainedWidget(
-                text: "Войти",
+                text: 'Войти',
                 width: 278,
                 height: 60,
                 onPressed: () {
@@ -51,7 +53,7 @@ void notAuthDialog(BuildContext context, String text) {
               ),
               const SizedBox(width: 24),
               ButtonOutlinedWidget(
-                text: "Регистрация",
+                text: 'Регистрация',
                 width: 278,
                 height: 60,
                 onPressed: () {
@@ -65,13 +67,16 @@ void notAuthDialog(BuildContext context, String text) {
       ),
     ),
     titlePadding: const EdgeInsets.only(top: 20, right: 20),
-    contentPadding: const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
+    contentPadding:
+        const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
   );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+  unawaited(
+    showDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    ),
   );
 }

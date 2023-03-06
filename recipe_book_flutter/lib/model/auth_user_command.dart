@@ -10,11 +10,12 @@ class AuthUserCommand {
     this.password,
   });
 
+  factory AuthUserCommand.fromJson(Map<String, dynamic> json) =>
+      _$AuthUserCommandFromJson(json);
+
   String? name;
   String? login;
   String? password;
-
-  factory AuthUserCommand.fromJson(Map<String, dynamic> json) => _$AuthUserCommandFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthUserCommandToJson(this);
 }

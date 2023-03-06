@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class ButtonOutlinedWidget extends StatelessWidget {
   const ButtonOutlinedWidget({
-    Key? key,
+    required this.text,
+    required this.width,
+    required this.height,
     this.onPressed,
     this.icon,
     this.padding,
     this.color,
-    required this.text,
-    required this.width,
-    required this.height,
-  }) : super(key: key);
+    super.key,
+  });
 
   final VoidCallback? onPressed;
   final String text;
@@ -29,18 +29,25 @@ class ButtonOutlinedWidget extends StatelessWidget {
       height: height,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
+          foregroundColor: Palette.orange,
           backgroundColor: Colors.transparent,
-          primary: Palette.orange,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-          side: BorderSide(color: text != "" ? Palette.orange : Palette.grey.withOpacity(0.7)),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          side: BorderSide(
+            color: text != '' ? Palette.orange : Palette.grey.withOpacity(0.7),
+          ),
         ),
         onPressed: onPressed,
         child: icon == null
             ? Text(
                 text,
-                style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                style: Theme.of(context)
+                    .textTheme
+                    .b18
+                    .copyWith(color: Palette.orange),
               )
-            : text != ""
+            : text != ''
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -52,7 +59,10 @@ class ButtonOutlinedWidget extends StatelessWidget {
                       SizedBox(width: padding),
                       Text(
                         text,
-                        style: Theme.of(context).textTheme.b18.copyWith(color: Palette.orange),
+                        style: Theme.of(context)
+                            .textTheme
+                            .b18
+                            .copyWith(color: Palette.orange),
                       ),
                     ],
                   )

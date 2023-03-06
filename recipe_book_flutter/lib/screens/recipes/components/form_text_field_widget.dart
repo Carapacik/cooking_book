@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class FormTextFieldWidget extends StatefulWidget {
   const FormTextFieldWidget({
-    Key? key,
     required this.hintText,
     this.height,
     this.width,
@@ -20,7 +19,8 @@ class FormTextFieldWidget extends StatefulWidget {
     this.obscureText,
     this.readOnly,
     this.inputFormatters,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TextEditingController? controller;
   final double? height;
@@ -48,7 +48,7 @@ class _FormTextFieldWidgetState extends State<FormTextFieldWidget> {
       height: widget.height,
       width: widget.width ?? double.infinity,
       child: TextFormField(
-        readOnly: widget.readOnly == null ? false : widget.readOnly != false,
+        readOnly: widget.readOnly ?? false,
         inputFormatters: widget.inputFormatters,
         obscureText: widget.obscureText != null,
         onChanged: widget.onChanged,

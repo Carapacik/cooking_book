@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/ingredient_notifier.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/notifier/ingredient_notifier.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
 
-class IngredientItemWidget extends StatelessWidget {
-  IngredientItemWidget({
-    required this.index,
-    Key? key,
-  }) : super(key: key);
+class IngredientItemWidget extends StatefulWidget {
+  const IngredientItemWidget({required this.index, super.key});
 
   final int index;
+
+  @override
+  State<IngredientItemWidget> createState() => _IngredientItemWidgetState();
+}
+
+class _IngredientItemWidgetState extends State<IngredientItemWidget> {
   TextEditingController? titleController;
+
   TextEditingController? itemsController;
 
   @override
   Widget build(BuildContext context) {
-    final IngredientNotifier ingredientNotifier = Provider.of<IngredientNotifier>(context);
-    if (ingredientNotifier.ingredientList[index].title != "") {
+    final ingredientNotifier = Provider.of<IngredientNotifier>(context);
+    if (ingredientNotifier.ingredientList[widget.index].title != '') {
       titleController = TextEditingController();
       itemsController = TextEditingController();
-      titleController!.text = ingredientNotifier.ingredientList[index].title;
-      itemsController!.text = ingredientNotifier.ingredientList[index].ingredientNames.join("\n");
+      titleController!.text =
+          ingredientNotifier.ingredientList[widget.index].title;
+      itemsController!.text = ingredientNotifier
+          .ingredientList[widget.index].ingredientNames
+          .join('\n');
     }
 
     return Column(
@@ -33,7 +40,7 @@ class IngredientItemWidget extends StatelessWidget {
               splashRadius: 1,
               splashColor: Colors.transparent,
               onPressed: () {
-                ingredientNotifier.deleteIngredient(index);
+                ingredientNotifier.deleteIngredient(widget.index);
               },
               icon: Icon(
                 Icons.close,
@@ -60,15 +67,16 @@ class IngredientItemWidget extends StatelessWidget {
             children: [
               FormTextFieldWidget(
                 controller: titleController,
-                hintText: "Заголовок для ингридиентов",
+                hintText: 'Заголовок для ингридиентов',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Не должно быть пустым";
+                    return 'Не должно быть пустым';
                   }
                   return null;
                 },
                 onSaved: (value) {
-                  ingredientNotifier.ingredientList[index].title = value!;
+                  ingredientNotifier.ingredientList[widget.index].title =
+                      value!;
                 },
               ),
               const SizedBox(height: 20),
@@ -76,15 +84,16 @@ class IngredientItemWidget extends StatelessWidget {
                 controller: itemsController,
                 textarea: true,
                 height: 230,
-                hintText: "Список подуктов для категории",
+                hintText: 'Список подуктов для категории',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "Не должно быть пустым";
+                    return 'Не должно быть пустым';
                   }
                   return null;
                 },
                 onSaved: (value) {
-                  ingredientNotifier.ingredientList[index].ingredientNames = value!.trim().split("\n");
+                  ingredientNotifier.ingredientList[widget.index]
+                      .ingredientNames = value!.trim().split('\n');
                 },
               ),
             ],

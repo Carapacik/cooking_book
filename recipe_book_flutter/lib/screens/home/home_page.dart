@@ -1,24 +1,23 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/images.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/home/components/recipe_of_day.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/category_card.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
-import 'package:recipebook/widgets/header_widget.dart';
-import 'package:recipebook/widgets/login_dialog.dart';
-import 'package:recipebook/widgets/not_auth_dialog.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/icons.dart';
+import 'package:recipe_book_flutter/resources/images.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/home/components/recipe_of_day.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/category_card.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/header_buttons.dart';
+import 'package:recipe_book_flutter/widgets/header_widget.dart';
+import 'package:recipe_book_flutter/widgets/login_dialog.dart';
+import 'package:recipe_book_flutter/widgets/not_auth_dialog.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   final TextEditingController? textController = TextEditingController();
 
@@ -32,15 +31,17 @@ class HomePage extends StatelessWidget {
           children: [
             SvgPicture.asset(
               CookingImages.wave1,
-              color: Palette.wave,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
+              colorFilter:
+                  const ColorFilter.mode(Palette.wave, BlendMode.srcIn),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 900),
               child: SvgPicture.asset(
                 CookingImages.wave2,
-                color: Palette.wave,
+                colorFilter:
+                    const ColorFilter.mode(Palette.wave, BlendMode.srcIn),
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
               ),
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       width: 688,
                       child: Text(
-                        "Готовь и делись рецептами",
+                        'Готовь и делись рецептами',
                         style: Theme.of(context).textTheme.b72,
                       ),
                     ),
@@ -71,7 +72,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       width: 566,
                       child: Text(
-                        "Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.",
+                        'Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.',
                         style: Theme.of(context).textTheme.r18,
                       ),
                     ),
@@ -81,24 +82,24 @@ class HomePage extends StatelessWidget {
                         ButtonContainedWidget(
                           icon: Icons.add,
                           padding: 18,
-                          text: "Добавить рецепт",
+                          text: 'Добавить рецепт',
                           width: 278,
                           height: 60,
                           onPressed: authNotifier.isAuth
                               ? () {
-                                  context.beamToNamed("/recipes/add");
+                                  context.beamToNamed('/recipes/add');
                                 }
                               : () {
                                   notAuthDialog(
                                     context,
-                                    "Добавлять рецепты могут только авторизированные пользователи.",
+                                    'Добавлять рецепты могут только авторизированные пользователи.',
                                   );
                                 },
                         ),
                         const SizedBox(width: 24),
                         if (!authNotifier.isAuth)
                           ButtonOutlinedWidget(
-                            text: "Войти",
+                            text: 'Войти',
                             width: 216,
                             height: 60,
                             onPressed: () {
@@ -109,14 +110,14 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 352),
                     Text(
-                      "Умная сортировка по тегам",
+                      'Умная сортировка по тегам',
                       style: Theme.of(context).textTheme.b42,
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
                       width: 700,
                       child: Text(
-                        "Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.",
+                        'Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.',
                         style: Theme.of(context).textTheme.r18,
                       ),
                     ),
@@ -127,27 +128,31 @@ class HomePage extends StatelessWidget {
                         children: [
                           CategoryCardWidget(
                             iconPath: CookingIcons.menu,
-                            title: "Простые блюда",
-                            searchQuery: "простое",
-                            description: "Время приготвления таких блюд не более 1 часа",
+                            title: 'Простые блюда',
+                            searchQuery: 'простое',
+                            description:
+                                'Время приготвления таких блюд не более 1 часа',
                           ),
                           CategoryCardWidget(
                             iconPath: CookingIcons.cook,
-                            title: "Детское",
-                            searchQuery: "детское",
-                            description: "Самые полезные блюда которые можно детям любого возраста",
+                            title: 'Детское',
+                            searchQuery: 'детское',
+                            description:
+                                'Самые полезные блюда которые можно детям любого возраста',
                           ),
                           CategoryCardWidget(
                             iconPath: CookingIcons.chef,
-                            title: "От шеф-поваров",
-                            searchQuery: "шеф-повар",
-                            description: "Требуют умения, времени и терпения, зато как в ресторане",
+                            title: 'От шеф-поваров',
+                            searchQuery: 'шеф-повар',
+                            description:
+                                'Требуют умения, времени и терпения, зато как в ресторане',
                           ),
                           CategoryCardWidget(
                             iconPath: CookingIcons.confetti,
-                            title: "На праздник",
-                            searchQuery: "праздник",
-                            description: "Чем удивить гостей, чтобы все были сыты за праздничным столом",
+                            title: 'На праздник',
+                            searchQuery: 'праздник',
+                            description:
+                                'Чем удивить гостей, чтобы все были сыты за праздничным столом',
                           ),
                         ],
                       ),
@@ -158,13 +163,16 @@ class HomePage extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "Поиск рецептов",
+                          'Поиск рецептов',
                           style: Theme.of(context).textTheme.b42,
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          "Введите примерное название блюда, а мы по тегам найдем его",
-                          style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
+                          'Введите примерное название блюда, а мы по тегам найдем его',
+                          style: Theme.of(context)
+                              .textTheme
+                              .r18
+                              .copyWith(color: Palette.main),
                         ),
                         const SizedBox(height: 64),
                         Center(
@@ -174,7 +182,10 @@ class HomePage extends StatelessWidget {
                               Container(
                                 height: 73,
                                 width: 716,
-                                padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 28,
+                                  horizontal: 32,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(16),
@@ -189,21 +200,26 @@ class HomePage extends StatelessWidget {
                                 child: TextField(
                                   controller: textController,
                                   cursorColor: Palette.orange,
-                                  style: Theme.of(context).textTheme.r18.copyWith(color: Palette.main),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .r18
+                                      .copyWith(color: Palette.main),
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: "Название блюда...",
+                                    hintText: 'Название блюда...',
                                     hintStyle: Theme.of(context).textTheme.r16,
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 16),
                               ButtonContainedWidget(
-                                text: "Поиск",
+                                text: 'Поиск',
                                 width: 152,
                                 height: 73,
                                 onPressed: () {
-                                  context.beamToNamed("/recipes?searchQuery=${textController!.text}");
+                                  context.beamToNamed(
+                                    '/recipes?searchQuery=${textController!.text}',
+                                  );
                                 },
                               ),
                             ],

@@ -4,7 +4,7 @@ part 'recipe_of_day.g.dart';
 
 @JsonSerializable()
 class RecipeOfDay {
-  RecipeOfDay({
+  const RecipeOfDay({
     required this.recipeId,
     required this.title,
     required this.description,
@@ -14,6 +14,9 @@ class RecipeOfDay {
     required this.username,
   });
 
+  factory RecipeOfDay.fromJson(Map<String, dynamic> json) =>
+      _$RecipeOfDayFromJson(json);
+
   final int recipeId;
   final String title;
   final String description;
@@ -21,8 +24,6 @@ class RecipeOfDay {
   final int likesCount;
   final int cookingTimeInMinutes;
   final String username;
-
-  factory RecipeOfDay.fromJson(Map<String, dynamic> json) => _$RecipeOfDayFromJson(json);
 
   Map<String, dynamic> toJson() => _$RecipeOfDayToJson(this);
 }

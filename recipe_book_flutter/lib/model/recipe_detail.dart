@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:recipebook/model/ingredient.dart';
+import 'package:recipe_book_flutter/model/ingredient.dart';
 
 part 'recipe_detail.g.dart';
 
 @JsonSerializable()
 class RecipeDetail {
-  RecipeDetail({
+  const RecipeDetail({
     required this.recipeId,
     required this.title,
     required this.description,
@@ -22,6 +22,9 @@ class RecipeDetail {
     required this.ingredients,
   });
 
+  factory RecipeDetail.fromJson(Map<String, dynamic> json) =>
+      _$RecipeDetailFromJson(json);
+
   final int recipeId;
   final String title;
   final String description;
@@ -36,8 +39,6 @@ class RecipeDetail {
   final List<String> tags;
   final List<String> steps;
   final List<Ingredient> ingredients;
-
-  factory RecipeDetail.fromJson(Map<String, dynamic> json) => _$RecipeDetailFromJson(json);
 
   Map<String, dynamic> toJson() => _$RecipeDetailToJson(this);
 }

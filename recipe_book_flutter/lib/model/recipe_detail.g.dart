@@ -6,26 +6,27 @@ part of 'recipe_detail.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RecipeDetail _$RecipeDetailFromJson(Map<String, dynamic> json) {
-  return RecipeDetail(
-    recipeId: json['recipeId'] as int,
-    title: json['title'] as String,
-    description: json['description'] as String,
-    imageUrl: json['imageUrl'] as String,
-    cookingTimeInMinutes: json['cookingTimeInMinutes'] as int,
-    portionsCount: json['portionsCount'] as int,
-    likesCount: json['likesCount'] as int,
-    favoritesCount: json['favoritesCount'] as int,
-    username: json['username'] as String,
-    isLiked: json['isLiked'] as bool,
-    isFavorite: json['isFavorite'] as bool,
-    tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-    steps: (json['steps'] as List<dynamic>).map((e) => e as String).toList(),
-    ingredients: (json['ingredients'] as List<dynamic>).map((e) => Ingredient.fromJson(e as Map<String, dynamic>)).toList(),
-  );
-}
+RecipeDetail _$RecipeDetailFromJson(Map<String, dynamic> json) => RecipeDetail(
+      recipeId: json['recipeId'] as int,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      imageUrl: json['imageUrl'] as String,
+      cookingTimeInMinutes: json['cookingTimeInMinutes'] as int,
+      portionsCount: json['portionsCount'] as int,
+      likesCount: json['likesCount'] as int,
+      favoritesCount: json['favoritesCount'] as int,
+      username: json['username'] as String,
+      isLiked: json['isLiked'] as bool,
+      isFavorite: json['isFavorite'] as bool,
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      steps: (json['steps'] as List<dynamic>).map((e) => e as String).toList(),
+      ingredients: (json['ingredients'] as List<dynamic>)
+          .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
-Map<String, dynamic> _$RecipeDetailToJson(RecipeDetail instance) => <String, dynamic>{
+Map<String, dynamic> _$RecipeDetailToJson(RecipeDetail instance) =>
+    <String, dynamic>{
       'recipeId': instance.recipeId,
       'title': instance.title,
       'description': instance.description,

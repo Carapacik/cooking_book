@@ -1,28 +1,30 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/profile_command.dart';
-import 'package:recipebook/model/profile_model.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/notifier/recipe_notifier.dart';
-import 'package:recipebook/resources/images.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/profile/components/profile_card.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/error_snack_bar.dart';
-import 'package:recipebook/widgets/header_buttons.dart';
-import 'package:recipebook/widgets/header_widget.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/recipe_list_widget.dart';
+import 'package:recipe_book_flutter/model/profile_command.dart';
+import 'package:recipe_book_flutter/model/profile_model.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/notifier/recipe_notifier.dart';
+import 'package:recipe_book_flutter/resources/images.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/profile/components/profile_card.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/error_snack_bar.dart';
+import 'package:recipe_book_flutter/widgets/header_buttons.dart';
+import 'package:recipe_book_flutter/widgets/header_widget.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/widgets/recipe_list_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -43,15 +45,17 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isEndOfList = true;
   int skipCounter = 0;
 
-  Future getDetailProfile() async {
-    Response response;
+  Future<void> getDetailProfile() async {
+    Response<dynamic> response;
 
     try {
-      response = await _apiService.getRequest("user/profile");
+      response = await _apiService.getRequest('user/profile');
       isLoading = false;
       if (response.statusCode == 200) {
         setState(() {
-          profileDetail = ProfileModel.fromJson(jsonDecode(response.data as String) as Map<String, dynamic>);
+          profileDetail = ProfileModel.fromJson(
+            jsonDecode(response.data as String) as Map<String, dynamic>,
+          );
         });
         nameController?.text = profileDetail!.name;
         loginController?.text = profileDetail!.login;
@@ -63,22 +67,26 @@ class _ProfilePageState extends State<ProfilePage> {
           login: profileDetail!.login,
           description: profileDetail!.description,
         );
-      } else {
-        // код не 200
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  Future getMoreRecipes() async {
-    Response response;
+  Future<void> getMoreRecipes() async {
+    Response<dynamic> response;
 
     try {
-      response = await _apiService.getRequestWithParam(endPoint: "recipes/user-owned", take: 4, skip: skipCounter);
+      response = await _apiService.getRequestWithParam(
+        endPoint: 'recipes/user-owned',
+        take: 4,
+        skip: skipCounter,
+      );
       if (response.statusCode == 200) {
-        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        final listOfRecipes =
+            jsonDecode(response.data as String) as List<dynamic>;
         if (listOfRecipes.length == 4) {
           setState(() {
             isEndOfList = false;
@@ -90,36 +98,36 @@ class _ProfilePageState extends State<ProfilePage> {
         }
         _recipeNotifier.addRecipes(listOfRecipes);
         skipCounter += 4;
-      } else {
-        // затычка, код не 200
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  Future getInitialRecipes() async {
-    Response response;
+  Future<void> getInitialRecipes() async {
+    Response<dynamic> response;
 
     try {
-      response = await _apiService.getInitialWithParam("recipes/user-owned", 2);
+      response = await _apiService.getInitialWithParam('recipes/user-owned', 2);
       if (response.statusCode == 200) {
-        final listOfRecipes = jsonDecode(response.data as String) as List<dynamic>;
+        final listOfRecipes =
+            jsonDecode(response.data as String) as List<dynamic>;
         if (listOfRecipes.length == 2) {
           setState(() {
             isEndOfList = false;
           });
         }
-        _recipeNotifier.resultString = "Ваш список пуст";
-        _recipeNotifier.addClearRecipes(listOfRecipes);
+        _recipeNotifier
+          ..resultString = 'Ваш список пуст'
+          ..addClearRecipes(listOfRecipes);
         skipCounter += 2;
-      } else {
-        // затычка, код не 200
-      }
+      } else {}
     } on Exception catch (e) {
-      // возможно перенаправление на отдельную страницу
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -127,8 +135,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     _recipeNotifier = Provider.of<RecipeNotifier>(context, listen: false);
     _apiService = ApiService();
-    getDetailProfile();
-    getInitialRecipes();
+    unawaited(getDetailProfile());
+    unawaited(getInitialRecipes());
     super.initState();
   }
 
@@ -142,14 +150,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+    final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
           children: [
             SvgPicture.asset(
               CookingImages.wave1,
-              color: Palette.wave,
+              colorFilter:
+                  const ColorFilter.mode(Palette.wave, BlendMode.srcIn),
               width: MediaQuery.of(context).size.width,
             ),
             const HeaderWidget(currentSelectedPage: HeaderButtons.recipes),
@@ -165,7 +174,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () {
                         context.beamBack();
                       },
-                      style: TextButton.styleFrom(primary: Palette.orange),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Palette.orange),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -175,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            "Назад",
+                            'Назад',
                             style: Theme.of(context).textTheme.n18,
                           )
                         ],
@@ -183,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 11),
                     Text(
-                      isLoading ? "Загрузка профиля..." : "Мой профиль",
+                      isLoading ? 'Загрузка профиля...' : 'Мой профиль',
                       style: Theme.of(context).textTheme.b42,
                     ),
                     const SizedBox(height: 50),
@@ -205,7 +215,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 20, right: 20),
+                              padding:
+                                  const EdgeInsets.only(top: 20, right: 20),
                               child: readOnlyTextField
                                   ? IconButton(
                                       onPressed: () {
@@ -225,19 +236,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                         if (form.validate()) {
                                           form.save();
                                           try {
-                                            await _apiService.patchRequest("user/profile/edit", profileCommand!.toJson());
+                                            await _apiService.patchRequest(
+                                              'user/profile/edit',
+                                              profileCommand!.toJson(),
+                                            );
                                             readOnlyTextField = true;
-                                            _authNotifier.getCurrentUser();
-                                            getDetailProfile();
-                                          } catch (e) {
-                                            errorSnackBar(context, "Ошибка изменения: $e");
+                                            await authNotifier.getCurrentUser();
+                                            await getDetailProfile();
+                                          } on Exception catch (e) {
+                                            errorSnackBar(
+                                              context,
+                                              'Ошибка изменения: $e',
+                                            );
                                           }
                                         }
                                       },
                                       style: TextButton.styleFrom(
-                                        primary: Palette.orange,
+                                        foregroundColor: Palette.orange,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
                                       ),
                                       child: Container(
@@ -245,30 +263,44 @@ class _ProfilePageState extends State<ProfilePage> {
                                         width: 150,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          "Подтвердить",
-                                          style: Theme.of(context).textTheme.r18.copyWith(color: Palette.grey.withOpacity(0.8)),
+                                          'Подтвердить',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .r18
+                                              .copyWith(
+                                                color: Palette.grey
+                                                    .withOpacity(0.8),
+                                              ),
                                         ),
                                       ),
                                     ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 16, bottom: 60, right: 73, left: 73),
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                bottom: 60,
+                                right: 73,
+                                left: 73,
+                              ),
                               child: Form(
                                 key: _formKey,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
                                       width: 542,
                                       child: Column(
                                         children: [
                                           FormTextFieldWidget(
-                                            hintText: "Имя",
+                                            hintText: 'Имя',
                                             keyboardType: TextInputType.name,
                                             controller: nameController,
                                             readOnly: readOnlyTextField,
                                             validator: (value) {
-                                              if (value!.isEmpty) return "Не может быть пустым";
+                                              if (value!.isEmpty) {
+                                                return 'Не может быть пустым';
+                                              }
                                               return null;
                                             },
                                             onSaved: (value) {
@@ -277,12 +309,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                           const SizedBox(height: 20),
                                           FormTextFieldWidget(
-                                            hintText: "Логин",
+                                            hintText: 'Логин',
                                             controller: loginController,
                                             readOnly: readOnlyTextField,
                                             validator: (value) {
-                                              if (value!.isEmpty) return "Не может быть пустым";
-                                              if (value.length > 20) return "Логин меньше 20 символов";
+                                              if (value!.isEmpty) {
+                                                return 'Не может быть пустым';
+                                              }
+                                              if (value.length > 20) {
+                                                return 'Логин меньше 20 символов';
+                                              }
                                               return null;
                                             },
                                             onSaved: (value) {
@@ -292,12 +328,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                           const SizedBox(height: 20),
                                           FormTextFieldWidget(
                                             obscureText: true,
-                                            keyboardType: TextInputType.visiblePassword,
-                                            hintText: "Пароль",
+                                            keyboardType:
+                                                TextInputType.visiblePassword,
+                                            hintText: 'Пароль',
                                             readOnly: readOnlyTextField,
                                             validator: (value) {
-                                              if (value!.isEmpty) return "Не может быть пустым";
-                                              if (value.length < 8) return "Минимум 8 символов";
+                                              if (value!.isEmpty) {
+                                                return 'Не может быть пустым';
+                                              }
+                                              if (value.length < 8) {
+                                                return 'Минимум 8 символов';
+                                              }
                                               return null;
                                             },
                                             onSaved: (value) {
@@ -311,13 +352,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 472,
                                       child: FormTextFieldWidget(
                                         keyboardType: TextInputType.multiline,
-                                        hintText: "Напишите немного о себе",
+                                        hintText: 'Напишите немного о себе',
                                         height: 180,
                                         textarea: true,
                                         controller: descriptionController,
                                         readOnly: readOnlyTextField,
                                         validator: (value) {
-                                          if (value!.isNotEmpty && value.length > 150) return "Максимум 150 символов";
+                                          if (value!.isNotEmpty &&
+                                              value.length > 150) {
+                                            return 'Максимум 150 символов';
+                                          }
                                           return null;
                                         },
                                         onSaved: (value) {
@@ -337,14 +381,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ProfileCard(value: profileDetail!.recipesCount, text: "Всего рецептов"),
-                          ProfileCard(value: profileDetail!.likesCount, text: "Всего лайков"),
-                          ProfileCard(value: profileDetail!.favoritesCount, text: "В избранных"),
+                          ProfileCard(
+                            value: profileDetail!.recipesCount,
+                            text: 'Всего рецептов',
+                          ),
+                          ProfileCard(
+                            value: profileDetail!.likesCount,
+                            text: 'Всего лайков',
+                          ),
+                          ProfileCard(
+                            value: profileDetail!.favoritesCount,
+                            text: 'В избранных',
+                          ),
                         ],
                       ),
                     const SizedBox(height: 40),
                     Text(
-                      "Мои рецепты",
+                      'Мои рецепты',
                       style: Theme.of(context).textTheme.b24,
                     ),
                     const SizedBox(height: 40),
@@ -353,12 +406,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (!isEndOfList)
                       Center(
                         child: ButtonOutlinedWidget(
-                          text: "Загрузить еще",
+                          text: 'Загрузить еще',
                           width: 309,
                           height: 60,
-                          onPressed: () {
-                            getMoreRecipes();
-                          },
+                          onPressed: getMoreRecipes,
                         ),
                       ),
                     const SizedBox(height: 73),

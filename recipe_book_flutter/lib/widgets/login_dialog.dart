@@ -1,25 +1,28 @@
+// ignore_for_file: invalid_use_of_protected_member
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/auth_result.dart';
-import 'package:recipebook/model/auth_user_command.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
-import 'package:recipebook/widgets/register_dialog.dart';
+import 'package:recipe_book_flutter/model/auth_result.dart';
+import 'package:recipe_book_flutter/model/auth_user_command.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/widgets/register_dialog.dart';
 
 void loginDialog(BuildContext context) {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final apiService = ApiService();
   final user = AuthUserCommand();
   final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-  bool isUserExist = true;
-  bool isPasswordCorrect = true;
+  var isUserExist = true;
+  var isPasswordCorrect = true;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -37,7 +40,7 @@ void loginDialog(BuildContext context) {
       ),
     ),
     content: Form(
-      key: _formKey,
+      key: formKey,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 580, minWidth: 500),
         child: Column(
@@ -45,17 +48,23 @@ void loginDialog(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Войти",
+              'Войти',
               style: Theme.of(context).textTheme.b24,
             ),
             const SizedBox(height: 45),
             FormTextFieldWidget(
               keyboardType: TextInputType.name,
-              hintText: "Логин",
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))],
+              hintText: 'Логин',
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))
+              ],
               validator: (value) {
-                if (value!.isEmpty) return "Не может быть пустым";
-                if (!isUserExist) return "Такого пользователя не существует";
+                if (value!.isEmpty) {
+                  return 'Не может быть пустым';
+                }
+                if (!isUserExist) {
+                  return 'Такого пользователя не существует';
+                }
                 return null;
               },
               onChanged: (value) {
@@ -67,11 +76,15 @@ void loginDialog(BuildContext context) {
             ),
             const SizedBox(height: 20),
             FormTextFieldWidget(
-              hintText: "Пароль",
+              hintText: 'Пароль',
               obscureText: true,
               validator: (value) {
-                if (value!.isEmpty) return "Не может быть пустым";
-                if (!isPasswordCorrect) return "Неправильный пароль";
+                if (value!.isEmpty) {
+                  return 'Не может быть пустым';
+                }
+                if (!isPasswordCorrect) {
+                  return 'Неправильный пароль';
+                }
                 return null;
               },
               onChanged: (value) {
@@ -85,42 +98,50 @@ void loginDialog(BuildContext context) {
             Row(
               children: [
                 ButtonContainedWidget(
-                  text: "Войти",
+                  text: 'Войти',
                   width: 278,
                   height: 60,
                   onPressed: () async {
-                    final form = _formKey.currentState!;
+                    final navigator = Navigator.of(context);
+                    final beamer = Beamer.of(context);
+                    final form = formKey.currentState!;
                     if (form.validate()) {
                       form.save();
                       try {
-                        final result = await apiService.postRequest("user/login", user.toJson());
-                        final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
+                        final result = await apiService.postRequest(
+                          'user/login',
+                          user.toJson(),
+                        );
+                        final authResult =
+                            AuthResult.fromJson(result as Map<String, dynamic>);
                         if (authResult.isSuccess == true) {
-                          Navigator.of(context).pop();
-                          authNotifier.getCurrentUser();
-                          context.beamToNamed("/");
-                        } else if (authResult.errorMessage == "user") {
-                          form.setState(() {
-                            isUserExist = false;
-                          });
-                          form.validate();
-                        } else if (authResult.errorMessage == "password") {
-                          form.setState(() {
-                            isPasswordCorrect = false;
-                          });
-                          form.validate();
+                          navigator.pop();
+                          await authNotifier.getCurrentUser();
+                          beamer.beamToNamed('/');
+                        } else if (authResult.errorMessage == 'user') {
+                          form
+                            ..setState(() {
+                              isUserExist = false;
+                            })
+                            ..validate();
+                        } else if (authResult.errorMessage == 'password') {
+                          form
+                            ..setState(() {
+                              isPasswordCorrect = false;
+                            })
+                            ..validate();
                         } else {
-                          context.beamToNamed("/error?e=Not found");
+                          beamer.beamToNamed('/error?e=Not found');
                         }
-                      } catch (e) {
-                        context.beamToNamed("/error?e=$e");
+                      } on Exception catch (e) {
+                        beamer.beamToNamed('/error?e=$e');
                       }
                     }
                   },
                 ),
                 const SizedBox(width: 24),
                 ButtonOutlinedWidget(
-                  text: "Отмена",
+                  text: 'Отмена',
                   width: 278,
                   height: 60,
                   onPressed: () {
@@ -136,9 +157,12 @@ void loginDialog(BuildContext context) {
                   Navigator.of(context).pop();
                   registerDialog(context);
                 },
-                style: TextButton.styleFrom(onSurface: Colors.transparent, primary: Colors.orange),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.orange,
+                  disabledForegroundColor: Colors.transparent.withOpacity(0.38),
+                ),
                 child: Text(
-                  "У меня еще нет аккаунта",
+                  'У меня еще нет аккаунта',
                   style: Theme.of(context).textTheme.b18.copyWith(
                         color: Palette.orange,
                         decoration: TextDecoration.underline,
@@ -153,13 +177,16 @@ void loginDialog(BuildContext context) {
       ),
     ),
     titlePadding: const EdgeInsets.only(top: 20, right: 20),
-    contentPadding: const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
+    contentPadding:
+        const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
   );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+  unawaited(
+    showDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    ),
   );
 }

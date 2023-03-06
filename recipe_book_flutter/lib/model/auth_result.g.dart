@@ -6,14 +6,13 @@ part of 'auth_result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthResult _$AuthResultFromJson(Map<String, dynamic> json) {
-  return AuthResult(
-    isSuccess: json['isSuccess'] as bool,
-    errorMessage: json['errorMessage'] as String?,
-  );
-}
+AuthResult _$AuthResultFromJson(Map<String, dynamic> json) => AuthResult(
+      isSuccess: json['isSuccess'] as bool,
+      errorMessage: json['errorMessage'] as String?,
+    );
 
-Map<String, dynamic> _$AuthResultToJson(AuthResult instance) => <String, dynamic>{
+Map<String, dynamic> _$AuthResultToJson(AuthResult instance) =>
+    <String, dynamic>{
       'isSuccess': instance.isSuccess,
       'errorMessage': instance.errorMessage,
     };

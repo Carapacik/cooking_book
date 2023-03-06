@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/recipe_notifier.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/recipe_item_widget.dart';
+import 'package:recipe_book_flutter/notifier/recipe_notifier.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/recipe_item_widget.dart';
 
 class RecipeListWidget extends StatelessWidget {
-  const RecipeListWidget({Key? key}) : super(key: key);
+  const RecipeListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RecipeNotifier recipeNotifier = Provider.of<RecipeNotifier>(context);
+    final recipeNotifier = Provider.of<RecipeNotifier>(context);
 
     return Column(
       children: [
@@ -18,9 +18,11 @@ class RecipeListWidget extends StatelessWidget {
             shrinkWrap: true,
             itemCount: recipeNotifier.recipeList.length,
             itemBuilder: (context, index) {
-              return RecipeItemWidget(recipeItem: recipeNotifier.recipeList[index]);
+              return RecipeItemWidget(
+                recipeItem: recipeNotifier.recipeList[index],
+              );
             },
-            separatorBuilder: (BuildContext context, int index) {
+            separatorBuilder: (context, index) {
               return const SizedBox(height: 40);
             },
           )

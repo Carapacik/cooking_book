@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class ButtonContainedWidget extends StatelessWidget {
   const ButtonContainedWidget({
-    Key? key,
-    this.onPressed,
-    this.icon,
-    this.padding,
     required this.text,
     required this.width,
     required this.height,
-  }) : super(key: key);
+    this.onPressed,
+    this.icon,
+    this.padding,
+    super.key,
+  });
 
   final VoidCallback? onPressed;
   final String text;
@@ -27,8 +27,8 @@ class ButtonContainedWidget extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.white,
           backgroundColor: Palette.orange,
-          primary: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
@@ -37,7 +37,10 @@ class ButtonContainedWidget extends StatelessWidget {
         child: icon == null
             ? Text(
                 text,
-                style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .b18
+                    .copyWith(color: Colors.white),
               )
             : Row(
                 mainAxisSize: MainAxisSize.min,
@@ -50,7 +53,10 @@ class ButtonContainedWidget extends StatelessWidget {
                   SizedBox(width: padding),
                   Text(
                     text,
-                    style: Theme.of(context).textTheme.b18.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .b18
+                        .copyWith(color: Colors.white),
                   ),
                 ],
               ),

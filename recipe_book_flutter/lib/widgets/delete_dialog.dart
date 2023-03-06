@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
 
 void deleteDialog(BuildContext context, VoidCallback? onPressed) {
   final alert = AlertDialog(
@@ -27,21 +29,21 @@ void deleteDialog(BuildContext context, VoidCallback? onPressed) {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Удалить рецепт?",
+            'Удалить рецепт?',
             style: Theme.of(context).textTheme.b24,
           ),
           const SizedBox(height: 40),
           Row(
             children: [
               ButtonContainedWidget(
-                text: "Удалить",
+                text: 'Удалить',
                 width: 278,
                 height: 60,
                 onPressed: onPressed,
               ),
               const SizedBox(width: 24),
               ButtonOutlinedWidget(
-                text: "Отмена",
+                text: 'Отмена',
                 width: 278,
                 height: 60,
                 onPressed: () {
@@ -54,13 +56,16 @@ void deleteDialog(BuildContext context, VoidCallback? onPressed) {
       ),
     ),
     titlePadding: const EdgeInsets.only(top: 20, right: 20),
-    contentPadding: const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
+    contentPadding:
+        const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
   );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+  unawaited(
+    showDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    ),
   );
 }

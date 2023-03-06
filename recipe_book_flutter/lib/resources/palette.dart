@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-class Palette {
-  Palette._();
+abstract class Palette {
+  const Palette._();
 
   static const Color orange = Color(0xFFFDB100);
   static const Color red = Color(0xFFE40000);

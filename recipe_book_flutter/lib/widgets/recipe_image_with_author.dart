@@ -1,20 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class RecipeImageWithAuthor extends StatelessWidget {
   const RecipeImageWithAuthor({
-    Key? key,
     required this.imageUrl,
     required this.username,
     required this.size,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String imageUrl;
   final String username;
   final double size;
-  static const baseImageStorage = "http://localhost:5000/storage/images/";
+  static const baseImageStorage = 'http://localhost:5000/storage/images/';
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,12 @@ class RecipeImageWithAuthor extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: baseImageStorage + imageUrl,
             fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-              child: CircularProgressIndicator(value: downloadProgress.progress, color: Palette.orange),
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
+                color: Palette.orange,
+              ),
             ),
           ),
         ),
@@ -47,8 +51,11 @@ class RecipeImageWithAuthor extends StatelessWidget {
             borderRadius: BorderRadius.horizontal(right: Radius.circular(5)),
           ),
           child: Text(
-            "@${username.toLowerCase()}",
-            style: Theme.of(context).textTheme.r16.copyWith(color: Palette.orange, fontWeight: FontWeight.w600),
+            '@${username.toLowerCase()}',
+            style: Theme.of(context)
+                .textTheme
+                .r16
+                .copyWith(color: Palette.orange, fontWeight: FontWeight.w600),
           ),
         )
       ],

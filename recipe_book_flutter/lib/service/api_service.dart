@@ -1,24 +1,25 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiService {
-  late Dio _dio;
-
-  final baseUrl = "http://localhost:5000/api/";
-
   ApiService() {
     _dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: 5000,
-        receiveTimeout: 3000,
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
       ),
     );
 
     initializeInterceptors();
   }
 
-  Future patchRequest(String endPoint, dynamic data) async {
-    Response response;
+  late Dio _dio;
+
+  final baseUrl = 'http://localhost:5000/api/';
+
+  Future<dynamic> patchRequest(String endPoint, Object data) async {
+    Response<dynamic> response;
     try {
       response = await _dio.patch(
         endPoint,
@@ -30,8 +31,8 @@ class ApiService {
     return response.data;
   }
 
-  Future<Response> postRequestWithoutData(String endPoint) async {
-    Response response;
+  Future<Response<dynamic>> postRequestWithoutData(String endPoint) async {
+    Response<dynamic> response;
     try {
       response = await _dio.post(endPoint);
     } on DioError catch (e) {
@@ -40,8 +41,8 @@ class ApiService {
     return response;
   }
 
-  Future postRequest(String endPoint, dynamic data) async {
-    Response response;
+  Future<dynamic> postRequest(String endPoint, Object data) async {
+    Response<dynamic> response;
     try {
       response = await _dio.post(
         endPoint,
@@ -53,8 +54,8 @@ class ApiService {
     return response.data;
   }
 
-  Future deleteRequest(String endPoint) async {
-    Response response;
+  Future<dynamic> deleteRequest(String endPoint) async {
+    Response<dynamic> response;
     try {
       response = await _dio.delete(endPoint);
     } on DioError catch (e) {
@@ -63,8 +64,8 @@ class ApiService {
     return response.data;
   }
 
-  Future<Response> getRequest(String endPoint) async {
-    Response response;
+  Future<Response<dynamic>> getRequest(String endPoint) async {
+    Response<dynamic> response;
     try {
       response = await _dio.get<String>(endPoint);
     } on DioError catch (e) {
@@ -73,11 +74,11 @@ class ApiService {
     return response;
   }
 
-  Future<Response> getInitialWithParam(
+  Future<Response<String>> getInitialWithParam(
     String endPoint,
     int take,
   ) async {
-    Response response;
+    Response<String> response;
     try {
       response = await _dio.get<String>(
         endPoint,
@@ -91,13 +92,13 @@ class ApiService {
     return response;
   }
 
-  Future<Response> getRequestWithParam({
+  Future<Response<String>> getRequestWithParam({
     required String endPoint,
     required int skip,
     required int take,
     String? searchQuery,
   }) async {
-    Response response;
+    Response<String> response;
     try {
       response = await _dio.get<String>(
         endPoint,
@@ -113,20 +114,28 @@ class ApiService {
     return response;
   }
 
-  initializeInterceptors() {
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        print('REQUEST[${options.method}] => PATH: ${options.path}');
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        print('RESPONSE[${response.statusCode}]');
-        return handler.next(response);
-      },
-      onError: (err, handler) {
-        print('ERROR[${err.response?.statusCode}]');
-        return handler.next(err);
-      },
-    ));
+  void initializeInterceptors() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (kDebugMode) {
+            print('REQUEST[${options.method}] => PATH: ${options.path}');
+          }
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          if (kDebugMode) {
+            print('RESPONSE[${response.statusCode}]');
+          }
+          return handler.next(response);
+        },
+        onError: (err, handler) {
+          if (kDebugMode) {
+            print('ERROR[${err.response?.statusCode}]');
+          }
+          return handler.next(err);
+        },
+      ),
+    );
   }
 }

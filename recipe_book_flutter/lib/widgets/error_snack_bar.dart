@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 void errorSnackBar(BuildContext context, String text) {
   final snackBar = SnackBar(

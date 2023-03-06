@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/header_widget.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/header_widget.dart';
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({
-    this.errorMessage,
-    Key? key,
-  }) : super(key: key);
+  const ErrorPage({this.errorMessage, super.key});
 
   final String? errorMessage;
 
@@ -16,13 +13,13 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          HeaderWidget(),
+          const HeaderWidget(),
           Padding(
             padding: const EdgeInsets.only(top: 200),
             child: Column(
               children: [
                 Text(
-                  "Ошибка",
+                  'Ошибка',
                   style: Theme.of(context).textTheme.b72.copyWith(
                         color: Palette.red,
                         fontWeight: FontWeight.w900,

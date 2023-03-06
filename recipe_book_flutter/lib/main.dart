@@ -1,13 +1,13 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/location_builders.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/notifier/ingredient_notifier.dart';
-import 'package:recipebook/notifier/recipe_notifier.dart';
-import 'package:recipebook/notifier/step_notifier.dart';
-import 'package:recipebook/screens/error/error_page.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/location_builders.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/notifier/ingredient_notifier.dart';
+import 'package:recipe_book_flutter/notifier/recipe_notifier.dart';
+import 'package:recipe_book_flutter/notifier/step_notifier.dart';
+import 'package:recipe_book_flutter/screens/error/error_page.dart';
+import 'package:recipe_book_flutter/theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() {
@@ -26,12 +26,14 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final routerDelegate = BeamerDelegate(
+  App({super.key});
+
+  final _routerDelegate = BeamerDelegate(
     notFoundPage: BeamPage(
-      title: "Ошибка",
+      title: '404',
       child: const ErrorPage(),
     ),
-    locationBuilder: recipeLocationBuilder,
+    locationBuilder: recipeLocationBuilder.call,
     guards: [
       BeamGuard(
         check: (context, location) => context.read<AuthNotifier>().isAuth,
@@ -45,9 +47,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: themeData,
-      title: "RecipeBook",
+      title: 'RecipeBook',
       debugShowCheckedModeBanner: false,
-      routerDelegate: routerDelegate,
+      routerDelegate: _routerDelegate,
       routeInformationParser: BeamerParser(),
     );
   }

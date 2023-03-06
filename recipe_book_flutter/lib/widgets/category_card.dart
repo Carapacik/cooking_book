@@ -1,24 +1,24 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class CategoryCardWidget extends StatelessWidget {
-  final String title;
-  final String iconPath;
-  final String? description;
-  final String? searchQuery;
-  final VoidCallback? onPressed;
-
   const CategoryCardWidget({
     required this.title,
     required this.iconPath,
     this.description,
     this.searchQuery,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  final String title;
+  final String iconPath;
+  final String? description;
+  final String? searchQuery;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +37,12 @@ class CategoryCardWidget extends StatelessWidget {
         ],
       ),
       child: TextButton(
-        onPressed: description == null ? onPressed : () => context.beamToNamed("/recipes?searchQuery=$searchQuery"),
+        onPressed: description == null
+            ? onPressed
+            : () => context.beamToNamed('/recipes?searchQuery=$searchQuery'),
         style: TextButton.styleFrom(
+          foregroundColor: Palette.orange,
           backgroundColor: Colors.white,
-          primary: Palette.orange,
         ),
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -60,7 +62,10 @@ class CategoryCardWidget extends StatelessWidget {
                   child: SizedBox(
                     child: SvgPicture.asset(
                       iconPath,
-                      color: Palette.orange,
+                      colorFilter: const ColorFilter.mode(
+                        Palette.orange,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),

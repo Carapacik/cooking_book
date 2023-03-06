@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/notifier/step_notifier.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/notifier/step_notifier.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
-class StepItemWidget extends StatelessWidget {
-  StepItemWidget({
-    required this.index,
-    Key? key,
-  }) : super(key: key);
+class StepItemWidget extends StatefulWidget {
+  const StepItemWidget({required this.index, super.key});
 
   final int index;
+
+  @override
+  State<StepItemWidget> createState() => _StepItemWidgetState();
+}
+
+class _StepItemWidgetState extends State<StepItemWidget> {
   TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
-    final StepNotifier stepNotifier = Provider.of<StepNotifier>(context);
-    if (stepNotifier.stepList[index] != "") {
+    final stepNotifier = Provider.of<StepNotifier>(context);
+    if (stepNotifier.stepList[widget.index] != '') {
       controller = TextEditingController();
-      controller!.text = stepNotifier.stepList[index];
+      controller!.text = stepNotifier.stepList[widget.index];
     }
 
     return Container(
@@ -43,12 +46,15 @@ class StepItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Шаг ${index + 1}",
-                style: Theme.of(context).textTheme.r18.copyWith(fontWeight: FontWeight.w600),
+                'Шаг ${widget.index + 1}',
+                style: Theme.of(context)
+                    .textTheme
+                    .r18
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
               IconButton(
                 onPressed: () {
-                  stepNotifier.deleteStep(index);
+                  stepNotifier.deleteStep(widget.index);
                 },
                 icon: Icon(
                   Icons.close,
@@ -62,15 +68,15 @@ class StepItemWidget extends StatelessWidget {
             controller: controller,
             textarea: true,
             height: 170,
-            hintText: "Описание шага",
+            hintText: 'Описание шага',
             validator: (value) {
               if (value!.isEmpty) {
-                return "Не должно быть пустым";
+                return 'Не должно быть пустым';
               }
               return null;
             },
             onSaved: (value) {
-              stepNotifier.stepList[index] = value!;
+              stepNotifier.stepList[widget.index] = value!;
             },
           ),
         ],

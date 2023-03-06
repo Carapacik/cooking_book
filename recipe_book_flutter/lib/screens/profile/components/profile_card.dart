@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipebook/resources/icons.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/theme.dart';
+import 'package:recipe_book_flutter/resources/icons.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/theme.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({
-    Key? key,
-    required this.value,
-    required this.text,
-  }) : super(key: key);
+  const ProfileCard({required this.value, required this.text, super.key});
 
   final int value;
   final String text;
@@ -45,7 +41,8 @@ class ProfileCard extends StatelessWidget {
                 child: SvgPicture.asset(
                   CookingIcons.menu,
                   width: 20,
-                  color: Palette.orange,
+                  colorFilter:
+                      const ColorFilter.mode(Palette.orange, BlendMode.srcIn),
                 ),
               ),
               const SizedBox(height: 13),

@@ -1,25 +1,29 @@
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'dart:async';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:recipebook/model/auth_result.dart';
-import 'package:recipebook/model/auth_user_command.dart';
-import 'package:recipebook/notifier/auth_notifier.dart';
-import 'package:recipebook/resources/palette.dart';
-import 'package:recipebook/screens/recipes/components/form_text_field_widget.dart';
-import 'package:recipebook/service/api_service.dart';
-import 'package:recipebook/theme.dart';
-import 'package:recipebook/widgets/contained_button.dart';
-import 'package:recipebook/widgets/login_dialog.dart';
-import 'package:recipebook/widgets/outlined_button.dart';
+import 'package:recipe_book_flutter/model/auth_result.dart';
+import 'package:recipe_book_flutter/model/auth_user_command.dart';
+import 'package:recipe_book_flutter/notifier/auth_notifier.dart';
+import 'package:recipe_book_flutter/resources/palette.dart';
+import 'package:recipe_book_flutter/screens/recipes/components/form_text_field_widget.dart';
+import 'package:recipe_book_flutter/service/api_service.dart';
+import 'package:recipe_book_flutter/theme.dart';
+import 'package:recipe_book_flutter/widgets/contained_button.dart';
+import 'package:recipe_book_flutter/widgets/login_dialog.dart';
+import 'package:recipe_book_flutter/widgets/outlined_button.dart';
 
 void registerDialog(BuildContext context) {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
   final apiService = ApiService();
   final user = AuthUserCommand();
   String? currentPassword;
-  bool isUserExist = false;
+  var isUserExist = false;
 
   final alert = AlertDialog(
     shape: RoundedRectangleBorder(
@@ -37,7 +41,7 @@ void registerDialog(BuildContext context) {
       ),
     ),
     content: Form(
-      key: _formKey,
+      key: formKey,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 580, minWidth: 500),
         child: Column(
@@ -45,15 +49,17 @@ void registerDialog(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Регистрация",
+              'Регистрация',
               style: Theme.of(context).textTheme.b24,
             ),
             const SizedBox(height: 45),
             FormTextFieldWidget(
               keyboardType: TextInputType.name,
-              hintText: "Имя",
+              hintText: 'Имя',
               validator: (value) {
-                if (value!.isEmpty) return "Не может быть пустым";
+                if (value!.isEmpty) {
+                  return 'Не может быть пустым';
+                }
                 return null;
               },
               onSaved: (value) {
@@ -63,15 +69,23 @@ void registerDialog(BuildContext context) {
             const SizedBox(height: 20),
             FormTextFieldWidget(
               keyboardType: TextInputType.name,
-              hintText: "Логин",
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))],
+              hintText: 'Логин',
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))
+              ],
               onChanged: (value) {
                 isUserExist = false;
               },
               validator: (value) {
-                if (value!.isEmpty) return "Не может быть пустым";
-                if (value.length > 20) return "Логин меньше 20 символов";
-                if (isUserExist) return "Такой логин уже существует";
+                if (value!.isEmpty) {
+                  return 'Не может быть пустым';
+                }
+                if (value.length > 20) {
+                  return 'Логин меньше 20 символов';
+                }
+                if (isUserExist) {
+                  return 'Такой логин уже существует';
+                }
                 return null;
               },
               onSaved: (value) {
@@ -86,13 +100,17 @@ void registerDialog(BuildContext context) {
                     constraints: const BoxConstraints(maxWidth: 278),
                     child: FormTextFieldWidget(
                       obscureText: true,
-                      hintText: "Пароль",
+                      hintText: 'Пароль',
                       onChanged: (value) {
                         currentPassword = value;
                       },
                       validator: (value) {
-                        if (value!.isEmpty) return "Не может быть пустым";
-                        if (value.length < 8) return "Минимум 8 символов";
+                        if (value!.isEmpty) {
+                          return 'Не может быть пустым';
+                        }
+                        if (value.length < 8) {
+                          return 'Минимум 8 символов';
+                        }
                         return null;
                       },
                     ),
@@ -104,10 +122,14 @@ void registerDialog(BuildContext context) {
                     constraints: const BoxConstraints(maxWidth: 278),
                     child: FormTextFieldWidget(
                       obscureText: true,
-                      hintText: "Повторите пароль",
+                      hintText: 'Повторите пароль',
                       validator: (value) {
-                        if (value!.isEmpty) return "Не может быть пустым";
-                        if (value != currentPassword) return "Пароли не совпадают";
+                        if (value!.isEmpty) {
+                          return 'Не может быть пустым';
+                        }
+                        if (value != currentPassword) {
+                          return 'Пароли не совпадают';
+                        }
                         return null;
                       },
                       onSaved: (value) {
@@ -122,37 +144,42 @@ void registerDialog(BuildContext context) {
             Row(
               children: [
                 ButtonContainedWidget(
-                  text: "Зарегестрироваться",
+                  text: 'Зарегестрироваться',
                   width: 278,
                   height: 60,
                   onPressed: () async {
-                    final form = _formKey.currentState!;
+                    final navigator = Navigator.of(context);
+                    final beamer = Beamer.of(context);
+                    final form = formKey.currentState!;
                     if (form.validate()) {
                       form.save();
                       try {
-                        final result = await apiService.postRequest("user/register", user.toJson());
-                        final authResult = AuthResult.fromJson(result as Map<String, dynamic>);
+                        final result = await apiService.postRequest(
+                          'user/register',
+                          user.toJson(),
+                        );
+                        final authResult =
+                            AuthResult.fromJson(result as Map<String, dynamic>);
                         if (authResult.isSuccess == true) {
-                          Navigator.of(context).pop();
-                          authNotifier.getCurrentUser();
-                          context.beamToNamed("/");
-                        } else if (authResult.errorMessage == "user") {
-                          form.setState(() {
-                            isUserExist = true;
-                          });
-                          form.validate();
+                          navigator.pop();
+                          await authNotifier.getCurrentUser();
+                          beamer.beamToNamed('/');
+                        } else if (authResult.errorMessage == 'user') {
+                          form
+                            ..setState(() => isUserExist = true)
+                            ..validate();
                         } else {
-                          context.beamToNamed("/error?e=Not found");
+                          beamer.beamToNamed('/error?e=Not found');
                         }
-                      } catch (e) {
-                        context.beamToNamed("/error?e=$e");
+                      } on Exception catch (e) {
+                        beamer.beamToNamed('/error?e=$e');
                       }
                     }
                   },
                 ),
                 const SizedBox(width: 24),
                 ButtonOutlinedWidget(
-                  text: "Отмена",
+                  text: 'Отмена',
                   width: 278,
                   height: 60,
                   onPressed: () {
@@ -168,9 +195,12 @@ void registerDialog(BuildContext context) {
                   Navigator.of(context).pop();
                   loginDialog(context);
                 },
-                style: TextButton.styleFrom(onSurface: Colors.transparent, primary: Colors.orange),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.orange,
+                  disabledForegroundColor: Colors.transparent.withOpacity(0.38),
+                ),
                 child: Text(
-                  "У меня уже есть аккаунт",
+                  'У меня уже есть аккаунт',
                   style: Theme.of(context).textTheme.b18.copyWith(
                         color: Palette.orange,
                         decoration: TextDecoration.underline,
@@ -185,13 +215,16 @@ void registerDialog(BuildContext context) {
       ),
     ),
     titlePadding: const EdgeInsets.only(top: 20, right: 20),
-    contentPadding: const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
+    contentPadding:
+        const EdgeInsets.only(top: 16, right: 60, left: 60, bottom: 60),
   );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+  unawaited(
+    showDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    ),
   );
 }
