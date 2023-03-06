@@ -1,8 +1,9 @@
 # Recipe Book
 
 ### Technologies
-- **Backend**: ASP.NET 6 (or higher) or nest.js v9( or higher)
 - **Frontend**: Flutter 3.7 (or higher)
+- **State management**: Provider 6 (or higher)
+- **Backend**: ASP.NET 6 (or higher) or nest.js v9( or higher)
 - **Database**: MSSQL (for ASP.NET) or PostgreSQL (for nest.js)
 -  **ORM**: Entity Framework Core (for MSSQL) or TypeORM (for PostgreSQL)
 
