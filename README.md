@@ -1,5 +1,8 @@
 # Recipe Book
 
+## **`DON'T USE`** this Flutter project as a best practice. Take a better look at the [**Wordly Plus**](https://github.com/Carapacik/WordlyPlus)
+
+
 ### Technologies
 - **Frontend**: Flutter 3.7 (or higher)
 - **State management**: Provider 6 (or higher)
