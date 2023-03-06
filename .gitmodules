@@ -1,3 +1,7 @@
 [submodule "RecipeBookDotnet"]
 	path = RecipeBookDotnet
 	url = https://github.com/Carapacik/RecipeBookDotnet.git
+
+[submodule "recipe-book-nest"]
+	path = recipe-book-nest
+	url = https://github.com/Carapacik/recipe-book-nest.git
