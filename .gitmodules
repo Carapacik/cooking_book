@@ -1,0 +1,3 @@
+[submodule "RecipeBookDotnet"]
+	path = RecipeBookDotnet
+	url = https://github.com/Carapacik/RecipeBookDotnet.git
