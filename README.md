@@ -1,21 +1,25 @@
 # Recipe Book
 
-### Технологии
-- **Backend**: [.NET](https://github.com/dotnet/core)
-- **Frontend**: [Flutter](https://github.com/flutter/flutter) with [fish-redux](https://github.com/alibaba/fish-redux)
-- **Database**: PostgreSQL or MSSQL
--  **ORM**: Entity Framework Core
+## **`DON'T USE`** this Flutter project as a best practice. Take a better look at the [**Wordly Plus**](https://github.com/Carapacik/WordlyPlus)
 
-### Функции проекта:
-- `авторизация` и `регистрация` пользователей
-- Авторизированные пользователи могут `добавлять`, `удалять` и `редактировать` рецепты
-- Рецепты имеют картинки
-- Пользователи могут посмотреть список своих рецептов и статистику в профиле:
-    - Количество рецептов
-    - Количество лайков
-    - Количество избранных
-- Список избранных рецептов в отдельной вкладке у авторизированных пользователей
-- Возможность `редактировать` профиль
-- Авторизированные пользователи могут добавлять `лайки` и `избранное` на рецепт
-- Поиск по названиям рецептов и по `тэгам`
-- На главной странице отображается рецепт дня
+
+### Technologies
+- **Frontend**: Flutter 3.7 (or higher)
+- **State management**: Provider 6 (or higher)
+- **Backend**: ASP.NET 6 (or higher) or nest.js v9( or higher)
+- **Database**: MSSQL (for ASP.NET) or PostgreSQL (for nest.js)
+-  **ORM**: Entity Framework Core (for MSSQL) or TypeORM (for PostgreSQL)
+
+## Project functionality:
+- User `authorization` and `registration`
+- Authorized users can `add`, `delete` and `edit` recipes
+- Recipes have pictures
+- Users can view a list of their recipes and `statistics`:
+  - Number of recipes
+  - Number of likes
+  - Number of favorites
+- A list of favorite recipes in a separate tab for authorized users
+- `Edit` a profile
+- Authorized users can add `likes` and `favorites` to the recipe
+- Search by recipe `name` and `tags`
+- The `recipe of the day` is displayed on the main page
